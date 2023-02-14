@@ -27,6 +27,8 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from cols import COLS
+from utility import *
+import random
 
 def row(data, t):
     if data.cols:
@@ -36,7 +38,40 @@ def row(data, t):
                 add(col, t[col.at])
     else:
         data.cols = COLS(t)
-    return data</code></pre>
+    return data
+
+
+def add(col, x, n = 1):
+    if x != &#34;?&#34;:
+        col.n = col.n + n # Source of variable &#39;n&#39;
+        if col.isSym:
+            col.has[x] = n + (col.has.get(x, 0) or 0)
+            if col.has[x] &gt; col.most:
+                col.most = col.has[x]
+                col.mode = x
+        else:
+            col.lo = min(x, col.lo)
+            col.hi = max(x, col.hi)
+            all = len(col.has)
+            if all &lt; args.Max:
+                pos = all + 1
+            elif random.random() &lt; args.Max / col.n:
+                pos = rint(1, all)
+            else:
+                pos = None
+            if pos:
+                col.has[pos] = x
+                col.ok = False
+
+def adds(col, t):
+    for value in t or []:
+        add(col, value)
+    return col
+
+def extend(range, n, s):
+    range.lo = min(n, range.lo)
+    range.hi = max(n, range.hi)
+    add(range.y, s)</code></pre>
 </details>
 </section>
 <section>
@@ -46,6 +81,68 @@ def row(data, t):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="src.update.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>col, x, n=1)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add(col, x, n = 1):
+    if x != &#34;?&#34;:
+        col.n = col.n + n # Source of variable &#39;n&#39;
+        if col.isSym:
+            col.has[x] = n + (col.has.get(x, 0) or 0)
+            if col.has[x] &gt; col.most:
+                col.most = col.has[x]
+                col.mode = x
+        else:
+            col.lo = min(x, col.lo)
+            col.hi = max(x, col.hi)
+            all = len(col.has)
+            if all &lt; args.Max:
+                pos = all + 1
+            elif random.random() &lt; args.Max / col.n:
+                pos = rint(1, all)
+            else:
+                pos = None
+            if pos:
+                col.has[pos] = x
+                col.ok = False</code></pre>
+</details>
+</dd>
+<dt id="src.update.adds"><code class="name flex">
+<span>def <span class="ident">adds</span></span>(<span>col, t)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def adds(col, t):
+    for value in t or []:
+        add(col, value)
+    return col</code></pre>
+</details>
+</dd>
+<dt id="src.update.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>range, n, s)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(range, n, s):
+    range.lo = min(n, range.lo)
+    range.hi = max(n, range.hi)
+    add(range.y, s)</code></pre>
+</details>
+</dd>
 <dt id="src.update.row"><code class="name flex">
 <span>def <span class="ident">row</span></span>(<span>data, t)</span>
 </code></dt>
@@ -84,6 +181,9 @@ def row(data, t):
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="src.update.add" href="#src.update.add">add</a></code></li>
+<li><code><a title="src.update.adds" href="#src.update.adds">adds</a></code></li>
+<li><code><a title="src.update.extend" href="#src.update.extend">extend</a></code></li>
 <li><code><a title="src.update.row" href="#src.update.row">row</a></code></li>
 </ul>
 </li>

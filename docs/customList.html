@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>src API documentation</title>
+<title>src.customList API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,70 +19,42 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Namespace <code>src</code></h1>
+<h1 class="title">Module <code>src.customList</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+
+def per(t, p):
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="src.col" href="col.html">src.col</a></code></dt>
+<dt id="src.customList.per"><code class="name flex">
+<span>def <span class="ident">per</span></span>(<span>t, p)</span>
+</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.cols" href="cols.html">src.cols</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.customList" href="customList.html">src.customList</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.data" href="data.html">src.data</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.main" href="main.html">src.main</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.num" href="num.html">src.num</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.query" href="query.html">src.query</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.range" href="range.html">src.range</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.row" href="row.html">src.row</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.sym" href="sym.html">src.sym</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.testfile" href="testfile.html">src.testfile</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.update" href="update.html">src.update</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="src.utility" href="utility.html">src.utility</a></code></dt>
-<dd>
-<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def per(t, p):
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -93,21 +65,14 @@
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="src.col" href="col.html">src.col</a></code></li>
-<li><code><a title="src.cols" href="cols.html">src.cols</a></code></li>
-<li><code><a title="src.customList" href="customList.html">src.customList</a></code></li>
-<li><code><a title="src.data" href="data.html">src.data</a></code></li>
-<li><code><a title="src.main" href="main.html">src.main</a></code></li>
-<li><code><a title="src.num" href="num.html">src.num</a></code></li>
-<li><code><a title="src.query" href="query.html">src.query</a></code></li>
-<li><code><a title="src.range" href="range.html">src.range</a></code></li>
-<li><code><a title="src.row" href="row.html">src.row</a></code></li>
-<li><code><a title="src.sym" href="sym.html">src.sym</a></code></li>
-<li><code><a title="src.testfile" href="testfile.html">src.testfile</a></code></li>
-<li><code><a title="src.update" href="update.html">src.update</a></code></li>
-<li><code><a title="src.utility" href="utility.html">src.utility</a></code></li>
+<li><code><a title="src" href="index.html">src</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.customList.per" href="#src.customList.per">per</a></code></li>
 </ul>
 </li>
 </ul>
