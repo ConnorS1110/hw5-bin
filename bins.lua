@@ -13,9 +13,9 @@ USAGE: lua bins.lua [OPTIONS] [-g ACTIONS]
 OPTIONS:
   -b  --bins    initial number of bins       = 16
   -c  --cliffs  cliff's delta threshold      = .147
-  -f  --file    data file                    = ../etc/data/auto93.csv
+  -f  --file    data file                    = ./etc/data/auto93.csv
   -F  --Far     distance to distant          = .95
-  -g  --go      start-up action              = nothing
+  -g  --go      start-up action              = data
   -h  --help    show help                    = false
   -H  --Halves  search space for clustering  = 512
   -m  --min     size of smallest cluster     = .5
@@ -675,4 +675,4 @@ while true do
   if not _name then break end
   if _name:sub(1,1) ~= "_" then _locals[_name]=_value end
   _i = _i + 1 end
-return _locals  
+return _locals

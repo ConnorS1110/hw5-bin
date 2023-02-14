@@ -4,41 +4,22 @@ from row import ROW
 from cols import COLS
 import utility as util
 from collections.abc import Iterable
-from copy import copy
+from utility import *
+import update
 
 class DATA:
 
-    def __init__(self, src):
+    def __init__(self):
         self.rows = []
         self.cols = None
-        # self.halfCalls = 0
-        fun = lambda x: self.add(x)
-        if type(src) == str:
-            test.readCSV(src, fun)
-        else:
-            for row in src:
-                self.add(row)
 
-    def add(self, t):
-        """
-        Function:
-            add
-        Description:
-            Adds the data to rows and cols, or makes a COLS if there aren't any columns stored yet
-        Input:
-            self - current DATA instance
-            t - data to be added
-        Output:
-            None
-        """
-        if self.cols:
-            t = t if hasattr(t, "cells") else ROW(t)
-            self.rows.append(t)
-            self.cols.add(t)
-        else:
-            self.cols = COLS(t)
+    def read(self, sFile):
+        data = DATA()
+        callback = lambda t: update.row(data, t)
+        readCSV(sFile, callback)
+        return data
 
-    def clone(self, rows = None):
+    def clone(self, data, ts = None):
         """
         Function:
             clone
@@ -46,15 +27,13 @@ class DATA:
             Creates a clone of the DATA object and returns it
         Input:
             self - current DATA instance
-            init - init counter
-            x - data to be cloned
+            data - data to be cloned
         Output:
             data - Clone of DATA object
         """
-        data = DATA([self.cols.names])
-        for row in rows:
-            data.add(row)
-        return data
+        data1 = update.row(DATA(), data.names)
+        for t in (ts or []):
+            update.row(data1, t)
 
     def stats(self, what, cols, nPlaces, fun=None):
         """
