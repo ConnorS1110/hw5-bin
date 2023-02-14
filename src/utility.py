@@ -138,24 +138,6 @@ def eg(key, string, fun):
 def oo():
     pass
 
-def kap(listOfCols, fun):
-    """
-    Function:
-        kap
-    Description:
-        Creates map that stores functions as value
-    Input:
-        listOfCols - list of columns
-        fun - anonymous function to be used as value in map
-    Output:
-        u - map of anonymous functions
-    """
-    u = {}
-    for k, v in enumerate(listOfCols):
-        v, k = fun(v)
-        u[k or len(u)+1] = v
-    return u
-
 def rand(low, high):
     """
     Function:
@@ -191,38 +173,6 @@ def cosine(a, b, c):
     x2 = max(0, min(1, x1))
     y = (abs(a ** 2 - x2 ** 2)) ** 0.5
     return x2, y
-
-
-def many(t, n):
-    """
-    Function:
-        many
-    Description:
-        Creates a list of random rows
-    Input:
-        t - DATA object
-        n - Number of row samples
-    Output:
-        u - list of random n rows from t
-    """
-    u = []
-    for i in range(1, n + 1):
-        u.append(any(t))
-    return u
-
-def any(t):
-    """
-    Function:
-        any
-    Description:
-        Selects a random row
-    Input:
-        t - DATA object
-    Output:
-        Random row from t
-    """
-    rintVal = rint(None, len(t) - 1)
-    return t[rintVal]
 
 def randFunc():
     """
