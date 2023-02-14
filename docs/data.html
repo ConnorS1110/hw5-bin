@@ -32,41 +32,22 @@ from row import ROW
 from cols import COLS
 import utility as util
 from collections.abc import Iterable
-from copy import copy
+from utility import *
+import update
 
 class DATA:
 
-    def __init__(self, src):
+    def __init__(self):
         self.rows = []
         self.cols = None
-        # self.halfCalls = 0
-        fun = lambda x: self.add(x)
-        if type(src) == str:
-            test.readCSV(src, fun)
-        else:
-            for row in src:
-                self.add(row)
 
-    def add(self, t):
-        &#34;&#34;&#34;
-        Function:
-            add
-        Description:
-            Adds the data to rows and cols, or makes a COLS if there aren&#39;t any columns stored yet
-        Input:
-            self - current DATA instance
-            t - data to be added
-        Output:
-            None
-        &#34;&#34;&#34;
-        if self.cols:
-            t = t if hasattr(t, &#34;cells&#34;) else ROW(t)
-            self.rows.append(t)
-            self.cols.add(t)
-        else:
-            self.cols = COLS(t)
+    def read(self, sFile):
+        data = DATA()
+        callback = lambda t: update.row(data, t)
+        readCSV(sFile, callback)
+        return data
 
-    def clone(self, rows = None):
+    def clone(self, data, ts = None):
         &#34;&#34;&#34;
         Function:
             clone
@@ -74,15 +55,13 @@ class DATA:
             Creates a clone of the DATA object and returns it
         Input:
             self - current DATA instance
-            init - init counter
-            x - data to be cloned
+            data - data to be cloned
         Output:
             data - Clone of DATA object
         &#34;&#34;&#34;
-        data = DATA([self.cols.names])
-        for row in rows:
-            data.add(row)
-        return data
+        data1 = update.row(DATA(), data.names)
+        for t in (ts or []):
+            update.row(data1, t)
 
     def stats(self, what, cols, nPlaces, fun=None):
         &#34;&#34;&#34;
@@ -284,7 +263,6 @@ class DATA:
 <dl>
 <dt id="src.data.DATA"><code class="flex name class">
 <span>class <span class="ident">DATA</span></span>
-<span>(</span><span>src)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -294,37 +272,17 @@ class DATA:
 </summary>
 <pre><code class="python">class DATA:
 
-    def __init__(self, src):
+    def __init__(self):
         self.rows = []
         self.cols = None
-        # self.halfCalls = 0
-        fun = lambda x: self.add(x)
-        if type(src) == str:
-            test.readCSV(src, fun)
-        else:
-            for row in src:
-                self.add(row)
 
-    def add(self, t):
-        &#34;&#34;&#34;
-        Function:
-            add
-        Description:
-            Adds the data to rows and cols, or makes a COLS if there aren&#39;t any columns stored yet
-        Input:
-            self - current DATA instance
-            t - data to be added
-        Output:
-            None
-        &#34;&#34;&#34;
-        if self.cols:
-            t = t if hasattr(t, &#34;cells&#34;) else ROW(t)
-            self.rows.append(t)
-            self.cols.add(t)
-        else:
-            self.cols = COLS(t)
+    def read(self, sFile):
+        data = DATA()
+        callback = lambda t: update.row(data, t)
+        readCSV(sFile, callback)
+        return data
 
-    def clone(self, rows = None):
+    def clone(self, data, ts = None):
         &#34;&#34;&#34;
         Function:
             clone
@@ -332,15 +290,13 @@ class DATA:
             Creates a clone of the DATA object and returns it
         Input:
             self - current DATA instance
-            init - init counter
-            x - data to be cloned
+            data - data to be cloned
         Output:
             data - Clone of DATA object
         &#34;&#34;&#34;
-        data = DATA([self.cols.names])
-        for row in rows:
-            data.add(row)
-        return data
+        data1 = update.row(DATA(), data.names)
+        for t in (ts or []):
+            update.row(data1, t)
 
     def stats(self, what, cols, nPlaces, fun=None):
         &#34;&#34;&#34;
@@ -532,43 +488,6 @@ class DATA:
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="src.data.DATA.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, t)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>add</p>
-<h2 id="description">Description</h2>
-<p>Adds the data to rows and cols, or makes a COLS if there aren't any columns stored yet</p>
-<h2 id="input">Input</h2>
-<p>self - current DATA instance
-t - data to be added</p>
-<h2 id="output">Output</h2>
-<p>None</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, t):
-    &#34;&#34;&#34;
-    Function:
-        add
-    Description:
-        Adds the data to rows and cols, or makes a COLS if there aren&#39;t any columns stored yet
-    Input:
-        self - current DATA instance
-        t - data to be added
-    Output:
-        None
-    &#34;&#34;&#34;
-    if self.cols:
-        t = t if hasattr(t, &#34;cells&#34;) else ROW(t)
-        self.rows.append(t)
-        self.cols.add(t)
-    else:
-        self.cols = COLS(t)</code></pre>
-</details>
-</dd>
 <dt id="src.data.DATA.around"><code class="name flex">
 <span>def <span class="ident">around</span></span>(<span>self, row1, rows=None, cols=None)</span>
 </code></dt>
@@ -656,7 +575,7 @@ row2 - Second row to compare</p>
 </details>
 </dd>
 <dt id="src.data.DATA.clone"><code class="name flex">
-<span>def <span class="ident">clone</span></span>(<span>self, rows=None)</span>
+<span>def <span class="ident">clone</span></span>(<span>self, data, ts=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="function">Function</h2>
@@ -665,15 +584,14 @@ row2 - Second row to compare</p>
 <p>Creates a clone of the DATA object and returns it</p>
 <h2 id="input">Input</h2>
 <p>self - current DATA instance
-init - init counter
-x - data to be cloned</p>
+data - data to be cloned</p>
 <h2 id="output">Output</h2>
 <p>data - Clone of DATA object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def clone(self, rows = None):
+<pre><code class="python">def clone(self, data, ts = None):
     &#34;&#34;&#34;
     Function:
         clone
@@ -681,15 +599,13 @@ x - data to be cloned</p>
         Creates a clone of the DATA object and returns it
     Input:
         self - current DATA instance
-        init - init counter
-        x - data to be cloned
+        data - data to be cloned
     Output:
         data - Clone of DATA object
     &#34;&#34;&#34;
-    data = DATA([self.cols.names])
-    for row in rows:
-        data.add(row)
-    return data</code></pre>
+    data1 = update.row(DATA(), data.names)
+    for t in (ts or []):
+        update.row(data1, t)</code></pre>
 </details>
 </dd>
 <dt id="src.data.DATA.cluster"><code class="name flex">
@@ -860,6 +776,22 @@ c - Distance between A and B</p></div>
     return left, right, A, B, mid, c</code></pre>
 </details>
 </dd>
+<dt id="src.data.DATA.read"><code class="name flex">
+<span>def <span class="ident">read</span></span>(<span>self, sFile)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read(self, sFile):
+    data = DATA()
+    callback = lambda t: update.row(data, t)
+    readCSV(sFile, callback)
+    return data</code></pre>
+</details>
+</dd>
 <dt id="src.data.DATA.stats"><code class="name flex">
 <span>def <span class="ident">stats</span></span>(<span>self, what, cols, nPlaces, fun=None)</span>
 </code></dt>
@@ -970,7 +902,6 @@ above - Previous point of split</p>
 <li>
 <h4><code><a title="src.data.DATA" href="#src.data.DATA">DATA</a></code></h4>
 <ul class="two-column">
-<li><code><a title="src.data.DATA.add" href="#src.data.DATA.add">add</a></code></li>
 <li><code><a title="src.data.DATA.around" href="#src.data.DATA.around">around</a></code></li>
 <li><code><a title="src.data.DATA.better" href="#src.data.DATA.better">better</a></code></li>
 <li><code><a title="src.data.DATA.clone" href="#src.data.DATA.clone">clone</a></code></li>
@@ -978,6 +909,7 @@ above - Previous point of split</p>
 <li><code><a title="src.data.DATA.dist" href="#src.data.DATA.dist">dist</a></code></li>
 <li><code><a title="src.data.DATA.furthest" href="#src.data.DATA.furthest">furthest</a></code></li>
 <li><code><a title="src.data.DATA.half" href="#src.data.DATA.half">half</a></code></li>
+<li><code><a title="src.data.DATA.read" href="#src.data.DATA.read">read</a></code></li>
 <li><code><a title="src.data.DATA.stats" href="#src.data.DATA.stats">stats</a></code></li>
 <li><code><a title="src.data.DATA.sway" href="#src.data.DATA.sway">sway</a></code></li>
 </ul>

@@ -34,24 +34,28 @@ import os
 from num import NUM
 from sym import SYM
 from data import DATA
-from math import floor
 from copy import deepcopy
 
 help = &#34;&#34;&#34;
-grid.lua : a rep grid processor
-(c)2022, Tim Menzies &lt;timm@ieee.org&gt;, BSD-2
+bins: multi-objective semi-supervised discetization
+(c) 2023 Tim Menzies &lt;timm@ieee.org&gt; BSD-2
 
-USAGE: grid.lua  [OPTIONS] [-g ACTION]
+USAGE: lua bins.lua [OPTIONS] [-g ACTIONS]
 
 OPTIONS:
-  -d  --dump    on crash, dump stack   = false
-  -f  --file    name of file           = ../etc/data/repgrid1.csv
-  -g  --go      start-up action        = data
-  -h  --help    show help              = false
-  -p  --p       distance coefficient   = 2
-  -s  --seed    random number seed     = 937162211
-
-ACTIONS:
+  -b  --bins    initial number of bins       = 16
+  -c  --cliffs  cliff&#39;s delta threshold      = .147
+  -f  --file    data file                    = ../etc/data/auto93.csv
+  -F  --Far     distance to distant          = .95
+  -g  --go      start-up action              = nothing
+  -h  --help    show help                    = false
+  -H  --Halves  search space for clustering  = 512
+  -m  --min     size of smallest cluster     = .5
+  -M  --Max     numbers                      = 512
+  -p  --p       dist coefficient             = 2
+  -r  --rest    how many of rest to sample   = 4
+  -R  --Reuse   child splits reuse a parent pole = true
+  -s  --seed    random number seed           = 937162211
 &#34;&#34;&#34;
 
 args = None
@@ -330,12 +334,19 @@ def getCliArgs():
     &#34;&#34;&#34;
     global args
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument(&#34;-d&#34;, &#34;--dump&#34;, type=bool, default=False, required=False, help=&#34;on crash, dump stack&#34;)
+    parser.add_argument(&#34;-b&#34;, &#34;--bins&#34;, type=int, default=16, required=False, help=&#34;initial number of bins&#34;)
     parser.add_argument(&#34;-g&#34;, &#34;--go&#34;, type=str, default=&#34;all&#34;, required=False, help=&#34;start-up action&#34;)
     parser.add_argument(&#34;-h&#34;, &#34;--help&#34;, action=&#39;store_true&#39;, help=&#34;show help&#34;)
     parser.add_argument(&#34;-s&#34;, &#34;--seed&#34;, type=int, default=937162211, required=False, help=&#34;random number seed&#34;)
-    parser.add_argument(&#34;-f&#34;, &#34;--file&#34;, type=str, default=&#34;../etc/data/repgrid1.json&#34;, required=False, help=&#34;name of file&#34;)
+    parser.add_argument(&#34;-f&#34;, &#34;--file&#34;, type=str, default=&#34;../etc/data/auto93.csv&#34;, required=False, help=&#34;data file&#34;)
     parser.add_argument(&#34;-p&#34;, &#34;--p&#34;, type=int, default=2, required=False, help=&#34;distance coefficient&#34;)
+    parser.add_argument(&#34;-c&#34;, &#34;--cliffs&#34;, type=float, default=0.147, required=False, help=&#34;cliff&#39;s delta threshold&#34;)
+    parser.add_argument(&#34;-F&#34;, &#34;--Far&#34;, type=float, default=0.95, required=False, help=&#34;distance to distant&#34;)
+    parser.add_argument(&#34;-H&#34;, &#34;--Halves&#34;, type=int, default=512, required=False, help=&#34;search space for clustering&#34;)
+    parser.add_argument(&#34;-m&#34;, &#34;--min&#34;, type=float, default=0.5, required=False, help=&#34;size of smallest cluster&#34;)
+    parser.add_argument(&#34;-M&#34;, &#34;--Max&#34;, type=int, default=512, required=False, help=&#34;numbers&#34;)
+    parser.add_argument(&#34;-r&#34;, &#34;--rest&#34;, type=int, default=4, required=False, help=&#34;how many of rest to sample&#34;)
+    parser.add_argument(&#34;-R&#34;, &#34;--Reuse&#34;, type=bool, default=True, required=False, help=&#34;child splits reuse a parent pole&#34;)
 
     args = parser.parse_args()
 
@@ -938,12 +949,19 @@ fun - callback function to use for test case</p>
     &#34;&#34;&#34;
     global args
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument(&#34;-d&#34;, &#34;--dump&#34;, type=bool, default=False, required=False, help=&#34;on crash, dump stack&#34;)
+    parser.add_argument(&#34;-b&#34;, &#34;--bins&#34;, type=int, default=16, required=False, help=&#34;initial number of bins&#34;)
     parser.add_argument(&#34;-g&#34;, &#34;--go&#34;, type=str, default=&#34;all&#34;, required=False, help=&#34;start-up action&#34;)
     parser.add_argument(&#34;-h&#34;, &#34;--help&#34;, action=&#39;store_true&#39;, help=&#34;show help&#34;)
     parser.add_argument(&#34;-s&#34;, &#34;--seed&#34;, type=int, default=937162211, required=False, help=&#34;random number seed&#34;)
-    parser.add_argument(&#34;-f&#34;, &#34;--file&#34;, type=str, default=&#34;../etc/data/repgrid1.json&#34;, required=False, help=&#34;name of file&#34;)
+    parser.add_argument(&#34;-f&#34;, &#34;--file&#34;, type=str, default=&#34;../etc/data/auto93.csv&#34;, required=False, help=&#34;data file&#34;)
     parser.add_argument(&#34;-p&#34;, &#34;--p&#34;, type=int, default=2, required=False, help=&#34;distance coefficient&#34;)
+    parser.add_argument(&#34;-c&#34;, &#34;--cliffs&#34;, type=float, default=0.147, required=False, help=&#34;cliff&#39;s delta threshold&#34;)
+    parser.add_argument(&#34;-F&#34;, &#34;--Far&#34;, type=float, default=0.95, required=False, help=&#34;distance to distant&#34;)
+    parser.add_argument(&#34;-H&#34;, &#34;--Halves&#34;, type=int, default=512, required=False, help=&#34;search space for clustering&#34;)
+    parser.add_argument(&#34;-m&#34;, &#34;--min&#34;, type=float, default=0.5, required=False, help=&#34;size of smallest cluster&#34;)
+    parser.add_argument(&#34;-M&#34;, &#34;--Max&#34;, type=int, default=512, required=False, help=&#34;numbers&#34;)
+    parser.add_argument(&#34;-r&#34;, &#34;--rest&#34;, type=int, default=4, required=False, help=&#34;how many of rest to sample&#34;)
+    parser.add_argument(&#34;-R&#34;, &#34;--Reuse&#34;, type=bool, default=True, required=False, help=&#34;child splits reuse a parent pole&#34;)
 
     args = parser.parse_args()</code></pre>
 </details>
