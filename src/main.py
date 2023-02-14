@@ -24,7 +24,7 @@ def main(funs):
                     fails += 1
                     print("❌ fail:",what)
                 else: print("✅ pass:",what)
-    printCLIvalues()
+    # printCLIvalues()
     if (fails == 0): return 0
     else: return 1
 
