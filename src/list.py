@@ -1,5 +1,5 @@
 import math
-from misc import *
+from miscellaneous import *
 
 def many(t, n):
     """

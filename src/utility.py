@@ -4,8 +4,11 @@ import json
 import math
 import os
 from num import NUM
+from query import has
 from sym import SYM
 from data import DATA
+from update import *
+from query import *
 from copy import deepcopy
 
 help = """
@@ -117,6 +120,23 @@ def rint(lo = None, hi = None):
     """
     return math.floor(0.5 + rand(lo, hi))
 
+def rand(low = None, high = None):
+    """
+    Function:
+        rand
+    Description:
+        Creates a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    """
+    global Seed
+    low, high = low or 0, high or 1
+    Seed = (16807 * Seed) % 2147483647
+    return low + (high - low) * Seed / 2147483647
+
 def eg(key, string, fun):
     """
     Function:
@@ -137,23 +157,6 @@ def eg(key, string, fun):
 
 def oo():
     pass
-
-def rand(low, high):
-    """
-    Function:
-        rand
-    Description:
-        Creates a random number
-    Input:
-        low - low value
-        high - high value
-    Output:
-        Random number
-    """
-    global Seed
-    low, high = low or 0, high or 1
-    Seed = (16807 * Seed) % 2147483647
-    return low + (high - low) * Seed / 2147483647
 
 def cosine(a, b, c):
     """
@@ -187,15 +190,27 @@ def randFunc():
     """
     global args
     global Seed
-    num1, num2 = NUM(), NUM()
-    Seed = args.seed
-    for i in range(10**3):
-        num1.add(rand(0, 1))
-    Seed = args.seed
-    for i in range(10**3):
-        num2.add(rand(0, 1))
-    m1, m2 = round(num1.mid(), 10), round(num2.mid(), 10)
-    return m1 == m2 and 0.5 == round(m1, 1)
+    Seed = 1
+    t = []
+    for i in range(1000):
+        t.append(rint(100))
+    Seed = 1
+    u = []
+    for i in range(1000):
+        u.append(rint(100))
+    for index, value in enumerate(t):
+        if (value != u[index]):
+            return False
+    return True
+
+def someFunc():
+    global args
+    args.Max = 32
+    num1 = NUM()
+    for i in range(10000):
+        add(num1, i)
+    args.Max = 512
+    # print(has(num1))
 
 def symFunc():
     """
@@ -208,10 +223,9 @@ def symFunc():
     Output:
         'a' is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
     """
-    sym = SYM()
-    for i in ["a","a","a","a","b","b","c"]:
-        sym.add(i)
-    return "a" == sym.mid() and 1.379 == round(sym.div(), ndigits=3)
+    sym = adds(SYM(), ["a","a","a","a","b","b","c"])
+    print(mid(sym), round(div(sym), 2))
+    return 1.38 == round(div(sym), 2)
 
 def numFunc():
     """
@@ -222,12 +236,16 @@ def numFunc():
     Input:
         None
     Output:
-        The mean equals 11/7 and the div equals 0.787 as a boolean
+        The midpoint of num1 of 0.5 and num1 has a greater midpoint than num2
     """
-    num = NUM()
-    for element in [1,1,1,1,2,2,3]:
-        num.add(element)
-    return 11/7 == num.mid() and 0.787 == round(num.div(), ndigits=3)
+    num1, num2 = NUM(), NUM()
+    for i in range(10000):
+        add(num1, rand())
+    for i in range(10000):
+        add(num2, rand() ** 2)
+    print(1, round(mid(num1), 2), round(div(num1), 2))
+    print(2, round(mid(num2), 2), round(div(num2), 2))
+    return .5 == round(mid(num1), 1) and mid(num1)> mid(num2)
 
 def crashFunc():
     """

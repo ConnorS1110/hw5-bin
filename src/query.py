@@ -3,16 +3,16 @@ from utility import *
 import math
 
 def has(col):
-    if not col.isSym and not col.ok:
-        col.has.sort()
+    if not hasattr(col, "isSym") and not col.ok:
+        col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
     col.ok = True
     return col.has
 
 def mid(col):
-    return col.isSym if col.mode else per(has(col), 0.5)
+    return col.isSym if hasattr(col, "mode") else per(has(col), 0.5)
 
 def div(col):
-    if col.isSym:
+    if hasattr(col, "isSym"):
         e = 0
         for n in col.has:
             e = e - n/col.n * math.log(n/col.n, 2)

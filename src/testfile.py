@@ -1,9 +1,11 @@
 from utility import *
 
-eg("crash", "show crashing behavior", crashFunc)
-eg("the", "show settings", oo)
+eg("the", "show options", oo)
+eg("rand", "demo random number generation", randFunc)
+eg("some", "demo of reservoir sampling", someFunc)
+eg("nums","demo of NUM", numFunc)
+eg("syms","demo SYMS", symFunc)
 # eg("copy", "check copy", copyFunc)
-# eg("sym","check syms", symFunc)
 # eg("num", "check nums", numFunc)
 # eg("repcols", "checking repcols", repColsFunc)
 # eg("synonyms","checking repcols cluster", synonymsFunc)

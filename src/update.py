@@ -1,5 +1,5 @@
 from cols import COLS
-from utility import *
+import utility as util
 import random
 
 def row(data, t):
@@ -16,8 +16,8 @@ def row(data, t):
 def add(col, x, n = 1):
     if x != "?":
         col.n = col.n + n # Source of variable 'n'
-        if col.isSym:
-            col.has[x] = n + (col.has.get(x, 0) or 0)
+        if hasattr(col, "isSym"):
+            col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] > col.most:
                 col.most = col.has[x]
                 col.mode = x
@@ -25,10 +25,10 @@ def add(col, x, n = 1):
             col.lo = min(x, col.lo)
             col.hi = max(x, col.hi)
             all = len(col.has)
-            if all < args.Max:
+            if all < util.args.Max:
                 pos = all + 1
-            elif random.random() < args.Max / col.n:
-                pos = rint(1, all)
+            elif random.random() < util.args.Max / col.n:
+                pos = util.rint(1, all)
             else:
                 pos = None
             if pos:
@@ -44,4 +44,3 @@ def extend(range, n, s):
     range.lo = min(n, range.lo)
     range.hi = max(n, range.hi)
     add(range.y, s)
-
