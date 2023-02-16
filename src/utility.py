@@ -4,7 +4,6 @@ import json
 import math
 import os
 from num import NUM
-from query import has
 from sym import SYM
 from data import DATA
 from update import *

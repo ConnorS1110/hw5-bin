@@ -4,19 +4,26 @@ import math
 
 def has(col):
     if not hasattr(col, "isSym") and not col.ok:
-        col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
+        if isinstance(col.has, dict):
+            col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
+        else:
+            col.has.sort()
     col.ok = True
     return col.has
 
 def mid(col):
-    return col.isSym if hasattr(col, "mode") else per(has(col), 0.5)
+    return col.mode if hasattr(col, "isSym") else per(has(col), 0.5)
 
 def div(col):
     if hasattr(col, "isSym"):
         e = 0
-        for n in col.has:
-            e = e - n/col.n * math.log(n/col.n, 2)
-            return e
+        if isinstance(col.has, dict):
+            for n in col.has.values():
+                e = e - n/col.n * math.log(n/col.n, 2)
+        else:
+            for n in col.has:
+                e = e - n/col.n * math.log(n/col.n, 2)
+        return e
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 

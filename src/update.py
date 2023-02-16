@@ -32,7 +32,10 @@ def add(col, x, n = 1):
             else:
                 pos = None
             if pos:
-                col.has[pos] = x
+                if isinstance(col.has, dict):
+                    col.has[pos] = x
+                else:
+                    col.has.append(x)
                 col.ok = False
 
 def adds(col, t):
