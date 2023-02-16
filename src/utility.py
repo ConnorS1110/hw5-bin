@@ -414,14 +414,14 @@ def cloneFunc():
     print(stats(data2))
 
 def cliffsFunc():
-    assert (cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1")
-    assert (cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2")
+    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1"
+    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2"
     t1, t2 = [], []
     for i in range(1000):
         t1.append(rand())
         t2.append(math.sqrt(rand()))
-    assert (cliffsDelta(t1, t1) == False, "3")
-    assert (cliffsDelta(t1, t2) == True, "4")
+    assert cliffsDelta(t1, t1) == False, "3"
+    assert cliffsDelta(t1, t2) == True, "4"
     diff, j = False, 1.0
     while not diff:
         t3 = list(map(lambda x: x*j, t1))
