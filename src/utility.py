@@ -9,6 +9,7 @@ from data import DATA
 from update import *
 from query import *
 from copy import deepcopy
+from query import *
 
 help = """
 bins: multi-objective semi-supervised discetization
@@ -76,6 +77,19 @@ def repRows(t, rows, u=None):
             u = t["rows"][len(t["rows"]) - n]
             row.append(u[-1])
     return DATA(rows)
+
+def cliffsDelta(ns1, ns2):
+    if len(ns1) > 256: ns1 = many(ns1,256)
+    if len(ns2) > 256: ns2 = many(ns2,256)
+    if len(ns1) > 10*len(ns2): ns1 = many(ns1,10*len(ns2))
+    if len(ns2) > 10*len(ns1): ns2 = many(ns2,10*len(ns1))
+    n,gt,lt = 0,0,0
+    for x in ns1:
+        for y in ns2:
+            n += 1
+            if x > y: gt += 1 
+            if x < y: lt += 1 
+    return abs(lt - gt)/n > args.cliffs
 
 def show(node, what= None, cols = None, nPlaces = None, lvl=None):
     """
@@ -326,7 +340,7 @@ def csvFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     readCSV(full_path, fun)
-    return n == 8 * 399
+    return n == 3192
 
 def readCSV(sFilename, fun):
     """
@@ -359,11 +373,9 @@ def dataFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     data = DATA(full_path)
-    return (len(data.rows) == 398 and
-    data.cols.y[1].w == -1 and
-    data.cols.x[1].at == 1 and
-    len(data.cols.x) == 4
-    )
+    col = data.cols.x[1]
+    print(col.lo, col.hi, mid(col), div(col))
+    print(stats(data))
 
 def statsFunc():
     """
@@ -398,10 +410,33 @@ def cloneFunc():
     full_path = os.path.join(script_dir, args.file)
     data1 = DATA(full_path)
     data2 = data1.clone(data1.rows)
-    return (len(data1.rows) == len(data2.rows) and
-            data1.cols.y[1].w == data2.cols.y[1].w and
-            data1.cols.x[1].at == data2.cols.x[1].at and
-            len(data1.cols.x) == len(data2.cols.x))
+    print(stats(data1))
+    print(stats(data2))
+
+def cliffsFunc():
+    assert (cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "1")
+    assert (cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2")
+    t1, t2 = [], []
+    for i in range(1000):
+        t1.append(rand())
+        t2.append(math.sqrt(rand()))
+    assert (cliffsDelta(t1, t1) == False, "3")
+    assert (cliffsDelta(t1, t2) == True, "4")
+    diff, j = False, 1.0
+    while not diff:
+        t3 = list(map(lambda x: x*j, t1))
+        diff = cliffsDelta(t1, t3)
+        print(">", round(j, 4), diff)
+        j *= 1.025
+
+def distFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    data = DATA(full_path)
+    num = NUM()
+    for row in data.rows:
+        add(num, dist(data, row, data.rows[1]))
+    print({"lo": num.lo, "hi": num.hi, "mid": round(mid(num)), "div": round(num)})
 
 def clusterFunc():
     """

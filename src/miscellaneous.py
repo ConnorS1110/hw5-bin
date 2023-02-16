@@ -3,6 +3,7 @@ from list import *
 import re
 import math
 
+Seed = 937162211
 
 def itself(x):
     return x
