@@ -34,6 +34,8 @@ import os
 from num import NUM
 from sym import SYM
 from data import DATA
+from update import *
+from query import *
 from copy import deepcopy
 
 help = &#34;&#34;&#34;
@@ -145,6 +147,23 @@ def rint(lo = None, hi = None):
     &#34;&#34;&#34;
     return math.floor(0.5 + rand(lo, hi))
 
+def rand(low = None, high = None):
+    &#34;&#34;&#34;
+    Function:
+        rand
+    Description:
+        Creates a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    &#34;&#34;&#34;
+    global Seed
+    low, high = low or 0, high or 1
+    Seed = (16807 * Seed) % 2147483647
+    return low + (high - low) * Seed / 2147483647
+
 def eg(key, string, fun):
     &#34;&#34;&#34;
     Function:
@@ -166,41 +185,6 @@ def eg(key, string, fun):
 def oo():
     pass
 
-def kap(listOfCols, fun):
-    &#34;&#34;&#34;
-    Function:
-        kap
-    Description:
-        Creates map that stores functions as value
-    Input:
-        listOfCols - list of columns
-        fun - anonymous function to be used as value in map
-    Output:
-        u - map of anonymous functions
-    &#34;&#34;&#34;
-    u = {}
-    for k, v in enumerate(listOfCols):
-        v, k = fun(v)
-        u[k or len(u)+1] = v
-    return u
-
-def rand(low, high):
-    &#34;&#34;&#34;
-    Function:
-        rand
-    Description:
-        Creates a random number
-    Input:
-        low - low value
-        high - high value
-    Output:
-        Random number
-    &#34;&#34;&#34;
-    global Seed
-    low, high = low or 0, high or 1
-    Seed = (16807 * Seed) % 2147483647
-    return low + (high - low) * Seed / 2147483647
-
 def cosine(a, b, c):
     &#34;&#34;&#34;
     Function:
@@ -220,38 +204,6 @@ def cosine(a, b, c):
     y = (abs(a ** 2 - x2 ** 2)) ** 0.5
     return x2, y
 
-
-def many(t, n):
-    &#34;&#34;&#34;
-    Function:
-        many
-    Description:
-        Creates a list of random rows
-    Input:
-        t - DATA object
-        n - Number of row samples
-    Output:
-        u - list of random n rows from t
-    &#34;&#34;&#34;
-    u = []
-    for i in range(1, n + 1):
-        u.append(any(t))
-    return u
-
-def any(t):
-    &#34;&#34;&#34;
-    Function:
-        any
-    Description:
-        Selects a random row
-    Input:
-        t - DATA object
-    Output:
-        Random row from t
-    &#34;&#34;&#34;
-    rintVal = rint(None, len(t) - 1)
-    return t[rintVal]
-
 def randFunc():
     &#34;&#34;&#34;
     Function:
@@ -265,15 +217,27 @@ def randFunc():
     &#34;&#34;&#34;
     global args
     global Seed
-    num1, num2 = NUM(), NUM()
-    Seed = args.seed
-    for i in range(10**3):
-        num1.add(rand(0, 1))
-    Seed = args.seed
-    for i in range(10**3):
-        num2.add(rand(0, 1))
-    m1, m2 = round(num1.mid(), 10), round(num2.mid(), 10)
-    return m1 == m2 and 0.5 == round(m1, 1)
+    Seed = 1
+    t = []
+    for i in range(1000):
+        t.append(rint(100))
+    Seed = 1
+    u = []
+    for i in range(1000):
+        u.append(rint(100))
+    for index, value in enumerate(t):
+        if (value != u[index]):
+            return False
+    return True
+
+def someFunc():
+    global args
+    args.Max = 32
+    num1 = NUM()
+    for i in range(10000):
+        add(num1, i)
+    args.Max = 512
+    # print(has(num1))
 
 def symFunc():
     &#34;&#34;&#34;
@@ -286,10 +250,9 @@ def symFunc():
     Output:
         &#39;a&#39; is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
     &#34;&#34;&#34;
-    sym = SYM()
-    for i in [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;]:
-        sym.add(i)
-    return &#34;a&#34; == sym.mid() and 1.379 == round(sym.div(), ndigits=3)
+    sym = adds(SYM(), [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;])
+    print(mid(sym), round(div(sym), 2))
+    return 1.38 == round(div(sym), 2)
 
 def numFunc():
     &#34;&#34;&#34;
@@ -300,12 +263,16 @@ def numFunc():
     Input:
         None
     Output:
-        The mean equals 11/7 and the div equals 0.787 as a boolean
+        The midpoint of num1 of 0.5 and num1 has a greater midpoint than num2
     &#34;&#34;&#34;
-    num = NUM()
-    for element in [1,1,1,1,2,2,3]:
-        num.add(element)
-    return 11/7 == num.mid() and 0.787 == round(num.div(), ndigits=3)
+    num1, num2 = NUM(), NUM()
+    for i in range(10000):
+        add(num1, rand())
+    for i in range(10000):
+        add(num2, rand() ** 2)
+    print(1, round(mid(num1), 2), round(div(num1), 2))
+    print(2, round(mid(num2), 2), round(div(num2), 2))
+    return .5 == round(mid(num1), 1) and mid(num1)&gt; mid(num2)
 
 def crashFunc():
     &#34;&#34;&#34;
@@ -573,37 +540,6 @@ def copyFunc():
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="src.utility.any"><code class="name flex">
-<span>def <span class="ident">any</span></span>(<span>t)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>any</p>
-<h2 id="description">Description</h2>
-<p>Selects a random row</p>
-<h2 id="input">Input</h2>
-<p>t - DATA object</p>
-<h2 id="output">Output</h2>
-<p>Random row from t</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def any(t):
-    &#34;&#34;&#34;
-    Function:
-        any
-    Description:
-        Selects a random row
-    Input:
-        t - DATA object
-    Output:
-        Random row from t
-    &#34;&#34;&#34;
-    rintVal = rint(None, len(t) - 1)
-    return t[rintVal]</code></pre>
-</details>
-</dd>
 <dt id="src.utility.aroundFunc"><code class="name flex">
 <span>def <span class="ident">aroundFunc</span></span>(<span>)</span>
 </code></dt>
@@ -1003,42 +939,6 @@ fun - callback function to use for test case</p>
     print(B.cells)</code></pre>
 </details>
 </dd>
-<dt id="src.utility.kap"><code class="name flex">
-<span>def <span class="ident">kap</span></span>(<span>listOfCols, fun)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>kap</p>
-<h2 id="description">Description</h2>
-<p>Creates map that stores functions as value</p>
-<h2 id="input">Input</h2>
-<p>listOfCols - list of columns
-fun - anonymous function to be used as value in map</p>
-<h2 id="output">Output</h2>
-<p>u - map of anonymous functions</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def kap(listOfCols, fun):
-    &#34;&#34;&#34;
-    Function:
-        kap
-    Description:
-        Creates map that stores functions as value
-    Input:
-        listOfCols - list of columns
-        fun - anonymous function to be used as value in map
-    Output:
-        u - map of anonymous functions
-    &#34;&#34;&#34;
-    u = {}
-    for k, v in enumerate(listOfCols):
-        v, k = fun(v)
-        u[k or len(u)+1] = v
-    return u</code></pre>
-</details>
-</dd>
 <dt id="src.utility.last"><code class="name flex">
 <span>def <span class="ident">last</span></span>(<span>t)</span>
 </code></dt>
@@ -1052,41 +952,6 @@ fun - anonymous function to be used as value in map</p>
     return t[-1]</code></pre>
 </details>
 </dd>
-<dt id="src.utility.many"><code class="name flex">
-<span>def <span class="ident">many</span></span>(<span>t, n)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>many</p>
-<h2 id="description">Description</h2>
-<p>Creates a list of random rows</p>
-<h2 id="input">Input</h2>
-<p>t - DATA object
-n - Number of row samples</p>
-<h2 id="output">Output</h2>
-<p>u - list of random n rows from t</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def many(t, n):
-    &#34;&#34;&#34;
-    Function:
-        many
-    Description:
-        Creates a list of random rows
-    Input:
-        t - DATA object
-        n - Number of row samples
-    Output:
-        u - list of random n rows from t
-    &#34;&#34;&#34;
-    u = []
-    for i in range(1, n + 1):
-        u.append(any(t))
-    return u</code></pre>
-</details>
-</dd>
 <dt id="src.utility.numFunc"><code class="name flex">
 <span>def <span class="ident">numFunc</span></span>(<span>)</span>
 </code></dt>
@@ -1098,7 +963,7 @@ n - Number of row samples</p>
 <h2 id="input">Input</h2>
 <p>None</p>
 <h2 id="output">Output</h2>
-<p>The mean equals 11/7 and the div equals 0.787 as a boolean</p></div>
+<p>The midpoint of num1 of 0.5 and num1 has a greater midpoint than num2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1112,12 +977,16 @@ n - Number of row samples</p>
     Input:
         None
     Output:
-        The mean equals 11/7 and the div equals 0.787 as a boolean
+        The midpoint of num1 of 0.5 and num1 has a greater midpoint than num2
     &#34;&#34;&#34;
-    num = NUM()
-    for element in [1,1,1,1,2,2,3]:
-        num.add(element)
-    return 11/7 == num.mid() and 0.787 == round(num.div(), ndigits=3)</code></pre>
+    num1, num2 = NUM(), NUM()
+    for i in range(10000):
+        add(num1, rand())
+    for i in range(10000):
+        add(num2, rand() ** 2)
+    print(1, round(mid(num1), 2), round(div(num1), 2))
+    print(2, round(mid(num2), 2), round(div(num2), 2))
+    return .5 == round(mid(num1), 1) and mid(num1)&gt; mid(num2)</code></pre>
 </details>
 </dd>
 <dt id="src.utility.oo"><code class="name flex">
@@ -1186,7 +1055,7 @@ n - Number of row samples</p>
 </details>
 </dd>
 <dt id="src.utility.rand"><code class="name flex">
-<span>def <span class="ident">rand</span></span>(<span>low, high)</span>
+<span>def <span class="ident">rand</span></span>(<span>low=None, high=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="function">Function</h2>
@@ -1202,7 +1071,7 @@ high - high value</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def rand(low, high):
+<pre><code class="python">def rand(low = None, high = None):
     &#34;&#34;&#34;
     Function:
         rand
@@ -1249,15 +1118,18 @@ high - high value</p>
     &#34;&#34;&#34;
     global args
     global Seed
-    num1, num2 = NUM(), NUM()
-    Seed = args.seed
-    for i in range(10**3):
-        num1.add(rand(0, 1))
-    Seed = args.seed
-    for i in range(10**3):
-        num2.add(rand(0, 1))
-    m1, m2 = round(num1.mid(), 10), round(num2.mid(), 10)
-    return m1 == m2 and 0.5 == round(m1, 1)</code></pre>
+    Seed = 1
+    t = []
+    for i in range(1000):
+        t.append(rint(100))
+    Seed = 1
+    u = []
+    for i in range(1000):
+        u.append(rint(100))
+    for index, value in enumerate(t):
+        if (value != u[index]):
+            return False
+    return True</code></pre>
 </details>
 </dd>
 <dt id="src.utility.readCSV"><code class="name flex">
@@ -1457,6 +1329,25 @@ lvl - how deep the tree is</p>
         show(node.get(&#34;right&#34;, None), what,cols,nPlaces, lvl+1)</code></pre>
 </details>
 </dd>
+<dt id="src.utility.someFunc"><code class="name flex">
+<span>def <span class="ident">someFunc</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def someFunc():
+    global args
+    args.Max = 32
+    num1 = NUM()
+    for i in range(10000):
+        add(num1, i)
+    args.Max = 512
+    # print(has(num1))</code></pre>
+</details>
+</dd>
 <dt id="src.utility.statsFunc"><code class="name flex">
 <span>def <span class="ident">statsFunc</span></span>(<span>)</span>
 </code></dt>
@@ -1552,10 +1443,9 @@ lvl - how deep the tree is</p>
     Output:
         &#39;a&#39; is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
     &#34;&#34;&#34;
-    sym = SYM()
-    for i in [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;]:
-        sym.add(i)
-    return &#34;a&#34; == sym.mid() and 1.379 == round(sym.div(), ndigits=3)</code></pre>
+    sym = adds(SYM(), [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;])
+    print(mid(sym), round(div(sym), 2))
+    return 1.38 == round(div(sym), 2)</code></pre>
 </details>
 </dd>
 <dt id="src.utility.synonymsFunc"><code class="name flex">
@@ -1607,7 +1497,6 @@ lvl - how deep the tree is</p>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="src.utility.any" href="#src.utility.any">any</a></code></li>
 <li><code><a title="src.utility.aroundFunc" href="#src.utility.aroundFunc">aroundFunc</a></code></li>
 <li><code><a title="src.utility.cloneFunc" href="#src.utility.cloneFunc">cloneFunc</a></code></li>
 <li><code><a title="src.utility.clusterFunc" href="#src.utility.clusterFunc">clusterFunc</a></code></li>
@@ -1620,9 +1509,7 @@ lvl - how deep the tree is</p>
 <li><code><a title="src.utility.eg" href="#src.utility.eg">eg</a></code></li>
 <li><code><a title="src.utility.getCliArgs" href="#src.utility.getCliArgs">getCliArgs</a></code></li>
 <li><code><a title="src.utility.halfFunc" href="#src.utility.halfFunc">halfFunc</a></code></li>
-<li><code><a title="src.utility.kap" href="#src.utility.kap">kap</a></code></li>
 <li><code><a title="src.utility.last" href="#src.utility.last">last</a></code></li>
-<li><code><a title="src.utility.many" href="#src.utility.many">many</a></code></li>
 <li><code><a title="src.utility.numFunc" href="#src.utility.numFunc">numFunc</a></code></li>
 <li><code><a title="src.utility.oo" href="#src.utility.oo">oo</a></code></li>
 <li><code><a title="src.utility.printCLIvalues" href="#src.utility.printCLIvalues">printCLIvalues</a></code></li>
@@ -1636,6 +1523,7 @@ lvl - how deep the tree is</p>
 <li><code><a title="src.utility.reprowsFunc" href="#src.utility.reprowsFunc">reprowsFunc</a></code></li>
 <li><code><a title="src.utility.rint" href="#src.utility.rint">rint</a></code></li>
 <li><code><a title="src.utility.show" href="#src.utility.show">show</a></code></li>
+<li><code><a title="src.utility.someFunc" href="#src.utility.someFunc">someFunc</a></code></li>
 <li><code><a title="src.utility.statsFunc" href="#src.utility.statsFunc">statsFunc</a></code></li>
 <li><code><a title="src.utility.swayFunc" href="#src.utility.swayFunc">swayFunc</a></code></li>
 <li><code><a title="src.utility.symFunc" href="#src.utility.symFunc">symFunc</a></code></li>

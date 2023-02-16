@@ -27,9 +27,6 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import math
-import testfile as test
-from row import ROW
-from cols import COLS
 import utility as util
 from collections.abc import Iterable
 from utility import *
@@ -81,7 +78,7 @@ class DATA:
             mid = getattr(col, what or &#34;mid&#34;)
             rounded = round(float(mid()), nPlaces)
             return (rounded, col.txt)
-        return test.kap(cols or self.cols.y, fun)
+        return kap(cols or self.cols.y, fun)
 
     def better(self, row1, row2):
         &#34;&#34;&#34;
@@ -316,7 +313,7 @@ class DATA:
             mid = getattr(col, what or &#34;mid&#34;)
             rounded = round(float(mid()), nPlaces)
             return (rounded, col.txt)
-        return test.kap(cols or self.cols.y, fun)
+        return kap(cols or self.cols.y, fun)
 
     def better(self, row1, row2):
         &#34;&#34;&#34;
@@ -829,7 +826,7 @@ nPlaces - # of decimal places stat is rounded to</p>
         mid = getattr(col, what or &#34;mid&#34;)
         rounded = round(float(mid()), nPlaces)
         return (rounded, col.txt)
-    return test.kap(cols or self.cols.y, fun)</code></pre>
+    return kap(cols or self.cols.y, fun)</code></pre>
 </details>
 </dd>
 <dt id="src.data.DATA.sway"><code class="name flex">

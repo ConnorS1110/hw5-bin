@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>src.testfile API documentation</title>
+<title>src.list API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,25 +19,78 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>src.testfile</code></h1>
+<h1 class="title">Module <code>src.list</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from utility import *
+<pre><code class="python">import math
+from miscellaneous import *
 
-eg(&#34;the&#34;, &#34;show options&#34;, oo)
-eg(&#34;rand&#34;, &#34;demo random number generation&#34;, randFunc)
-eg(&#34;some&#34;, &#34;demo of reservoir sampling&#34;, someFunc)
-eg(&#34;nums&#34;,&#34;demo of NUM&#34;, numFunc)
-eg(&#34;syms&#34;,&#34;demo SYMS&#34;, symFunc)
-# eg(&#34;copy&#34;, &#34;check copy&#34;, copyFunc)
-# eg(&#34;num&#34;, &#34;check nums&#34;, numFunc)
-# eg(&#34;repcols&#34;, &#34;checking repcols&#34;, repColsFunc)
-# eg(&#34;synonyms&#34;,&#34;checking repcols cluster&#34;, synonymsFunc)
-# eg(&#34;reprows&#34;,&#34;checking reprows&#34;, reprowsFunc)</code></pre>
+def many(t, n):
+    &#34;&#34;&#34;
+    Function:
+        many
+    Description:
+        Creates a list of random rows
+    Input:
+        t - DATA object
+        n - Number of row samples
+    Output:
+        u - list of random n rows from t
+    &#34;&#34;&#34;
+    u = []
+    for i in range(1, n + 1):
+        u.append(any(t))
+    return u
+
+def any(t):
+    &#34;&#34;&#34;
+    Function:
+        any
+    Description:
+        Selects a random row
+    Input:
+        t - DATA object
+    Output:
+        Random row from t
+    &#34;&#34;&#34;
+    rintVal = rint(None, len(t) - 1)
+    return t[rintVal]
+
+def per(t, p):
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]
+
+def kap(listOfCols, fun):
+    &#34;&#34;&#34;
+    Function:
+        kap
+    Description:
+        Creates map that stores functions as value
+    Input:
+        listOfCols - list of columns
+        fun - anonymous function to be used as value in map
+    Output:
+        u - map of anonymous functions
+    &#34;&#34;&#34;
+    u = {}
+    for k, v in enumerate(listOfCols):
+        v, k = fun(v)
+        u[k or len(u)+1] = v
+    return u
+
+def slice(t, go = None, stop = None, inc = None):
+    if go and go &lt; 0:
+        go = len(t) - 1 + go
+    if stop and stop &lt; 0:
+        stop = len(t) + stop
+    u = []
+    for j in range(int((go or 1)), int((stop or len(t))), int(inc or 1)):
+        u.append(t[j])
+    return u</code></pre>
 </details>
 </section>
 <section>
@@ -45,6 +98,145 @@ eg(&#34;syms&#34;,&#34;demo SYMS&#34;, symFunc)
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.list.any"><code class="name flex">
+<span>def <span class="ident">any</span></span>(<span>t)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>any</p>
+<h2 id="description">Description</h2>
+<p>Selects a random row</p>
+<h2 id="input">Input</h2>
+<p>t - DATA object</p>
+<h2 id="output">Output</h2>
+<p>Random row from t</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def any(t):
+    &#34;&#34;&#34;
+    Function:
+        any
+    Description:
+        Selects a random row
+    Input:
+        t - DATA object
+    Output:
+        Random row from t
+    &#34;&#34;&#34;
+    rintVal = rint(None, len(t) - 1)
+    return t[rintVal]</code></pre>
+</details>
+</dd>
+<dt id="src.list.kap"><code class="name flex">
+<span>def <span class="ident">kap</span></span>(<span>listOfCols, fun)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>kap</p>
+<h2 id="description">Description</h2>
+<p>Creates map that stores functions as value</p>
+<h2 id="input">Input</h2>
+<p>listOfCols - list of columns
+fun - anonymous function to be used as value in map</p>
+<h2 id="output">Output</h2>
+<p>u - map of anonymous functions</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def kap(listOfCols, fun):
+    &#34;&#34;&#34;
+    Function:
+        kap
+    Description:
+        Creates map that stores functions as value
+    Input:
+        listOfCols - list of columns
+        fun - anonymous function to be used as value in map
+    Output:
+        u - map of anonymous functions
+    &#34;&#34;&#34;
+    u = {}
+    for k, v in enumerate(listOfCols):
+        v, k = fun(v)
+        u[k or len(u)+1] = v
+    return u</code></pre>
+</details>
+</dd>
+<dt id="src.list.many"><code class="name flex">
+<span>def <span class="ident">many</span></span>(<span>t, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>many</p>
+<h2 id="description">Description</h2>
+<p>Creates a list of random rows</p>
+<h2 id="input">Input</h2>
+<p>t - DATA object
+n - Number of row samples</p>
+<h2 id="output">Output</h2>
+<p>u - list of random n rows from t</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def many(t, n):
+    &#34;&#34;&#34;
+    Function:
+        many
+    Description:
+        Creates a list of random rows
+    Input:
+        t - DATA object
+        n - Number of row samples
+    Output:
+        u - list of random n rows from t
+    &#34;&#34;&#34;
+    u = []
+    for i in range(1, n + 1):
+        u.append(any(t))
+    return u</code></pre>
+</details>
+</dd>
+<dt id="src.list.per"><code class="name flex">
+<span>def <span class="ident">per</span></span>(<span>t, p)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def per(t, p):
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]</code></pre>
+</details>
+</dd>
+<dt id="src.list.slice"><code class="name flex">
+<span>def <span class="ident">slice</span></span>(<span>t, go=None, stop=None, inc=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slice(t, go = None, stop = None, inc = None):
+    if go and go &lt; 0:
+        go = len(t) - 1 + go
+    if stop and stop &lt; 0:
+        stop = len(t) + stop
+    u = []
+    for j in range(int((go or 1)), int((stop or len(t))), int(inc or 1)):
+        u.append(t[j])
+    return u</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -58,6 +250,15 @@ eg(&#34;syms&#34;,&#34;demo SYMS&#34;, symFunc)
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="src" href="index.html">src</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.list.any" href="#src.list.any">any</a></code></li>
+<li><code><a title="src.list.kap" href="#src.list.kap">kap</a></code></li>
+<li><code><a title="src.list.many" href="#src.list.many">many</a></code></li>
+<li><code><a title="src.list.per" href="#src.list.per">per</a></code></li>
+<li><code><a title="src.list.slice" href="#src.list.slice">slice</a></code></li>
 </ul>
 </li>
 </ul>

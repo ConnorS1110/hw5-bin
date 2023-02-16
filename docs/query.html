@@ -26,25 +26,32 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from customList import *
+<pre><code class="python">from list import *
 from utility import *
 import math
 
 def has(col):
-    if not col.isSym and not col.ok:
-        col.has.sort()
+    if not hasattr(col, &#34;isSym&#34;) and not col.ok:
+        if isinstance(col.has, dict):
+            col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
+        else:
+            col.has.sort()
     col.ok = True
     return col.has
 
 def mid(col):
-    return col.isSym if col.mode else per(has(col), 0.5)
+    return col.mode if hasattr(col, &#34;isSym&#34;) else per(has(col), 0.5)
 
 def div(col):
-    if col.isSym:
+    if hasattr(col, &#34;isSym&#34;):
         e = 0
-        for n in col.has:
-            e = e - n/col.n * math.log(n/col.n, 2)
-            return e
+        if isinstance(col.has, dict):
+            for n in col.has.values():
+                e = e - n/col.n * math.log(n/col.n, 2)
+        else:
+            for n in col.has:
+                e = e - n/col.n * math.log(n/col.n, 2)
+        return e
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
@@ -181,11 +188,15 @@ def better(data, row1, row2):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def div(col):
-    if col.isSym:
+    if hasattr(col, &#34;isSym&#34;):
         e = 0
-        for n in col.has:
-            e = e - n/col.n * math.log(n/col.n, 2)
-            return e
+        if isinstance(col.has, dict):
+            for n in col.has.values():
+                e = e - n/col.n * math.log(n/col.n, 2)
+        else:
+            for n in col.has:
+                e = e - n/col.n * math.log(n/col.n, 2)
+        return e
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58</code></pre>
 </details>
@@ -200,8 +211,11 @@ def better(data, row1, row2):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def has(col):
-    if not col.isSym and not col.ok:
-        col.has.sort()
+    if not hasattr(col, &#34;isSym&#34;) and not col.ok:
+        if isinstance(col.has, dict):
+            col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
+        else:
+            col.has.sort()
     col.ok = True
     return col.has</code></pre>
 </details>
@@ -216,7 +230,7 @@ def better(data, row1, row2):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mid(col):
-    return col.isSym if col.mode else per(has(col), 0.5)</code></pre>
+    return col.mode if hasattr(col, &#34;isSym&#34;) else per(has(col), 0.5)</code></pre>
 </details>
 </dd>
 <dt id="src.query.norm"><code class="name flex">

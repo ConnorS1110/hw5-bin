@@ -27,7 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from cols import COLS
-from utility import *
+import utility as util
 import random
 
 def row(data, t):
@@ -44,8 +44,8 @@ def row(data, t):
 def add(col, x, n = 1):
     if x != &#34;?&#34;:
         col.n = col.n + n # Source of variable &#39;n&#39;
-        if col.isSym:
-            col.has[x] = n + (col.has.get(x, 0) or 0)
+        if hasattr(col, &#34;isSym&#34;):
+            col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] &gt; col.most:
                 col.most = col.has[x]
                 col.mode = x
@@ -53,14 +53,17 @@ def add(col, x, n = 1):
             col.lo = min(x, col.lo)
             col.hi = max(x, col.hi)
             all = len(col.has)
-            if all &lt; args.Max:
+            if all &lt; util.args.Max:
                 pos = all + 1
-            elif random.random() &lt; args.Max / col.n:
-                pos = rint(1, all)
+            elif random.random() &lt; util.args.Max / col.n:
+                pos = util.rint(1, all)
             else:
                 pos = None
             if pos:
-                col.has[pos] = x
+                if isinstance(col.has, dict):
+                    col.has[pos] = x
+                else:
+                    col.has.append(x)
                 col.ok = False
 
 def adds(col, t):
@@ -93,8 +96,8 @@ def extend(range, n, s):
 <pre><code class="python">def add(col, x, n = 1):
     if x != &#34;?&#34;:
         col.n = col.n + n # Source of variable &#39;n&#39;
-        if col.isSym:
-            col.has[x] = n + (col.has.get(x, 0) or 0)
+        if hasattr(col, &#34;isSym&#34;):
+            col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] &gt; col.most:
                 col.most = col.has[x]
                 col.mode = x
@@ -102,14 +105,17 @@ def extend(range, n, s):
             col.lo = min(x, col.lo)
             col.hi = max(x, col.hi)
             all = len(col.has)
-            if all &lt; args.Max:
+            if all &lt; util.args.Max:
                 pos = all + 1
-            elif random.random() &lt; args.Max / col.n:
-                pos = rint(1, all)
+            elif random.random() &lt; util.args.Max / col.n:
+                pos = util.rint(1, all)
             else:
                 pos = None
             if pos:
-                col.has[pos] = x
+                if isinstance(col.has, dict):
+                    col.has[pos] = x
+                else:
+                    col.has.append(x)
                 col.ok = False</code></pre>
 </details>
 </dd>
