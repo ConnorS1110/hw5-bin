@@ -1,7 +1,4 @@
 import math
-import testfile as test
-from row import ROW
-from cols import COLS
 import utility as util
 from collections.abc import Iterable
 from utility import *
@@ -53,7 +50,7 @@ class DATA:
             mid = getattr(col, what or "mid")
             rounded = round(float(mid()), nPlaces)
             return (rounded, col.txt)
-        return test.kap(cols or self.cols.y, fun)
+        return kap(cols or self.cols.y, fun)
 
     def better(self, row1, row2):
         """
