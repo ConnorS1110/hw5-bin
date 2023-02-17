@@ -78,7 +78,7 @@ def kap(listOfCols, fun):
     &#34;&#34;&#34;
     u = {}
     for k, v in enumerate(listOfCols):
-        v, k = fun(v)
+        v, k = fun(k, v)
         u[k or len(u)+1] = v
     return u
 
@@ -162,7 +162,7 @@ fun - anonymous function to be used as value in map</p>
     &#34;&#34;&#34;
     u = {}
     for k, v in enumerate(listOfCols):
-        v, k = fun(v)
+        v, k = fun(k, v)
         u[k or len(u)+1] = v
     return u</code></pre>
 </details>

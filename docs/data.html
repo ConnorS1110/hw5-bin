@@ -31,221 +31,222 @@ import utility as util
 from collections.abc import Iterable
 from utility import *
 import update
-from miscellaneous import *
 
-def new():
-    return {&#34;rows&#34;: [], &#34;cols&#34;: None}
+class DATA:
 
-def read(sFile):
-    data = new()
-    callback = lambda t: update.row(data, t)
-    CSV(sFile, callback)
-    return data
+    def __init__(self):
+        self.rows = []
+        self.cols = None
 
-def clone(data, ts = None):
-    &#34;&#34;&#34;
-    Function:
-        clone
-    Description:
-        Creates a clone of the DATA object and returns it
-    Input:
-        self - current DATA instance
-        data - data to be cloned
-    Output:
-        data - Clone of DATA object
-    &#34;&#34;&#34;
-    data1 = update.row(new(), data.cols.names)
-    for t in (ts or []):
-        update.row(data1, t)
-    return data1
+    def read(self, sFile):
+        data = DATA()
+        callback = lambda t: update.row(data, t)
+        util.readCSV(sFile, callback)
+        return data
 
-# def stats(self, what, cols, nPlaces, fun=None):
-#     &#34;&#34;&#34;
-#     Function:
-#         stats
-#     Description:
-#         Gets a given statistic and returns the rounded answer
-#     Input:
-#         self - current DATA instance
-#         what - statistic to be returned
-#         cols - cols to use as the data for statistic
-#         nPlaces - # of decimal places stat is rounded to
-#     Output:
-#         map of cols y position and anonymous function that calculates the rounded stat
-#     &#34;&#34;&#34;
-#     def fun(col):
-#         mid = getattr(col, what or &#34;mid&#34;)
-#         rounded = round(float(mid()), nPlaces)
-#         return (rounded, col.txt)
-#     return kap(cols or self.cols.y, fun)
+    def clone(self, data, ts = None):
+        &#34;&#34;&#34;
+        Function:
+            clone
+        Description:
+            Creates a clone of the DATA object and returns it
+        Input:
+            self - current DATA instance
+            data - data to be cloned
+        Output:
+            data - Clone of DATA object
+        &#34;&#34;&#34;
+        data1 = update.row(DATA(), data.names)
+        for t in (ts or []):
+            update.row(data1, t)
 
-# def better(self, row1, row2):
-#     &#34;&#34;&#34;
-#     Function:
-#         better
-#     Description:
-#         Determines if row1 dominates row2
-#     Input:
-#         self - current DATA instance
-#         row1 - First row to compare
-#         row2 - Second row to compare
-#     Output:
-#         True if row1 dominates row2
-#     &#34;&#34;&#34;
-#     s1, s2, ys = 0, 0, self.cols.y
-#     for _, col in enumerate(ys):
-#         x = col.norm(row1.cells[col.at])
-#         y = col.norm(row2.cells[col.at])
-#         s1 -= math.exp(col.w * (((x - y)) / len(ys)))
-#         s2 -= math.exp(col.w * ((y - x) / len(ys)))
-#     # print(&#34;Value of s1: &#34; + str(s1) + &#34; Type of s1: &#34; + str(type(s1)))
-#     # print(&#34;Value of s2: &#34; + str(s2) + &#34; Type of s2: &#34; + str(type(s2)))
-#     # print(&#34;Value of len(ys): &#34; + str(len(ys)) + &#34; Type of len(ys): &#34; + str(type(len(ys))))
-#     return (s1 / len(ys)) &lt; (s2 / len(ys))
+    def stats(self, what, cols, nPlaces, fun=None):
+        &#34;&#34;&#34;
+        Function:
+            stats
+        Description:
+            Gets a given statistic and returns the rounded answer
+        Input:
+            self - current DATA instance
+            what - statistic to be returned
+            cols - cols to use as the data for statistic
+            nPlaces - # of decimal places stat is rounded to
+        Output:
+            map of cols y position and anonymous function that calculates the rounded stat
+        &#34;&#34;&#34;
+        def fun(col):
+            mid = getattr(col, what or &#34;mid&#34;)
+            rounded = round(float(mid()), nPlaces)
+            return (rounded, col.txt)
+        return kap(cols or self.cols.y, fun)
 
-# def dist(self, row1, row2, cols = None):
-#     &#34;&#34;&#34;
-#     Function:
-#         dist
-#     Description:
-#         Finds normalized distance between row1 and row2
-#     Input:
-#         self - current DATA instance
-#         row1 - First row
-#         row2 - Second row
-#         cols - cols to use as the data for distance
-#     Output:
-#         Normalized distance between row1 and row2
-#     &#34;&#34;&#34;
-#     n, d = 0, 0
-#     for col in (cols or self.cols.x):
-#         n += 1
-#         d += col.dist(row1.cells[col.at], row2.cells[col.at]) ** util.args.p
-#     return (d / n) ** (1 / util.args.p)
+    def better(self, row1, row2):
+        &#34;&#34;&#34;
+        Function:
+            better
+        Description:
+            Determines if row1 dominates row2
+        Input:
+            self - current DATA instance
+            row1 - First row to compare
+            row2 - Second row to compare
+        Output:
+            True if row1 dominates row2
+        &#34;&#34;&#34;
+        s1, s2, ys = 0, 0, self.cols.y
+        for _, col in enumerate(ys):
+            x = col.norm(row1.cells[col.at])
+            y = col.norm(row2.cells[col.at])
+            s1 -= math.exp(col.w * (((x - y)) / len(ys)))
+            s2 -= math.exp(col.w * ((y - x) / len(ys)))
+        # print(&#34;Value of s1: &#34; + str(s1) + &#34; Type of s1: &#34; + str(type(s1)))
+        # print(&#34;Value of s2: &#34; + str(s2) + &#34; Type of s2: &#34; + str(type(s2)))
+        # print(&#34;Value of len(ys): &#34; + str(len(ys)) + &#34; Type of len(ys): &#34; + str(type(len(ys))))
+        return (s1 / len(ys)) &lt; (s2 / len(ys))
 
-# def around(self, row1, rows = None, cols = None):
-#     &#34;&#34;&#34;
-#     Function:
-#         around
-#     Description:
-#         Sorts rows by distance to row1
-#     Input:
-#         self - current DATA instance
-#         row1 - Central row to do sorting by distance around
-#         rows - Rows to compare to distance from row1
-#         cols - cols to use as the data for sorting by distance to row1
-#     Output:
-#         Sorted list of rows by their distance to row1
-#     &#34;&#34;&#34;
-#     if isinstance(rows, Iterable):
-#         iterable = rows
-#     else:
-#         iterable = self.rows
+    def dist(self, row1, row2, cols = None):
+        &#34;&#34;&#34;
+        Function:
+            dist
+        Description:
+            Finds normalized distance between row1 and row2
+        Input:
+            self - current DATA instance
+            row1 - First row
+            row2 - Second row
+            cols - cols to use as the data for distance
+        Output:
+            Normalized distance between row1 and row2
+        &#34;&#34;&#34;
+        n, d = 0, 0
+        for col in (cols or self.cols.x):
+            n += 1
+            d += col.dist(row1.cells[col.at], row2.cells[col.at]) ** util.args.p
+        return (d / n) ** (1 / util.args.p)
 
-#     rows_with_distance = [(row2, self.dist(row1, row2, cols)) for row2 in iterable]
-#     sorted_rows = sorted(rows_with_distance, key=lambda x: x[1])
-#     return [(row, dist) for row, dist in sorted_rows]
+    def around(self, row1, rows = None, cols = None):
+        &#34;&#34;&#34;
+        Function:
+            around
+        Description:
+            Sorts rows by distance to row1
+        Input:
+            self - current DATA instance
+            row1 - Central row to do sorting by distance around
+            rows - Rows to compare to distance from row1
+            cols - cols to use as the data for sorting by distance to row1
+        Output:
+            Sorted list of rows by their distance to row1
+        &#34;&#34;&#34;
+        if isinstance(rows, Iterable):
+            iterable = rows
+        else:
+            iterable = self.rows
 
-# def furthest(self, row1, rows, cols = None):
-#             t = self.around(row1, rows, cols)
-#             return t[-1][0]
+        rows_with_distance = [(row2, self.dist(row1, row2, cols)) for row2 in iterable]
+        sorted_rows = sorted(rows_with_distance, key=lambda x: x[1])
+        return [(row, dist) for row, dist in sorted_rows]
 
-# def half(self, rows = None, cols = None, above = None):
-#     &#34;&#34;&#34;
-#     Function:
-#         half
-#     Description:
-#         Splits data in half
-#     Input:
-#         self - current DATA instance
-#         rows - rows to split
-#         cols - cols to split
-#         above - previous point of split
-#     Output:
-#         left - list of rows to the left of split
-#         right - list of rows to the right of split
-#         A - far left point
-#         B - far right point
-#         mid - mid point where split occurs
-#         c - Distance between A and B
-#     &#34;&#34;&#34;
-#     A, B, left, right, c, mid, some = None, None, None, None, None, None, None
-#     def project(row):
-#         x, y = util.cosine(dist(row, A), dist(row, B), c)
-#         row.x = row.x or x
-#         row.y = row.y or y
-#             eturn {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
-#     def dist(row1, row2):
-#         return self.dist(row1, row2, cols)
-#     rows = rows or self.rows
-#     # some = util.many(rows, util.args.Sample)
-#     A = above or util.any(rows)
-#     # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
-#     B = self.furthest(A, rows)
-#     c = dist(A, B)
-#     left, right = [], []
-#     mapVAR = [project(row) for row in rows]
-#     sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
-#     for n, tmp in enumerate(sorted_rows):
-#         if n &lt;= len(rows) // 2 - 1:
-#             left.append(tmp[&#34;row&#34;])
-#             mid = tmp[&#34;row&#34;]
-#         else:
-#             right.append(tmp[&#34;row&#34;])
-#     return left, right, A, B, mid, c
+    def furthest(self, row1, rows, cols = None):
+                t = self.around(row1, rows, cols)
+                return t[-1][0]
 
-# def cluster(self, rows = None, cols = None, above = None):
-#     &#34;&#34;&#34;
-#     Function:
-#         cluster
-#     Description:
-#         Returns clustered rows by recursively splitting data
-#     Input:
-#         self - current DATA instance
-#         rows - rows to cluster
-#         cols - cols to cluster
-#         above - Previous point of split
-#     Output:
-#         Clustered rows
-#     &#34;&#34;&#34;
-#     rows = rows if rows else self.rows
-#     # min = min if min else len(rows) ** util.args.min
-#     cols = cols if cols else self.cols.x
-#     node = {&#34;data&#34;: self.clone(rows)}
+    def half(self, rows = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            half
+        Description:
+            Splits data in half
+        Input:
+            self - current DATA instance
+            rows - rows to split
+            cols - cols to split
+            above - previous point of split
+        Output:
+            left - list of rows to the left of split
+            right - list of rows to the right of split
+            A - far left point
+            B - far right point
+            mid - mid point where split occurs
+            c - Distance between A and B
+        &#34;&#34;&#34;
+        A, B, left, right, c, mid, some = None, None, None, None, None, None, None
+        def project(row):
+            x, y = util.cosine(dist(row, A), dist(row, B), c)
+            row.x = row.x or x
+            row.y = row.y or y
+            return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
+        def dist(row1, row2):
+            return self.dist(row1, row2, cols)
+        rows = rows or self.rows
+        # some = util.many(rows, util.args.Sample)
+        A = above or util.any(rows)
+        # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
+        B = self.furthest(A, rows)
+        c = dist(A, B)
+        left, right = [], []
+        mapVAR = [project(row) for row in rows]
+        sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
+        for n, tmp in enumerate(sorted_rows):
+            if n &lt;= len(rows) // 2 - 1:
+                left.append(tmp[&#34;row&#34;])
+                mid = tmp[&#34;row&#34;]
+            else:
+                right.append(tmp[&#34;row&#34;])
+        return left, right, A, B, mid, c
 
-#     if len(rows) &gt;= 2:
-#         left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], node[&#34;C&#34;] = self.half(rows, cols, above)
-#         node[&#34;left&#34;] = self.cluster(left, cols, node[&#34;A&#34;])
-#         node[&#34;right&#34;] = self.cluster(right, cols, node[&#34;B&#34;])
-#     return node
+    def cluster(self, rows = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            cluster
+        Description:
+            Returns clustered rows by recursively splitting data
+        Input:
+            self - current DATA instance
+            rows - rows to cluster
+            cols - cols to cluster
+            above - Previous point of split
+        Output:
+            Clustered rows
+        &#34;&#34;&#34;
+        rows = rows if rows else self.rows
+        # min = min if min else len(rows) ** util.args.min
+        cols = cols if cols else self.cols.x
+        node = {&#34;data&#34;: self.clone(rows)}
 
-# def sway(self, rows = None, min = None, cols = None, above = None):
-#     &#34;&#34;&#34;
-#     Function:
-#         sway
-#     Description:
-#         Finds the best half of the data by recursion
-#     Input:
-#         self - current DATA instance
-#         rows - rows to sway
-#         cols - cols to sway
-#         min - Determines when recursion stops
-#         above - Previous point of split
-#     Output:
-#         Swayed rows
-#     &#34;&#34;&#34;
-#     rows = rows if rows else self.rows
-#     min = min if min else len(rows) ** util.args.min
-#     cols = cols if cols else self.cols.x
-#     node = {&#34;data&#34;: self.clone(rows)}
+        if len(rows) &gt;= 2:
+            left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], node[&#34;C&#34;] = self.half(rows, cols, above)
+            node[&#34;left&#34;] = self.cluster(left, cols, node[&#34;A&#34;])
+            node[&#34;right&#34;] = self.cluster(right, cols, node[&#34;B&#34;])
+        return node
 
-#     if len(rows) &gt; 2 * min:
-#         left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], _ = self.half(rows, cols, above)
-#         if self.better(node[&#34;B&#34;], node[&#34;A&#34;]):
-#             left, right, node[&#34;A&#34;], node[&#34;B&#34;] = right, left, node[&#34;B&#34;], node[&#34;A&#34;]
-#         node[&#34;left&#34;] = self.sway(left,  min, cols, node[&#34;A&#34;])
+    def sway(self, rows = None, min = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            sway
+        Description:
+            Finds the best half of the data by recursion
+        Input:
+            self - current DATA instance
+            rows - rows to sway
+            cols - cols to sway
+            min - Determines when recursion stops
+            above - Previous point of split
+        Output:
+            Swayed rows
+        &#34;&#34;&#34;
+        rows = rows if rows else self.rows
+        min = min if min else len(rows) ** util.args.min
+        cols = cols if cols else self.cols.x
+        node = {&#34;data&#34;: self.clone(rows)}
 
-#     return node</code></pre>
+        if len(rows) &gt; 2 * min:
+           left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], _ = self.half(rows, cols, above)
+           if self.better(node[&#34;B&#34;], node[&#34;A&#34;]):
+               left, right, node[&#34;A&#34;], node[&#34;B&#34;] = right, left, node[&#34;B&#34;], node[&#34;A&#34;]
+           node[&#34;left&#34;] = self.sway(left,  min, cols, node[&#34;A&#34;])
+
+        return node</code></pre>
 </details>
 </section>
 <section>
@@ -253,10 +254,325 @@ def clone(data, ts = None):
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="src.data.clone"><code class="name flex">
-<span>def <span class="ident">clone</span></span>(<span>data, ts=None)</span>
+<dt id="src.data.DATA"><code class="flex name class">
+<span>class <span class="ident">DATA</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DATA:
+
+    def __init__(self):
+        self.rows = []
+        self.cols = None
+
+    def read(self, sFile):
+        data = DATA()
+        callback = lambda t: update.row(data, t)
+        util.readCSV(sFile, callback)
+        return data
+
+    def clone(self, data, ts = None):
+        &#34;&#34;&#34;
+        Function:
+            clone
+        Description:
+            Creates a clone of the DATA object and returns it
+        Input:
+            self - current DATA instance
+            data - data to be cloned
+        Output:
+            data - Clone of DATA object
+        &#34;&#34;&#34;
+        data1 = update.row(DATA(), data.names)
+        for t in (ts or []):
+            update.row(data1, t)
+
+    def stats(self, what, cols, nPlaces, fun=None):
+        &#34;&#34;&#34;
+        Function:
+            stats
+        Description:
+            Gets a given statistic and returns the rounded answer
+        Input:
+            self - current DATA instance
+            what - statistic to be returned
+            cols - cols to use as the data for statistic
+            nPlaces - # of decimal places stat is rounded to
+        Output:
+            map of cols y position and anonymous function that calculates the rounded stat
+        &#34;&#34;&#34;
+        def fun(col):
+            mid = getattr(col, what or &#34;mid&#34;)
+            rounded = round(float(mid()), nPlaces)
+            return (rounded, col.txt)
+        return kap(cols or self.cols.y, fun)
+
+    def better(self, row1, row2):
+        &#34;&#34;&#34;
+        Function:
+            better
+        Description:
+            Determines if row1 dominates row2
+        Input:
+            self - current DATA instance
+            row1 - First row to compare
+            row2 - Second row to compare
+        Output:
+            True if row1 dominates row2
+        &#34;&#34;&#34;
+        s1, s2, ys = 0, 0, self.cols.y
+        for _, col in enumerate(ys):
+            x = col.norm(row1.cells[col.at])
+            y = col.norm(row2.cells[col.at])
+            s1 -= math.exp(col.w * (((x - y)) / len(ys)))
+            s2 -= math.exp(col.w * ((y - x) / len(ys)))
+        # print(&#34;Value of s1: &#34; + str(s1) + &#34; Type of s1: &#34; + str(type(s1)))
+        # print(&#34;Value of s2: &#34; + str(s2) + &#34; Type of s2: &#34; + str(type(s2)))
+        # print(&#34;Value of len(ys): &#34; + str(len(ys)) + &#34; Type of len(ys): &#34; + str(type(len(ys))))
+        return (s1 / len(ys)) &lt; (s2 / len(ys))
+
+    def dist(self, row1, row2, cols = None):
+        &#34;&#34;&#34;
+        Function:
+            dist
+        Description:
+            Finds normalized distance between row1 and row2
+        Input:
+            self - current DATA instance
+            row1 - First row
+            row2 - Second row
+            cols - cols to use as the data for distance
+        Output:
+            Normalized distance between row1 and row2
+        &#34;&#34;&#34;
+        n, d = 0, 0
+        for col in (cols or self.cols.x):
+            n += 1
+            d += col.dist(row1.cells[col.at], row2.cells[col.at]) ** util.args.p
+        return (d / n) ** (1 / util.args.p)
+
+    def around(self, row1, rows = None, cols = None):
+        &#34;&#34;&#34;
+        Function:
+            around
+        Description:
+            Sorts rows by distance to row1
+        Input:
+            self - current DATA instance
+            row1 - Central row to do sorting by distance around
+            rows - Rows to compare to distance from row1
+            cols - cols to use as the data for sorting by distance to row1
+        Output:
+            Sorted list of rows by their distance to row1
+        &#34;&#34;&#34;
+        if isinstance(rows, Iterable):
+            iterable = rows
+        else:
+            iterable = self.rows
+
+        rows_with_distance = [(row2, self.dist(row1, row2, cols)) for row2 in iterable]
+        sorted_rows = sorted(rows_with_distance, key=lambda x: x[1])
+        return [(row, dist) for row, dist in sorted_rows]
+
+    def furthest(self, row1, rows, cols = None):
+                t = self.around(row1, rows, cols)
+                return t[-1][0]
+
+    def half(self, rows = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            half
+        Description:
+            Splits data in half
+        Input:
+            self - current DATA instance
+            rows - rows to split
+            cols - cols to split
+            above - previous point of split
+        Output:
+            left - list of rows to the left of split
+            right - list of rows to the right of split
+            A - far left point
+            B - far right point
+            mid - mid point where split occurs
+            c - Distance between A and B
+        &#34;&#34;&#34;
+        A, B, left, right, c, mid, some = None, None, None, None, None, None, None
+        def project(row):
+            x, y = util.cosine(dist(row, A), dist(row, B), c)
+            row.x = row.x or x
+            row.y = row.y or y
+            return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
+        def dist(row1, row2):
+            return self.dist(row1, row2, cols)
+        rows = rows or self.rows
+        # some = util.many(rows, util.args.Sample)
+        A = above or util.any(rows)
+        # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
+        B = self.furthest(A, rows)
+        c = dist(A, B)
+        left, right = [], []
+        mapVAR = [project(row) for row in rows]
+        sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
+        for n, tmp in enumerate(sorted_rows):
+            if n &lt;= len(rows) // 2 - 1:
+                left.append(tmp[&#34;row&#34;])
+                mid = tmp[&#34;row&#34;]
+            else:
+                right.append(tmp[&#34;row&#34;])
+        return left, right, A, B, mid, c
+
+    def cluster(self, rows = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            cluster
+        Description:
+            Returns clustered rows by recursively splitting data
+        Input:
+            self - current DATA instance
+            rows - rows to cluster
+            cols - cols to cluster
+            above - Previous point of split
+        Output:
+            Clustered rows
+        &#34;&#34;&#34;
+        rows = rows if rows else self.rows
+        # min = min if min else len(rows) ** util.args.min
+        cols = cols if cols else self.cols.x
+        node = {&#34;data&#34;: self.clone(rows)}
+
+        if len(rows) &gt;= 2:
+            left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], node[&#34;C&#34;] = self.half(rows, cols, above)
+            node[&#34;left&#34;] = self.cluster(left, cols, node[&#34;A&#34;])
+            node[&#34;right&#34;] = self.cluster(right, cols, node[&#34;B&#34;])
+        return node
+
+    def sway(self, rows = None, min = None, cols = None, above = None):
+        &#34;&#34;&#34;
+        Function:
+            sway
+        Description:
+            Finds the best half of the data by recursion
+        Input:
+            self - current DATA instance
+            rows - rows to sway
+            cols - cols to sway
+            min - Determines when recursion stops
+            above - Previous point of split
+        Output:
+            Swayed rows
+        &#34;&#34;&#34;
+        rows = rows if rows else self.rows
+        min = min if min else len(rows) ** util.args.min
+        cols = cols if cols else self.cols.x
+        node = {&#34;data&#34;: self.clone(rows)}
+
+        if len(rows) &gt; 2 * min:
+           left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], _ = self.half(rows, cols, above)
+           if self.better(node[&#34;B&#34;], node[&#34;A&#34;]):
+               left, right, node[&#34;A&#34;], node[&#34;B&#34;] = right, left, node[&#34;B&#34;], node[&#34;A&#34;]
+           node[&#34;left&#34;] = self.sway(left,  min, cols, node[&#34;A&#34;])
+
+        return node</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.data.DATA.around"><code class="name flex">
+<span>def <span class="ident">around</span></span>(<span>self, row1, rows=None, cols=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>around</p>
+<h2 id="description">Description</h2>
+<p>Sorts rows by distance to row1</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+row1 - Central row to do sorting by distance around
+rows - Rows to compare to distance from row1
+cols - cols to use as the data for sorting by distance to row1</p>
+<h2 id="output">Output</h2>
+<p>Sorted list of rows by their distance to row1</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def around(self, row1, rows = None, cols = None):
+    &#34;&#34;&#34;
+    Function:
+        around
+    Description:
+        Sorts rows by distance to row1
+    Input:
+        self - current DATA instance
+        row1 - Central row to do sorting by distance around
+        rows - Rows to compare to distance from row1
+        cols - cols to use as the data for sorting by distance to row1
+    Output:
+        Sorted list of rows by their distance to row1
+    &#34;&#34;&#34;
+    if isinstance(rows, Iterable):
+        iterable = rows
+    else:
+        iterable = self.rows
+
+    rows_with_distance = [(row2, self.dist(row1, row2, cols)) for row2 in iterable]
+    sorted_rows = sorted(rows_with_distance, key=lambda x: x[1])
+    return [(row, dist) for row, dist in sorted_rows]</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.better"><code class="name flex">
+<span>def <span class="ident">better</span></span>(<span>self, row1, row2)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>better</p>
+<h2 id="description">Description</h2>
+<p>Determines if row1 dominates row2</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+row1 - First row to compare
+row2 - Second row to compare</p>
+<h2 id="output">Output</h2>
+<p>True if row1 dominates row2</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def better(self, row1, row2):
+    &#34;&#34;&#34;
+    Function:
+        better
+    Description:
+        Determines if row1 dominates row2
+    Input:
+        self - current DATA instance
+        row1 - First row to compare
+        row2 - Second row to compare
+    Output:
+        True if row1 dominates row2
+    &#34;&#34;&#34;
+    s1, s2, ys = 0, 0, self.cols.y
+    for _, col in enumerate(ys):
+        x = col.norm(row1.cells[col.at])
+        y = col.norm(row2.cells[col.at])
+        s1 -= math.exp(col.w * (((x - y)) / len(ys)))
+        s2 -= math.exp(col.w * ((y - x) / len(ys)))
+    # print(&#34;Value of s1: &#34; + str(s1) + &#34; Type of s1: &#34; + str(type(s1)))
+    # print(&#34;Value of s2: &#34; + str(s2) + &#34; Type of s2: &#34; + str(type(s2)))
+    # print(&#34;Value of len(ys): &#34; + str(len(ys)) + &#34; Type of len(ys): &#34; + str(type(len(ys))))
+    return (s1 / len(ys)) &lt; (s2 / len(ys))</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.clone"><code class="name flex">
+<span>def <span class="ident">clone</span></span>(<span>self, data, ts=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="function">Function</h2>
@@ -272,7 +588,7 @@ data - data to be cloned</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def clone(data, ts = None):
+<pre><code class="python">def clone(self, data, ts = None):
     &#34;&#34;&#34;
     Function:
         clone
@@ -284,14 +600,98 @@ data - data to be cloned</p>
     Output:
         data - Clone of DATA object
     &#34;&#34;&#34;
-    data1 = update.row(new(), data.cols.names)
+    data1 = update.row(DATA(), data.names)
     for t in (ts or []):
-        update.row(data1, t)
-    return data1</code></pre>
+        update.row(data1, t)</code></pre>
 </details>
 </dd>
-<dt id="src.data.new"><code class="name flex">
-<span>def <span class="ident">new</span></span>(<span>)</span>
+<dt id="src.data.DATA.cluster"><code class="name flex">
+<span>def <span class="ident">cluster</span></span>(<span>self, rows=None, cols=None, above=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>cluster</p>
+<h2 id="description">Description</h2>
+<p>Returns clustered rows by recursively splitting data</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+rows - rows to cluster
+cols - cols to cluster
+above - Previous point of split</p>
+<h2 id="output">Output</h2>
+<p>Clustered rows</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cluster(self, rows = None, cols = None, above = None):
+    &#34;&#34;&#34;
+    Function:
+        cluster
+    Description:
+        Returns clustered rows by recursively splitting data
+    Input:
+        self - current DATA instance
+        rows - rows to cluster
+        cols - cols to cluster
+        above - Previous point of split
+    Output:
+        Clustered rows
+    &#34;&#34;&#34;
+    rows = rows if rows else self.rows
+    # min = min if min else len(rows) ** util.args.min
+    cols = cols if cols else self.cols.x
+    node = {&#34;data&#34;: self.clone(rows)}
+
+    if len(rows) &gt;= 2:
+        left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], node[&#34;C&#34;] = self.half(rows, cols, above)
+        node[&#34;left&#34;] = self.cluster(left, cols, node[&#34;A&#34;])
+        node[&#34;right&#34;] = self.cluster(right, cols, node[&#34;B&#34;])
+    return node</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.dist"><code class="name flex">
+<span>def <span class="ident">dist</span></span>(<span>self, row1, row2, cols=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>dist</p>
+<h2 id="description">Description</h2>
+<p>Finds normalized distance between row1 and row2</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+row1 - First row
+row2 - Second row
+cols - cols to use as the data for distance</p>
+<h2 id="output">Output</h2>
+<p>Normalized distance between row1 and row2</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dist(self, row1, row2, cols = None):
+    &#34;&#34;&#34;
+    Function:
+        dist
+    Description:
+        Finds normalized distance between row1 and row2
+    Input:
+        self - current DATA instance
+        row1 - First row
+        row2 - Second row
+        cols - cols to use as the data for distance
+    Output:
+        Normalized distance between row1 and row2
+    &#34;&#34;&#34;
+    n, d = 0, 0
+    for col in (cols or self.cols.x):
+        n += 1
+        d += col.dist(row1.cells[col.at], row2.cells[col.at]) ** util.args.p
+    return (d / n) ** (1 / util.args.p)</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.furthest"><code class="name flex">
+<span>def <span class="ident">furthest</span></span>(<span>self, row1, rows, cols=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -299,12 +699,82 @@ data - data to be cloned</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def new():
-    return {&#34;rows&#34;: [], &#34;cols&#34;: None}</code></pre>
+<pre><code class="python">def furthest(self, row1, rows, cols = None):
+            t = self.around(row1, rows, cols)
+            return t[-1][0]</code></pre>
 </details>
 </dd>
-<dt id="src.data.read"><code class="name flex">
-<span>def <span class="ident">read</span></span>(<span>sFile)</span>
+<dt id="src.data.DATA.half"><code class="name flex">
+<span>def <span class="ident">half</span></span>(<span>self, rows=None, cols=None, above=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>half</p>
+<h2 id="description">Description</h2>
+<p>Splits data in half</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+rows - rows to split
+cols - cols to split
+above - previous point of split</p>
+<h2 id="output">Output</h2>
+<p>left - list of rows to the left of split
+right - list of rows to the right of split
+A - far left point
+B - far right point
+mid - mid point where split occurs
+c - Distance between A and B</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def half(self, rows = None, cols = None, above = None):
+    &#34;&#34;&#34;
+    Function:
+        half
+    Description:
+        Splits data in half
+    Input:
+        self - current DATA instance
+        rows - rows to split
+        cols - cols to split
+        above - previous point of split
+    Output:
+        left - list of rows to the left of split
+        right - list of rows to the right of split
+        A - far left point
+        B - far right point
+        mid - mid point where split occurs
+        c - Distance between A and B
+    &#34;&#34;&#34;
+    A, B, left, right, c, mid, some = None, None, None, None, None, None, None
+    def project(row):
+        x, y = util.cosine(dist(row, A), dist(row, B), c)
+        row.x = row.x or x
+        row.y = row.y or y
+        return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
+    def dist(row1, row2):
+        return self.dist(row1, row2, cols)
+    rows = rows or self.rows
+    # some = util.many(rows, util.args.Sample)
+    A = above or util.any(rows)
+    # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
+    B = self.furthest(A, rows)
+    c = dist(A, B)
+    left, right = [], []
+    mapVAR = [project(row) for row in rows]
+    sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
+    for n, tmp in enumerate(sorted_rows):
+        if n &lt;= len(rows) // 2 - 1:
+            left.append(tmp[&#34;row&#34;])
+            mid = tmp[&#34;row&#34;]
+        else:
+            right.append(tmp[&#34;row&#34;])
+    return left, right, A, B, mid, c</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.read"><code class="name flex">
+<span>def <span class="ident">read</span></span>(<span>self, sFile)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -312,16 +782,105 @@ data - data to be cloned</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def read(sFile):
-    data = new()
+<pre><code class="python">def read(self, sFile):
+    data = DATA()
     callback = lambda t: update.row(data, t)
-    CSV(sFile, callback)
+    util.readCSV(sFile, callback)
     return data</code></pre>
 </details>
 </dd>
+<dt id="src.data.DATA.stats"><code class="name flex">
+<span>def <span class="ident">stats</span></span>(<span>self, what, cols, nPlaces, fun=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>stats</p>
+<h2 id="description">Description</h2>
+<p>Gets a given statistic and returns the rounded answer</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+what - statistic to be returned
+cols - cols to use as the data for statistic
+nPlaces - # of decimal places stat is rounded to</p>
+<h2 id="output">Output</h2>
+<p>map of cols y position and anonymous function that calculates the rounded stat</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stats(self, what, cols, nPlaces, fun=None):
+    &#34;&#34;&#34;
+    Function:
+        stats
+    Description:
+        Gets a given statistic and returns the rounded answer
+    Input:
+        self - current DATA instance
+        what - statistic to be returned
+        cols - cols to use as the data for statistic
+        nPlaces - # of decimal places stat is rounded to
+    Output:
+        map of cols y position and anonymous function that calculates the rounded stat
+    &#34;&#34;&#34;
+    def fun(col):
+        mid = getattr(col, what or &#34;mid&#34;)
+        rounded = round(float(mid()), nPlaces)
+        return (rounded, col.txt)
+    return kap(cols or self.cols.y, fun)</code></pre>
+</details>
+</dd>
+<dt id="src.data.DATA.sway"><code class="name flex">
+<span>def <span class="ident">sway</span></span>(<span>self, rows=None, min=None, cols=None, above=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>sway</p>
+<h2 id="description">Description</h2>
+<p>Finds the best half of the data by recursion</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+rows - rows to sway
+cols - cols to sway
+min - Determines when recursion stops
+above - Previous point of split</p>
+<h2 id="output">Output</h2>
+<p>Swayed rows</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sway(self, rows = None, min = None, cols = None, above = None):
+    &#34;&#34;&#34;
+    Function:
+        sway
+    Description:
+        Finds the best half of the data by recursion
+    Input:
+        self - current DATA instance
+        rows - rows to sway
+        cols - cols to sway
+        min - Determines when recursion stops
+        above - Previous point of split
+    Output:
+        Swayed rows
+    &#34;&#34;&#34;
+    rows = rows if rows else self.rows
+    min = min if min else len(rows) ** util.args.min
+    cols = cols if cols else self.cols.x
+    node = {&#34;data&#34;: self.clone(rows)}
+
+    if len(rows) &gt; 2 * min:
+       left, right, node[&#34;A&#34;], node[&#34;B&#34;], node[&#34;mid&#34;], _ = self.half(rows, cols, above)
+       if self.better(node[&#34;B&#34;], node[&#34;A&#34;]):
+           left, right, node[&#34;A&#34;], node[&#34;B&#34;] = right, left, node[&#34;B&#34;], node[&#34;A&#34;]
+       node[&#34;left&#34;] = self.sway(left,  min, cols, node[&#34;A&#34;])
+
+    return node</code></pre>
+</details>
+</dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -335,11 +894,23 @@ data - data to be cloned</p>
 <li><code><a title="src" href="index.html">src</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="src.data.clone" href="#src.data.clone">clone</a></code></li>
-<li><code><a title="src.data.new" href="#src.data.new">new</a></code></li>
-<li><code><a title="src.data.read" href="#src.data.read">read</a></code></li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.data.DATA" href="#src.data.DATA">DATA</a></code></h4>
+<ul class="two-column">
+<li><code><a title="src.data.DATA.around" href="#src.data.DATA.around">around</a></code></li>
+<li><code><a title="src.data.DATA.better" href="#src.data.DATA.better">better</a></code></li>
+<li><code><a title="src.data.DATA.clone" href="#src.data.DATA.clone">clone</a></code></li>
+<li><code><a title="src.data.DATA.cluster" href="#src.data.DATA.cluster">cluster</a></code></li>
+<li><code><a title="src.data.DATA.dist" href="#src.data.DATA.dist">dist</a></code></li>
+<li><code><a title="src.data.DATA.furthest" href="#src.data.DATA.furthest">furthest</a></code></li>
+<li><code><a title="src.data.DATA.half" href="#src.data.DATA.half">half</a></code></li>
+<li><code><a title="src.data.DATA.read" href="#src.data.DATA.read">read</a></code></li>
+<li><code><a title="src.data.DATA.stats" href="#src.data.DATA.stats">stats</a></code></li>
+<li><code><a title="src.data.DATA.sway" href="#src.data.DATA.sway">sway</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
