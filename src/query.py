@@ -30,10 +30,11 @@ def div(col):
 def stats(data, nPlaces, fun = None, cols = None):
     cols = cols or data.cols.y
     def callBack(k, col):
+        col = col.col
         return round((fun or mid)(col), nPlaces), col.txt
     tmp = kap(cols, callBack)
     tmp["N"] = len(data.rows)
-    return tmp, map(cols, mid)
+    return tmp, map(mid, cols)
 
 def norm(num, n):
     """

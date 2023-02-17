@@ -3,7 +3,6 @@ from list import *
 import re
 import math
 
-Seed = 937162211
 
 def itself(x):
     return x
@@ -42,7 +41,7 @@ def coerce(s):
             return False
         return s1
 
-    return int(s) if s.isnumeric() else float(s) if s.replace('.', '', 1).isdigit() else fun(s.strip())
+    return math.tointeger(s) or float(s) or fun(s.strip())
 
 def cells(s):
     t = []
@@ -57,7 +56,7 @@ def lines(sFilename, fun):
             fun(s)
     src.close()
 
-def CSV(sFilename, fun):
+def csv(sFilename, fun):
     lines(sFilename, lambda line: fun(cells(line)))
 
 def rand(low, high):

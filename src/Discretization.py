@@ -3,7 +3,6 @@ from update import *
 from query import *
 import math
 from copy import deepcopy
-from miscellaneous import *
 
 def bins(cols, rowss):
     out = []

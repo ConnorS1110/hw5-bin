@@ -50,7 +50,7 @@ def kap(listOfCols, fun):
     """
     u = {}
     for k, v in enumerate(listOfCols):
-        v, k = fun(v)
+        v, k = fun(k, v)
         u[k or len(u)+1] = v
     return u
 
