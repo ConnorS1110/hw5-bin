@@ -517,13 +517,13 @@ def cliffsFunc():
     assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "2"
     t1, t2 = [], []
     for i in range(1000):
-        t1.append(rand())
-        t2.append(math.sqrt(rand()))
+        t1.append(random())
+        t2.append(math.sqrt(random()))
     assert cliffsDelta(t1, t1) == False, "3"
     # assert cliffsDelta(t1, t2) == True, "4" Giving Error
     diff, j = False, 1.0
     while not diff:
         t3 = list(map(lambda x: x*j, t1))
         diff = cliffsDelta(t1, t3)
-        print(">", round(j), diff)
+        print(">", round(j, 4), diff)
         j *= 1.025
