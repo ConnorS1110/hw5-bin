@@ -27,9 +27,26 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from utility import *
-from list import *
+# from list import many : defined many here to avoid circular import error
 import re
 import math
+
+def many(t, n):
+    &#34;&#34;&#34;
+    Function:
+        many
+    Description:
+        Creates a list of random rows
+    Input:
+        t - DATA object
+        n - Number of row samples
+    Output:
+        u - list of random n rows from t
+    &#34;&#34;&#34;
+    u = []
+    for i in range(1, n + 1):
+        u.append(any(t))
+    return u
 
 
 def itself(x):
@@ -53,8 +70,8 @@ def cliffsDelta(ns1, ns2):
                 gt += 1
             if x &lt; y:
                 lt += 1
-
-    return abs(lt - gt) / n &gt; args.cliffs
+    
+    return abs(lt - gt) / n &gt; 0.147 # Replaced args
 
 def diffs(nums1, nums2):
     def kap(nums, fn):
@@ -169,8 +186,8 @@ def rint(lo = None, hi = None):
                 gt += 1
             if x &lt; y:
                 lt += 1
-
-    return abs(lt - gt) / n &gt; args.cliffs</code></pre>
+    
+    return abs(lt - gt) / n &gt; 0.147 # Replaced args</code></pre>
 </details>
 </dd>
 <dt id="src.miscellaneous.coerce"><code class="name flex">
@@ -251,6 +268,41 @@ def rint(lo = None, hi = None):
     src.close()</code></pre>
 </details>
 </dd>
+<dt id="src.miscellaneous.many"><code class="name flex">
+<span>def <span class="ident">many</span></span>(<span>t, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>many</p>
+<h2 id="description">Description</h2>
+<p>Creates a list of random rows</p>
+<h2 id="input">Input</h2>
+<p>t - DATA object
+n - Number of row samples</p>
+<h2 id="output">Output</h2>
+<p>u - list of random n rows from t</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def many(t, n):
+    &#34;&#34;&#34;
+    Function:
+        many
+    Description:
+        Creates a list of random rows
+    Input:
+        t - DATA object
+        n - Number of row samples
+    Output:
+        u - list of random n rows from t
+    &#34;&#34;&#34;
+    u = []
+    for i in range(1, n + 1):
+        u.append(any(t))
+    return u</code></pre>
+</details>
+</dd>
 <dt id="src.miscellaneous.rand"><code class="name flex">
 <span>def <span class="ident">rand</span></span>(<span>low, high)</span>
 </code></dt>
@@ -285,6 +337,12 @@ high - high value</p>
     Seed = (16807 * Seed) % 2147483647
     return low + (high - low) * Seed / 2147483647</code></pre>
 </details>
+</dd>
+<dt id="src.miscellaneous.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>random() -&gt; x in the interval [0, 1).</p></div>
 </dd>
 <dt id="src.miscellaneous.rint"><code class="name flex">
 <span>def <span class="ident">rint</span></span>(<span>lo=None, hi=None)</span>
@@ -343,7 +401,9 @@ high - high value</p>
 <li><code><a title="src.miscellaneous.diffs" href="#src.miscellaneous.diffs">diffs</a></code></li>
 <li><code><a title="src.miscellaneous.itself" href="#src.miscellaneous.itself">itself</a></code></li>
 <li><code><a title="src.miscellaneous.lines" href="#src.miscellaneous.lines">lines</a></code></li>
+<li><code><a title="src.miscellaneous.many" href="#src.miscellaneous.many">many</a></code></li>
 <li><code><a title="src.miscellaneous.rand" href="#src.miscellaneous.rand">rand</a></code></li>
+<li><code><a title="src.miscellaneous.random" href="#src.miscellaneous.random">random</a></code></li>
 <li><code><a title="src.miscellaneous.rint" href="#src.miscellaneous.rint">rint</a></code></li>
 </ul>
 </li>
