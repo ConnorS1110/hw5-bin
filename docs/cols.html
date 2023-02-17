@@ -31,22 +31,17 @@ from sym import SYM
 from col import COL
 import re
 
-class COLS:
-    def __init__(self, ss):
-        self.names = ss
-        self.all = []
-        self.x = []
-        self.y = []
-        for n, s in enumerate(ss):
-            col = COL(n, s)
-            self.all.append(col)
-            if not col.isIgnored:
-                if hasattr(col, &#39;isKlass&#39;):
-                    self.klass = col
-                if col.isGoal:
-                    self.y.append(col)
-                else:
-                    self.x.append(col)</code></pre>
+def COLS(ss):
+    cols={&#34;names&#34;: ss, &#34;all&#34;: [], &#34;x&#34;: [], &#34;y&#34;: []}
+    for n, s in enumerate(ss):
+        col = cols[&#34;all&#34;].append(COL(n, s))
+        if not col[&#34;isIgnored&#34;]:
+            if col[&#39;isKlass&#39;]:
+                col[&#39;isKlass&#39;] = col
+            if col.isGoal:
+                col.y.append(col)
+            else:
+                col.x.append(col)</code></pre>
 </details>
 </section>
 <section>
@@ -54,13 +49,10 @@ class COLS:
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="src.cols.COLS"><code class="flex name class">
-<span>class <span class="ident">COLS</span></span>
-<span>(</span><span>ss)</span>
+<dt id="src.cols.COLS"><code class="name flex">
+<span>def <span class="ident">COLS</span></span>(<span>ss)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -68,25 +60,22 @@ class COLS:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class COLS:
-    def __init__(self, ss):
-        self.names = ss
-        self.all = []
-        self.x = []
-        self.y = []
-        for n, s in enumerate(ss):
-            col = COL(n, s)
-            self.all.append(col)
-            if not col.isIgnored:
-                if hasattr(col, &#39;isKlass&#39;):
-                    self.klass = col
-                if col.isGoal:
-                    self.y.append(col)
-                else:
-                    self.x.append(col)</code></pre>
+<pre><code class="python">def COLS(ss):
+    cols={&#34;names&#34;: ss, &#34;all&#34;: [], &#34;x&#34;: [], &#34;y&#34;: []}
+    for n, s in enumerate(ss):
+        col = cols[&#34;all&#34;].append(COL(n, s))
+        if not col[&#34;isIgnored&#34;]:
+            if col[&#39;isKlass&#39;]:
+                col[&#39;isKlass&#39;] = col
+            if col.isGoal:
+                col.y.append(col)
+            else:
+                col.x.append(col)</code></pre>
 </details>
 </dd>
 </dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -100,11 +89,9 @@ class COLS:
 <li><code><a title="src" href="index.html">src</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="src.cols.COLS" href="#src.cols.COLS">COLS</a></code></h4>
-</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.cols.COLS" href="#src.cols.COLS">COLS</a></code></li>
 </ul>
 </li>
 </ul>

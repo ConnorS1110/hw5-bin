@@ -29,12 +29,12 @@
 <pre><code class="python">from num import NUM
 from sym import SYM
 
-class COL:
-    def __init__(self, n, s):
-        self.col = NUM(n, s) if s[0].isupper() else SYM(n, s)
-        self.isIgnored = self.col.txt.endswith(&#34;X&#34;)
-        self.isKlass = self.col.txt.endswith(&#34;!&#34;)
-        self.isGoal = self.col.txt[-1] in [&#34;!&#34;, &#34;+&#34;, &#34;-&#34;]</code></pre>
+def COL(n, s):
+    col = NUM(n, s) if s[0].isupper() else SYM(n, s)
+    # col[&#39;isIgnored&#39;] = &#39;X&#39; in col[&#39;txt&#39;]
+    # col[&#39;isKlass&#39;] = &#39;!&#39; in col[&#39;txt&#39;]
+    # col[&#39;isGoal&#39;] = any(x in col[&#39;txt&#39;] for x in [&#39;!&#39;, &#39;+&#39;, &#39;-&#39;])
+    return col</code></pre>
 </details>
 </section>
 <section>
@@ -42,13 +42,10 @@ class COL:
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="src.col.COL"><code class="flex name class">
-<span>class <span class="ident">COL</span></span>
-<span>(</span><span>n, s)</span>
+<dt id="src.col.COL"><code class="name flex">
+<span>def <span class="ident">COL</span></span>(<span>n, s)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -56,15 +53,17 @@ class COL:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class COL:
-    def __init__(self, n, s):
-        self.col = NUM(n, s) if s[0].isupper() else SYM(n, s)
-        self.isIgnored = self.col.txt.endswith(&#34;X&#34;)
-        self.isKlass = self.col.txt.endswith(&#34;!&#34;)
-        self.isGoal = self.col.txt[-1] in [&#34;!&#34;, &#34;+&#34;, &#34;-&#34;]</code></pre>
+<pre><code class="python">def COL(n, s):
+    col = NUM(n, s) if s[0].isupper() else SYM(n, s)
+    # col[&#39;isIgnored&#39;] = &#39;X&#39; in col[&#39;txt&#39;]
+    # col[&#39;isKlass&#39;] = &#39;!&#39; in col[&#39;txt&#39;]
+    # col[&#39;isGoal&#39;] = any(x in col[&#39;txt&#39;] for x in [&#39;!&#39;, &#39;+&#39;, &#39;-&#39;])
+    return col</code></pre>
 </details>
 </dd>
 </dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -78,11 +77,9 @@ class COL:
 <li><code><a title="src" href="index.html">src</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="src.col.COL" href="#src.col.COL">COL</a></code></h4>
-</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.col.COL" href="#src.col.COL">COL</a></code></li>
 </ul>
 </li>
 </ul>

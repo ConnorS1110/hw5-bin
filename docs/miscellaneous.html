@@ -70,7 +70,7 @@ def coerce(s):
             return False
         return s1
 
-    return math.tointeger(s) or float(s) or fun(s.strip())
+    return int(s) if s.isnumeric() else float(s) if s.replace(&#39;.&#39;, &#39;&#39;, 1).isdigit() else fun(s.strip())
 
 def cells(s):
     t = []
@@ -85,7 +85,7 @@ def lines(sFilename, fun):
             fun(s)
     src.close()
 
-def csv(sFilename, fun):
+def CSV(sFilename, fun):
     lines(sFilename, lambda line: fun(cells(line)))
 
 def rand(low, high):
@@ -127,6 +127,19 @@ def rint(lo = None, hi = None):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="src.miscellaneous.CSV"><code class="name flex">
+<span>def <span class="ident">CSV</span></span>(<span>sFilename, fun)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CSV(sFilename, fun):
+    lines(sFilename, lambda line: fun(cells(line)))</code></pre>
+</details>
+</dd>
 <dt id="src.miscellaneous.cells"><code class="name flex">
 <span>def <span class="ident">cells</span></span>(<span>s)</span>
 </code></dt>
@@ -191,20 +204,7 @@ def rint(lo = None, hi = None):
             return False
         return s1
 
-    return math.tointeger(s) or float(s) or fun(s.strip())</code></pre>
-</details>
-</dd>
-<dt id="src.miscellaneous.csv"><code class="name flex">
-<span>def <span class="ident">csv</span></span>(<span>sFilename, fun)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def csv(sFilename, fun):
-    lines(sFilename, lambda line: fun(cells(line)))</code></pre>
+    return int(s) if s.isnumeric() else float(s) if s.replace(&#39;.&#39;, &#39;&#39;, 1).isdigit() else fun(s.strip())</code></pre>
 </details>
 </dd>
 <dt id="src.miscellaneous.diffs"><code class="name flex">
@@ -337,10 +337,10 @@ high - high value</p>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
+<li><code><a title="src.miscellaneous.CSV" href="#src.miscellaneous.CSV">CSV</a></code></li>
 <li><code><a title="src.miscellaneous.cells" href="#src.miscellaneous.cells">cells</a></code></li>
 <li><code><a title="src.miscellaneous.cliffsDelta" href="#src.miscellaneous.cliffsDelta">cliffsDelta</a></code></li>
 <li><code><a title="src.miscellaneous.coerce" href="#src.miscellaneous.coerce">coerce</a></code></li>
-<li><code><a title="src.miscellaneous.csv" href="#src.miscellaneous.csv">csv</a></code></li>
 <li><code><a title="src.miscellaneous.diffs" href="#src.miscellaneous.diffs">diffs</a></code></li>
 <li><code><a title="src.miscellaneous.itself" href="#src.miscellaneous.itself">itself</a></code></li>
 <li><code><a title="src.miscellaneous.lines" href="#src.miscellaneous.lines">lines</a></code></li>
