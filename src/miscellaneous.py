@@ -1,7 +1,24 @@
 from utility import *
-from list import *
+# from list import many : defined many here to avoid circular import error
 import re
 import math
+
+def many(t, n):
+    """
+    Function:
+        many
+    Description:
+        Creates a list of random rows
+    Input:
+        t - DATA object
+        n - Number of row samples
+    Output:
+        u - list of random n rows from t
+    """
+    u = []
+    for i in range(1, n + 1):
+        u.append(any(t))
+    return u
 
 
 def itself(x):
@@ -25,8 +42,8 @@ def cliffsDelta(ns1, ns2):
                 gt += 1
             if x < y:
                 lt += 1
-
-    return abs(lt - gt) / n > args.cliffs
+    
+    return abs(lt - gt) / n > 0.147 # Replaced args
 
 def diffs(nums1, nums2):
     def kap(nums, fn):
