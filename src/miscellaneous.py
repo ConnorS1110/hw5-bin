@@ -42,7 +42,7 @@ def coerce(s):
             return False
         return s1
 
-    return math.tointeger(s) or float(s) or fun(s.strip())
+    return int(s) if s.isnumeric() else float(s) if s.replace('.', '', 1).isdigit() else fun(s.strip())
 
 def cells(s):
     t = []
@@ -57,7 +57,7 @@ def lines(sFilename, fun):
             fun(s)
     src.close()
 
-def csv(sFilename, fun):
+def CSV(sFilename, fun):
     lines(sFilename, lambda line: fun(cells(line)))
 
 def rand(low, high):

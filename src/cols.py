@@ -3,19 +3,14 @@ from sym import SYM
 from col import COL
 import re
 
-class COLS:
-    def __init__(self, ss):
-        self.names = ss
-        self.all = []
-        self.x = []
-        self.y = []
-        for n, s in enumerate(ss):
-            col = COL(n, s)
-            self.all.append(col)
-            if not col.isIgnored:
-                if hasattr(col, 'isKlass'):
-                    self.klass = col
-                if col.isGoal:
-                    self.y.append(col)
-                else:
-                    self.x.append(col)
+def COLS(ss):
+    cols={"names": ss, "all": [], "x": [], "y": []}
+    for n, s in enumerate(ss):
+        col = cols["all"].append(COL(n, s))
+        if not col["isIgnored"]:
+            if col['isKlass']:
+                col['isKlass'] = col
+            if col.isGoal:
+                col.y.append(col)
+            else:
+                col.x.append(col)

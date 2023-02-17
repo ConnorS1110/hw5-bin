@@ -5,7 +5,7 @@ import math
 import os
 from num import NUM
 from sym import SYM
-from data import DATA
+from data import *
 from update import *
 from query import *
 from copy import deepcopy
@@ -372,7 +372,7 @@ def dataFunc():
     """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
+    data = read(full_path)
     col = data.cols.x[1]
     print(col.lo, col.hi, mid(col), div(col))
     print(stats(data))
@@ -408,8 +408,8 @@ def cloneFunc():
     """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data1 = DATA(full_path)
-    data2 = data1.clone(data1.rows)
+    data1 = read(full_path)
+    data2 = clone(data1.rows)
     print(stats(data1))
     print(stats(data2))
 
@@ -432,7 +432,7 @@ def cliffsFunc():
 def distFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
+    data = read(full_path)
     num = NUM()
     for row in data.rows:
         add(num, dist(data, row, data.rows[1]))

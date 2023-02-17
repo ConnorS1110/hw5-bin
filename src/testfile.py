@@ -1,10 +1,10 @@
 from utility import *
 
-eg("the", "show options", oo)
-eg("rand", "demo random number generation", randFunc)
-eg("some", "demo of reservoir sampling", someFunc)
-eg("nums","demo of NUM", numFunc)
-eg("syms","demo SYMS", symFunc)
+# eg("the", "show options", oo)
+# eg("rand", "demo random number generation", randFunc)
+# eg("some", "demo of reservoir sampling", someFunc)
+# eg("nums","demo of NUM", numFunc)
+# eg("syms","demo SYMS", symFunc)
 eg("csv","reading csv files", csvFunc)
 eg("data", "showing data sets", dataFunc)
 eg("clone","replicate structure of a DATA", cloneFunc)

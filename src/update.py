@@ -3,13 +3,13 @@ import utility as util
 import random
 
 def row(data, t):
-    if data.cols:
-        data.rows.append(t)
-        for cols in [data.cols.x, data.cols.y]:
+    if data["cols"]:
+        data["rows"].append(t)
+        for cols in [data["cols"]["x"], data["cols"]["y"]]:
             for col in cols:
-                add(col, t[col.at])
+                add(col, t[col.names])
     else:
-        data.cols = COLS(t)
+        data["cols"]= COLS(t)
     return data
 
 
