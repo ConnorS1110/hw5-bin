@@ -404,11 +404,9 @@ def cloneFunc():
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data1 = dataOBJ.read(full_path)
-    data2 = data1.clone(data1.rows)
-    return (len(data1.rows) == len(data2.rows) and
-            data1.cols.y[1].w == data2.cols.y[1].w and
-            data1.cols.x[1].at == data2.cols.x[1].at and
-            len(data1.cols.x) == len(data2.cols.x))
+    data2 = data1.clone(data1, data1.rows)
+    print(stats(data1))
+    print(stats(data2))
 
 def clusterFunc():
     """
@@ -527,3 +525,13 @@ def cliffsFunc():
         diff = cliffsDelta(t1, t3)
         print(">", round(j, 4), diff)
         j *= 1.025
+
+def distFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    num  = NUM()
+    for row in data.rows:
+        add(num, dist(data, row, data.rows[1]))
+    print({"lo": num.lo, "hi": num.hi, "mid": rnd(mid(num)), "div": rnd(div(num))})

@@ -28,9 +28,10 @@ class DATA:
         Output:
             data - Clone of DATA object
         """
-        data1 = update.row(DATA(), data.names)
+        data1 = update.row(DATA(), data.cols.names)
         for t in (ts or []):
             update.row(data1, t)
+        return data1
 
     def stats(self, what, cols, nPlaces, fun=None):
         """

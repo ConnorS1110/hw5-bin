@@ -27,7 +27,7 @@ def div(col):
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
-def stats(data, nPlaces, fun = None, cols = None):
+def stats(data, nPlaces = None, fun = None, cols = None):
     cols = cols or data.cols.y
     def callBack(k, col):
         col = col.col
@@ -75,7 +75,7 @@ def dist(data, t1, t2, cols = None):
         return abs(x - y)
 
     d, n = 0, 1 / float("inf")
-    cols = cols or data.cols.x
+    cols = cols if cols else data.cols.x
     for col in cols:
         n += 1
         d += dist1(col, t1[col.at], t2[col.at])**args.p
