@@ -56,9 +56,10 @@ class DATA:
         Output:
             data - Clone of DATA object
         &#34;&#34;&#34;
-        data1 = update.row(DATA(), data.names)
+        data1 = update.row(DATA(), data.cols.names)
         for t in (ts or []):
             update.row(data1, t)
+        return data1
 
     def stats(self, what, cols, nPlaces, fun=None):
         &#34;&#34;&#34;
@@ -300,9 +301,10 @@ class DATA:
         Output:
             data - Clone of DATA object
         &#34;&#34;&#34;
-        data1 = update.row(DATA(), data.names)
+        data1 = update.row(DATA(), data.cols.names)
         for t in (ts or []):
             update.row(data1, t)
+        return data1
 
     def stats(self, what, cols, nPlaces, fun=None):
         &#34;&#34;&#34;
@@ -609,9 +611,10 @@ data - data to be cloned</p>
     Output:
         data - Clone of DATA object
     &#34;&#34;&#34;
-    data1 = update.row(DATA(), data.names)
+    data1 = update.row(DATA(), data.cols.names)
     for t in (ts or []):
-        update.row(data1, t)</code></pre>
+        update.row(data1, t)
+    return data1</code></pre>
 </details>
 </dd>
 <dt id="src.data.DATA.cluster"><code class="name flex">

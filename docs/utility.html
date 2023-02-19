@@ -432,11 +432,9 @@ def cloneFunc():
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data1 = dataOBJ.read(full_path)
-    data2 = data1.clone(data1.rows)
-    return (len(data1.rows) == len(data2.rows) and
-            data1.cols.y[1].w == data2.cols.y[1].w and
-            data1.cols.x[1].at == data2.cols.x[1].at and
-            len(data1.cols.x) == len(data2.cols.x))
+    data2 = data1.clone(data1, data1.rows)
+    print(stats(data1))
+    print(stats(data2))
 
 def clusterFunc():
     &#34;&#34;&#34;
@@ -554,7 +552,17 @@ def cliffsFunc():
         t3 = list(map(lambda x: x*j, t1))
         diff = cliffsDelta(t1, t3)
         print(&#34;&gt;&#34;, round(j, 4), diff)
-        j *= 1.025</code></pre>
+        j *= 1.025
+
+def distFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    num  = NUM()
+    for row in data.rows:
+        add(num, dist(data, row, data.rows[1]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: rnd(mid(num)), &#34;div&#34;: rnd(div(num))})</code></pre>
 </details>
 </section>
 <section>
@@ -656,11 +664,9 @@ def cliffsFunc():
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data1 = dataOBJ.read(full_path)
-    data2 = data1.clone(data1.rows)
-    return (len(data1.rows) == len(data2.rows) and
-            data1.cols.y[1].w == data2.cols.y[1].w and
-            data1.cols.x[1].at == data2.cols.x[1].at and
-            len(data1.cols.x) == len(data2.cols.x))</code></pre>
+    data2 = data1.clone(data1, data1.rows)
+    print(stats(data1))
+    print(stats(data2))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.clusterFunc"><code class="name flex">
@@ -858,6 +864,26 @@ y - y of line between a &amp; b</p></div>
     # data.cols.x[1].at == 1 and
     # len(data.cols.x) == 4
     # )</code></pre>
+</details>
+</dd>
+<dt id="src.utility.distFunc"><code class="name flex">
+<span>def <span class="ident">distFunc</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def distFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    num  = NUM()
+    for row in data.rows:
+        add(num, dist(data, row, data.rows[1]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: rnd(mid(num)), &#34;div&#34;: rnd(div(num))})</code></pre>
 </details>
 </dd>
 <dt id="src.utility.dofile"><code class="name flex">
@@ -1567,6 +1593,7 @@ lvl - how deep the tree is</p>
 <li><code><a title="src.utility.crashFunc" href="#src.utility.crashFunc">crashFunc</a></code></li>
 <li><code><a title="src.utility.csvFunc" href="#src.utility.csvFunc">csvFunc</a></code></li>
 <li><code><a title="src.utility.dataFunc" href="#src.utility.dataFunc">dataFunc</a></code></li>
+<li><code><a title="src.utility.distFunc" href="#src.utility.distFunc">distFunc</a></code></li>
 <li><code><a title="src.utility.dofile" href="#src.utility.dofile">dofile</a></code></li>
 <li><code><a title="src.utility.eg" href="#src.utility.eg">eg</a></code></li>
 <li><code><a title="src.utility.getCliArgs" href="#src.utility.getCliArgs">getCliArgs</a></code></li>
