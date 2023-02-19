@@ -11,6 +11,7 @@ from query import *
 from copy import deepcopy
 from miscellaneous import cliffsDelta
 from random import random
+from cluster import *
 
 help = """
 bins: multi-objective semi-supervised discetization
@@ -471,12 +472,13 @@ def halfFunc():
     """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    left, right, A, B, mid, c = data.half()
-    print(len(left), len(right), len(data.rows))
-    print(A.cells, c)
-    print(mid.cells)
-    print(B.cells)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    left, right, A, B, c = half(data)
+    print(len(left), len(right))
+    l, r = data.clone(data, left), data.clone(data, right)
+    print("l", stats(l))
+    print("r", stats(r))
 
 def repColsFunc():
     script_dir = os.path.dirname(__file__)

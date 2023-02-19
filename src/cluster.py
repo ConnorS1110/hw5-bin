@@ -1,5 +1,6 @@
 from query import *
 from data import *
+import utility as util
 
 
 
@@ -29,12 +30,12 @@ def half(data, rows = None, cols = None, above = None):
         def proj(r):
             return {'row': r, 'x': cos(gap(r, A), gap(r, B), c)}
         rows = rows or data.rows
-        some = many(rows, args.Halves)
-        A = above if args.Reuse else any(some)
+        some = many(rows, util.args.Halves)
+        A = above or any(some)
         tmp = sorted([{"row": r, "d": gap(r, A)} for r in some], key=lambda x: x["d"])
-        far = tmp[int(len(tmp)*args.Far)]
+        far = tmp[int(len(tmp)*util.args.Far)]
         B, c = far["row"], far["d"]
-        sorted_rows = sorted(map(rows, proj), key=lambda x: x["x"])
+        sorted_rows = sorted(map(proj, rows), key=lambda x: x["x"])
         left, right = [], []
         for n, two in enumerate(sorted_rows):
             if n <= (len(rows) - 1) / 2:
