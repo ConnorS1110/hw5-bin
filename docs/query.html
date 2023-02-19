@@ -28,6 +28,7 @@
 </summary>
 <pre><code class="python">from list import *
 from utility import *
+import utility as util
 import math
 
 def has(col):
@@ -93,21 +94,22 @@ def dist(data, t1, t2, cols = None):
     def dist1(col, x, y):
         if x == &#34;?&#34; and y == &#34;?&#34;:
             return 1
-        if col.isSym:
+        if hasattr(col, &#34;isSym&#34;):
             return 0 if x == y else 1
-        x, y = norm(col, x), norm(col, y)
-        if x == &#34;?&#34;:
-            x = 1 if y &lt; 0.5 else 1
-        if y == &#34;?&#34;:
-            y = 1 if x &lt; 0.5 else 1
-        return abs(x - y)
+        else:
+            x, y = norm(col, x), norm(col, y)
+            if x == &#34;?&#34;:
+                x = 1 if y &lt; 0.5 else 1
+            if y == &#34;?&#34;:
+                y = 1 if x &lt; 0.5 else 1
+            return abs(x - y)
 
     d, n = 0, 1 / float(&#34;inf&#34;)
     cols = cols if cols else data.cols.x
     for col in cols:
         n += 1
-        d += dist1(col, t1[col.at], t2[col.at])**args.p
-    return (d / n)**(1 / args.p)
+        d += dist1(col.col, float(t1[col.col.at]), float(t2[col.col.at]))**util.args.p
+    return (d / n)**(1 / util.args.p)
 
 def better(data, row1, row2):
     s1, s2, ys = 0, 0, data.cols.y
@@ -162,21 +164,22 @@ def better(data, row1, row2):
     def dist1(col, x, y):
         if x == &#34;?&#34; and y == &#34;?&#34;:
             return 1
-        if col.isSym:
+        if hasattr(col, &#34;isSym&#34;):
             return 0 if x == y else 1
-        x, y = norm(col, x), norm(col, y)
-        if x == &#34;?&#34;:
-            x = 1 if y &lt; 0.5 else 1
-        if y == &#34;?&#34;:
-            y = 1 if x &lt; 0.5 else 1
-        return abs(x - y)
+        else:
+            x, y = norm(col, x), norm(col, y)
+            if x == &#34;?&#34;:
+                x = 1 if y &lt; 0.5 else 1
+            if y == &#34;?&#34;:
+                y = 1 if x &lt; 0.5 else 1
+            return abs(x - y)
 
     d, n = 0, 1 / float(&#34;inf&#34;)
     cols = cols if cols else data.cols.x
     for col in cols:
         n += 1
-        d += dist1(col, t1[col.at], t2[col.at])**args.p
-    return (d / n)**(1 / args.p)</code></pre>
+        d += dist1(col.col, float(t1[col.col.at]), float(t2[col.col.at]))**util.args.p
+    return (d / n)**(1 / util.args.p)</code></pre>
 </details>
 </dd>
 <dt id="src.query.div"><code class="name flex">

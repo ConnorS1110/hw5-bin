@@ -561,8 +561,8 @@ def distFunc():
     data = dataOBJ.read(full_path)
     num  = NUM()
     for row in data.rows:
-        add(num, dist(data, row, data.rows[1]))
-    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: rnd(mid(num)), &#34;div&#34;: rnd(div(num))})</code></pre>
+        add(num, dist(data, row, data.rows[0]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(mid(num)), &#34;div&#34;: round(div(num))})</code></pre>
 </details>
 </section>
 <section>
@@ -882,8 +882,8 @@ y - y of line between a &amp; b</p></div>
     data = dataOBJ.read(full_path)
     num  = NUM()
     for row in data.rows:
-        add(num, dist(data, row, data.rows[1]))
-    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: rnd(mid(num)), &#34;div&#34;: rnd(div(num))})</code></pre>
+        add(num, dist(data, row, data.rows[0]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(mid(num)), &#34;div&#34;: round(div(num))})</code></pre>
 </details>
 </dd>
 <dt id="src.utility.dofile"><code class="name flex">
