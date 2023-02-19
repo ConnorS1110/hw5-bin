@@ -533,5 +533,5 @@ def distFunc():
     data = dataOBJ.read(full_path)
     num  = NUM()
     for row in data.rows:
-        add(num, dist(data, row, data.rows[1]))
-    print({"lo": num.lo, "hi": num.hi, "mid": rnd(mid(num)), "div": rnd(div(num))})
+        add(num, dist(data, row, data.rows[0]))
+    print({"lo": num.lo, "hi": num.hi, "mid": round(mid(num)), "div": round(div(num))})
