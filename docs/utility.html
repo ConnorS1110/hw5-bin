@@ -39,6 +39,7 @@ from query import *
 from copy import deepcopy
 from miscellaneous import cliffsDelta
 from random import random
+from cluster import *
 
 help = &#34;&#34;&#34;
 bins: multi-objective semi-supervised discetization
@@ -499,12 +500,13 @@ def halfFunc():
     &#34;&#34;&#34;
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    left, right, A, B, mid, c = data.half()
-    print(len(left), len(right), len(data.rows))
-    print(A.cells, c)
-    print(mid.cells)
-    print(B.cells)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    left, right, A, B, c = half(data)
+    print(len(left), len(right))
+    l, r = data.clone(data, left), data.clone(data, right)
+    print(&#34;l&#34;, stats(l))
+    print(&#34;r&#34;, stats(r))
 
 def repColsFunc():
     script_dir = os.path.dirname(__file__)
@@ -1012,12 +1014,13 @@ fun - callback function to use for test case</p>
     &#34;&#34;&#34;
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    left, right, A, B, mid, c = data.half()
-    print(len(left), len(right), len(data.rows))
-    print(A.cells, c)
-    print(mid.cells)
-    print(B.cells)</code></pre>
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    left, right, A, B, c = half(data)
+    print(len(left), len(right))
+    l, r = data.clone(data, left), data.clone(data, right)
+    print(&#34;l&#34;, stats(l))
+    print(&#34;r&#34;, stats(r))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.last"><code class="name flex">
@@ -1212,12 +1215,6 @@ high - high value</p>
             return False
     return True</code></pre>
 </details>
-</dd>
-<dt id="src.utility.random"><code class="name flex">
-<span>def <span class="ident">random</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>random() -&gt; x in the interval [0, 1).</p></div>
 </dd>
 <dt id="src.utility.readCSV"><code class="name flex">
 <span>def <span class="ident">readCSV</span></span>(<span>sFilename, fun)</span>
@@ -1605,7 +1602,6 @@ lvl - how deep the tree is</p>
 <li><code><a title="src.utility.print_all_attributes" href="#src.utility.print_all_attributes">print_all_attributes</a></code></li>
 <li><code><a title="src.utility.rand" href="#src.utility.rand">rand</a></code></li>
 <li><code><a title="src.utility.randFunc" href="#src.utility.randFunc">randFunc</a></code></li>
-<li><code><a title="src.utility.random" href="#src.utility.random">random</a></code></li>
 <li><code><a title="src.utility.readCSV" href="#src.utility.readCSV">readCSV</a></code></li>
 <li><code><a title="src.utility.repCols" href="#src.utility.repCols">repCols</a></code></li>
 <li><code><a title="src.utility.repColsFunc" href="#src.utility.repColsFunc">repColsFunc</a></code></li>

@@ -30,6 +30,7 @@
 # from list import many : defined many here to avoid circular import error
 import re
 import math
+import utility as util
 
 def many(t, n):
     &#34;&#34;&#34;
@@ -113,7 +114,7 @@ def rand(low, high):
     &#34;&#34;&#34;
     global Seed
     low, high = low or 0, high or 1
-    Seed = (16807 * Seed) % 2147483647
+    Seed = (16807 * util.Seed) % 2147483647
     return low + (high - low) * Seed / 2147483647
 
 def rint(lo = None, hi = None):
@@ -324,15 +325,9 @@ high - high value</p>
     &#34;&#34;&#34;
     global Seed
     low, high = low or 0, high or 1
-    Seed = (16807 * Seed) % 2147483647
+    Seed = (16807 * util.Seed) % 2147483647
     return low + (high - low) * Seed / 2147483647</code></pre>
 </details>
-</dd>
-<dt id="src.miscellaneous.random"><code class="name flex">
-<span>def <span class="ident">random</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>random() -&gt; x in the interval [0, 1).</p></div>
 </dd>
 <dt id="src.miscellaneous.rint"><code class="name flex">
 <span>def <span class="ident">rint</span></span>(<span>lo=None, hi=None)</span>
@@ -393,7 +388,6 @@ high - high value</p>
 <li><code><a title="src.miscellaneous.lines" href="#src.miscellaneous.lines">lines</a></code></li>
 <li><code><a title="src.miscellaneous.many" href="#src.miscellaneous.many">many</a></code></li>
 <li><code><a title="src.miscellaneous.rand" href="#src.miscellaneous.rand">rand</a></code></li>
-<li><code><a title="src.miscellaneous.random" href="#src.miscellaneous.random">random</a></code></li>
 <li><code><a title="src.miscellaneous.rint" href="#src.miscellaneous.rint">rint</a></code></li>
 </ul>
 </li>
