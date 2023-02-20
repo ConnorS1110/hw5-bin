@@ -33,50 +33,6 @@ class DATA:
             update.row(data1, t)
         return data1
 
-    def stats(self, what, cols, nPlaces, fun=None):
-        """
-        Function:
-            stats
-        Description:
-            Gets a given statistic and returns the rounded answer
-        Input:
-            self - current DATA instance
-            what - statistic to be returned
-            cols - cols to use as the data for statistic
-            nPlaces - # of decimal places stat is rounded to
-        Output:
-            map of cols y position and anonymous function that calculates the rounded stat
-        """
-        def fun(col):
-            mid = getattr(col, what or "mid")
-            rounded = round(float(mid()), nPlaces)
-            return (rounded, col.txt)
-        return kap(cols or self.cols.y, fun)
-
-    def better(self, row1, row2):
-        """
-        Function:
-            better
-        Description:
-            Determines if row1 dominates row2
-        Input:
-            self - current DATA instance
-            row1 - First row to compare
-            row2 - Second row to compare
-        Output:
-            True if row1 dominates row2
-        """
-        s1, s2, ys = 0, 0, self.cols.y
-        for _, col in enumerate(ys):
-            x = col.norm(row1.cells[col.at])
-            y = col.norm(row2.cells[col.at])
-            s1 -= math.exp(col.w * (((x - y)) / len(ys)))
-            s2 -= math.exp(col.w * ((y - x) / len(ys)))
-        # print("Value of s1: " + str(s1) + " Type of s1: " + str(type(s1)))
-        # print("Value of s2: " + str(s2) + " Type of s2: " + str(type(s2)))
-        # print("Value of len(ys): " + str(len(ys)) + " Type of len(ys): " + str(type(len(ys))))
-        return (s1 / len(ys)) < (s2 / len(ys))
-
     def dist(self, row1, row2, cols = None):
         """
         Function:

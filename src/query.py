@@ -28,7 +28,7 @@ def div(col):
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
-def stats(data, nPlaces = 2, fun = None, cols = None):
+def stats(data, fun = None, cols = None, nPlaces = 2):
     """
     Function:
         stats
@@ -67,7 +67,7 @@ def norm(num, n):
 
 def value(has, nB = 1, nR = 1, sGoal = True):
     b, r = 0, 0
-    for x, n in enumerate(has):
+    for x, n in has.items():
         if x == sGoal:
             b = b + n
         else:
@@ -98,11 +98,11 @@ def dist(data, t1, t2, cols = None):
 
 def better(data, row1, row2):
     s1, s2, ys = 0, 0, data.cols.y
-    for _, col in enumerate(ys):
-        x = norm(col, row1[col.at])
-        y = norm(col, row2[col.at])
+    for col in ys:
+        x = norm(col.col, float(row1[col.col.at]) if row1[col.col.at] != "?" else row1[col.col.at])
+        y = norm(col.col, float(row2[col.col.at]) if row2[col.col.at] != "?" else row2[col.col.at])
 
-        s1 = s1 - math.exp(col.w * (x-y)/len(ys))
-        s2 = s2 - math.exp(col.w * (y - x)/len(ys))
+        s1 = s1 - math.exp(col.col.w * (x-y)/len(ys))
+        s2 = s2 - math.exp(col.col.w * (y - x)/len(ys))
 
     return s1/len(ys) < s2 / len(ys)

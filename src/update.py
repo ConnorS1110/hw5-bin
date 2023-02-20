@@ -15,8 +15,8 @@ def row(data, t):
 
 def add(col, x, n = 1):
     if x != "?":
-        col.n = col.n + n # Source of variable 'n'
-        if hasattr(col, "isSym"):
+        col.n += n # Source of variable 'n'
+        if hasattr(col, "isSym") and col.isSym:
             col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] > col.most:
                 col.most = col.has[x]

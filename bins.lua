@@ -15,7 +15,7 @@ OPTIONS:
   -c  --cliffs  cliff's delta threshold      = .147
   -f  --file    data file                    = ./etc/data/auto93.csv
   -F  --Far     distance to distant          = .95
-  -g  --go      start-up action              = half
+  -g  --go      start-up action              = bins
   -h  --help    show help                    = false
   -H  --Halves  search space for clustering  = 512
   -m  --min     size of smallest cluster     = .5
