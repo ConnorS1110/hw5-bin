@@ -4,6 +4,16 @@ import utility as util
 import math
 
 def has(col):
+    """
+    Function:
+        has
+    Description:
+        Returns has on col
+    Input:
+        col - col to retrieve has from
+    Output:
+        col.has
+    """
     if not hasattr(col, "isSym") and not col.ok:
         if isinstance(col.has, dict):
             col.has = dict(sorted(col.has.items(), key = lambda item: item[1]))
@@ -13,10 +23,30 @@ def has(col):
     return col.has
 
 def mid(col):
-    return col.mode if hasattr(col, "isSym") else per(has(col), 0.5)
+    """
+    Function:
+        mid
+    Description:
+        Returns median of col
+    Input:
+        col - col to find median of
+    Output:
+        col.mode if col col has isSym and is true, otherwise return the middle value in col
+    """
+    return col.mode if hasattr(col, "isSym") and col.isSym else per(has(col), 0.5)
 
 def div(col):
-    if hasattr(col, "isSym"):
+    """
+    Function:
+        mid
+    Description:
+        Returns standard deviation of col
+    Input:
+        col - col to find deviation of
+    Output:
+        Standard deviation of a col
+    """
+    if hasattr(col, "isSym") and col.isSym:
         e = 0
         if isinstance(col.has, dict):
             for n in col.has.values():
@@ -26,7 +56,7 @@ def div(col):
                 e = e - n/col.n * math.log(n/col.n, 2)
         return e
     else:
-        return (per(has(col),.9) - per(has(col), .1))/2.58
+        return (per(has(col),.9) - per(has(col), .1)) / 2.58
 
 def stats(data, fun = None, cols = None, nPlaces = 2):
     """
@@ -35,8 +65,8 @@ def stats(data, fun = None, cols = None, nPlaces = 2):
     Description:
         Gets a given statistic and returns the rounded answer
     Input:
-        self - current DATA instance
-        what - statistic to be returned
+        data - current DATA instance
+        fun - statistic to be returned
         cols - cols to use as the data for statistic
         nPlaces - # of decimal places stat is rounded to
     Output:
@@ -66,6 +96,19 @@ def norm(num, n):
 
 
 def value(has, nB = 1, nR = 1, sGoal = True):
+    """
+    Function:
+        value
+    Description:
+        Finds frequency of sGoal in has
+    Input:
+        has - data to find frequency of
+        nB - best
+        nR - rest
+        sGoal - Goal value to find frequency of
+    Output:
+        Frequency of sGoal in has
+    """
     b, r = 0, 0
     for x, n in has.items():
         if x == sGoal:
@@ -76,6 +119,19 @@ def value(has, nB = 1, nR = 1, sGoal = True):
     return (b ** 2) / (b + r)
 
 def dist(data, t1, t2, cols = None):
+    """
+    Function:
+        dist
+    Description:
+        Finds normalized distance between row1 and row2
+    Input:
+        self - current DATA instance
+        t1 - First row
+        t2 - Second row
+        cols - cols to use as the data for distance
+    Output:
+        Normalized distance between row1 and row2
+    """
     def dist1(col, x, y):
         if x == "?" and y == "?":
             return 1
@@ -97,6 +153,18 @@ def dist(data, t1, t2, cols = None):
     return (d / n)**(1 / util.args.p)
 
 def better(data, row1, row2):
+    """
+    Function:
+        better
+    Description:
+        Returns whether the half is better than the other
+    Input:
+        data - data to compares
+        row1 - first row
+        row2 - second row
+    Output:
+        Boolean whether first half is better than second half
+    """
     s1, s2, ys = 0, 0, data.cols.y
     for col in ys:
         x = norm(col.col, float(row1[col.col.at]) if row1[col.col.at] != "?" else row1[col.col.at])

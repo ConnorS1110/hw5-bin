@@ -1,4 +1,4 @@
-from testfile import getCliArgs, printCLIvalues
+from testfile import getCliArgs
 import utility
 
 def main(funs):
@@ -24,7 +24,6 @@ def main(funs):
                     fails += 1
                     print("❌ fail:",what)
                 else: print("✅ pass:",what)
-    # printCLIvalues()
     if (fails == 0): return 0
     else: return 1
 

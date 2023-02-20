@@ -8,7 +8,6 @@ from sym import SYM
 from data import DATA
 from update import *
 import query as query
-from copy import deepcopy
 import miscellaneous as misc
 import cluster as cluster
 import Optimization as opt
@@ -41,73 +40,9 @@ Seed = 937162211
 egs = {}
 n = 0
 
-def print_all_attributes(obj):
-    stringToPrint = "{ "
-    for attr, value in vars(obj).items():
-        stringToPrint += str(attr) + ": " + str(value) + " "
-    return stringToPrint + "}"
-
 def dofile(filename):
     with open(filename) as f:
         return json.load(f)
-
-def transpose(t):
-    u = []
-    for i in range(len(t[0])):
-        u.append([t[j][i] for j in range(len(t))])
-    return u
-
-def repCols(cols):
-    copyCols = deepcopy(cols)
-    for col in cols:
-        col[-1] = str(col[0]) + ":" + str(col[-1])
-        for j in range(1, len(col)):
-            col[j - 1] = col[j]
-        col.pop()
-    cols.insert(0, ['Num' + str(k) for k in range(len(cols[0]))])
-    cols[0][-1] = "thingX"
-    return DATA(cols)
-
-def repRows(t, rows, u=None):
-    rows = deepcopy(rows)
-    for j, s in enumerate(rows[-1]):
-        rows[0][j] = str(rows[0][j]) + ":" + str(s)
-    rows.pop()
-    for n, row in enumerate(rows):
-        if n==0:
-            row.append("thingX")
-        else:
-            u = t["rows"][len(t["rows"]) - n]
-            row.append(u[-1])
-    return DATA(rows)
-
-def show(node, what= None, cols = None, nPlaces = None, lvl=None):
-    """
-    Function:
-        show
-    Description:
-        Displays optimization of data as a tree
-    Input:
-        node - data
-        what - stat to display
-        cols - data columns
-        nPlaces - # of decimal places to display stats
-        lvl - how deep the tree is
-    Output:
-        None
-    """
-    if node:
-        lvl = lvl or 0
-        print("|.. " * lvl, end="")
-        if ("left" not in node):
-            print(last(last(node["data"].rows).cells))
-        else:
-            print(str(int(100 * node["C"])))
-        show(node.get("left", None), what,cols, nPlaces, lvl+1)
-        show(node.get("right", None), what,cols,nPlaces, lvl+1)
-
-def last(t):
-    return t[-1]
 
 def rint(lo = None, hi = None):
     """
@@ -161,25 +96,6 @@ def eg(key, string, fun):
 def oo():
     pass
 
-def cosine(a, b, c):
-    """
-    Function:
-        cosine
-    Description:
-        Finds x, y of line between a & b
-    Input:
-        a - First point
-        b - Second point
-        c - distance between a & b
-    Output:
-        x2 - x of line between a & b
-        y - y of line between a & b
-    """
-    x1 = (a ** 2 + c ** 2 - b ** 2) / (2 * c)
-    x2 = max(0, min(1, x1))
-    y = (abs(a ** 2 - x2 ** 2)) ** 0.5
-    return x2, y
-
 def randFunc():
     """
     Function:
@@ -189,7 +105,7 @@ def randFunc():
     Input:
         None
     Output:
-        checks if m1 equals m2 and that they round to 0.5 as a boolean
+        checks that 1000 random ints are unique from each other
     """
     global args
     global Seed
@@ -201,12 +117,23 @@ def randFunc():
     u = []
     for i in range(1000):
         u.append(rint(100))
+    Seed = 937162211
     for index, value in enumerate(t):
         if (value != u[index]):
             return False
     return True
 
 def someFunc():
+    """
+    Function:
+        someFunc
+    Description:
+        Callback function to test add function
+    Input:
+        None
+    Output:
+        10000 numbers are added without error
+    """
     global args
     args.Max = 32
     num1 = NUM()
@@ -224,7 +151,7 @@ def symFunc():
     Input:
         None
     Output:
-        'a' is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
+        'a' is the median value in the array and that the div to 3 decimal points equals 1.38 as a boolean
     """
     sym = adds(SYM(), ["a","a","a","a","b","b","c"])
     print(query.mid(sym), round(query.div(sym), 2))
@@ -292,25 +219,6 @@ def getCliArgs():
     parser.add_argument("-R", "--Reuse", type=bool, default=True, required=False, help="child splits reuse a parent pole")
 
     args = parser.parse_args()
-
-def printCLIvalues():
-    """
-    Function:
-        printCLIvalues
-    Description:
-        Prints the arguments
-    Input:
-        None
-    Output:
-        None
-    """
-    cli_args = {}
-    cli_args["dump"] = args.dump
-    cli_args["go"] = args.go
-    cli_args["help"] = args.help
-    cli_args["seed"] = args.seed
-    cli_args["file"] = args.file
-    print(cli_args)
 
 def csvFunc():
     """
@@ -387,22 +295,6 @@ def cloneFunc():
     print(query.stats(data1))
     print(query.stats(data2))
 
-def clusterFunc():
-    """
-    Function:
-        clusterFunc
-    Description:
-        Callback function to test cluster function in DATA class
-    Input:
-        None
-    Output:
-        the correct data is output from the cluster function
-    """
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    show(data.cluster(), "mid", data.cols.y, 1)
-
 def swayFunc():
     """
     Function:
@@ -428,24 +320,6 @@ def swayFunc():
     print("\nall ~= best?", misc.diffs(best.cols.y, data.cols.y))
     print("best ~= rest?", misc.diffs(best.cols.y, rest.cols.y))
 
-def aroundFunc():
-    """
-    Function:
-        aroundFunc
-    Description:
-        Callback function to test around function in DATA class
-    Input:
-        None
-    Output:
-        the rows are correctly sorted for the DATA object
-    """
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    for n, t in enumerate(data.around(data.rows[1])):
-        if n % 50 == 0:
-            print(n, round(t[1], 2), t[0].cells)
-
 def halfFunc():
     """
     Function:
@@ -467,45 +341,23 @@ def halfFunc():
     print("l", query.stats(l))
     print("r", query.stats(r))
 
-def repColsFunc():
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    rawData = dofile(full_path)
-    t = repCols(rawData["cols"])
-    for col in t.cols.all:
-        print(vars(col))
-    for row in t.rows:
-        print(vars(row))
-
-def synonymsFunc():
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    show(repCols(dofile(full_path)["cols"]).cluster())
-
-def reprowsFunc():
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    t = dofile(full_path)
-    rows = repRows(t, transpose(t["cols"]))
-    for col in rows.cols.all:
-        print(vars(col))
-    for row in rows.rows:
-        print(vars(row))
-
-def copyFunc():
-    t1 = {'a': 1, 'b': {'c': 2, 'd': [3]}}
-    t2 = deepcopy(t1)
-    t2["b"]["d"][0] = 10000
-    print("Before: " + str(t1) + "\nAfter: " + str(t2))
-
-
 def cliffsFunc():
+    """
+    Function:
+        cliffsFunc
+    Description:
+        Callback function to test cliffsDelta function
+    Input:
+        None
+    Output:
+        all cliffsDelta values are returned correctly
+    """
     assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, "First cliff fails"
     assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, "Second cliff fails"
     t1, t2 = [], []
     for i in range(1000):
-        t1.append(util.rand())
-        t2.append(math.sqrt(util.rand()))
+        t1.append(rand())
+        t2.append(math.sqrt(rand()))
     assert misc.cliffsDelta(t1, t1) == False, "Third cliff fails"
     assert misc.cliffsDelta(t1, t2) == True, "Fourth cliff fails"
     diff, j = False, 1.0
@@ -516,6 +368,16 @@ def cliffsFunc():
         j *= 1.025
 
 def distFunc():
+    """
+    Function:
+        distFunc
+    Description:
+        Callback function to test dist function
+    Input:
+        None
+    Output:
+        the dist values are correctly added to the NUM object
+    """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
@@ -526,6 +388,16 @@ def distFunc():
     print({"lo": num.lo, "hi": num.hi, "mid": round(query.mid(num)), "div": round(query.div(num))})
 
 def treeFunc():
+    """
+    Function:
+        treeFunc
+    Description:
+        Callback function to test tree and showTree functions
+    Input:
+        None
+    Output:
+        the tree data is correctly displayed
+    """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
@@ -533,6 +405,16 @@ def treeFunc():
     cluster.showTree(cluster.tree(data))
 
 def binsFunc():
+    """
+    Function:
+        binsFunc
+    Description:
+        Callback function to test bins function
+    Input:
+        None
+    Output:
+        the bins are correctly printed
+    """
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()

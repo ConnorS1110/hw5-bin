@@ -4,7 +4,7 @@ class NUM:
         self.txt = s
         self.n = 0
         self.lo = float('inf')
-        self.hi = float('-inf') # Replaced sys.maxsize
+        self.hi = float('-inf')
         self.ok = True
         self.has = []
         self.w = -1 if s.endswith("-") else 1

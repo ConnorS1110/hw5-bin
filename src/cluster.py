@@ -54,6 +54,17 @@ def tree(data, rows = None, cols = None, above = None):
     return here
 
 def showTree(tree, lvl=0):
+    """
+    Function:
+        showTree
+    Description:
+        Displays optimization of data as a tree
+    Input:
+        tree - data
+        lvl - how deep the tree is
+    Output:
+        None
+    """
     if tree:
         print("{}[{}]".format("|.. " * lvl, len(tree["data"].rows)), end="")
         if lvl == 0 or not "left" in tree:

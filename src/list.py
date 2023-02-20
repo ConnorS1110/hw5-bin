@@ -1,5 +1,6 @@
 import math
-from miscellaneous import *
+import miscellaneous as misc
+import utility as util
 
 def many(t, n):
     """
@@ -29,12 +30,23 @@ def any(t):
     Output:
         Random row from t
     """
-    rintVal = rint(None, len(t) - 1)
+    rintVal = util.rint(None, len(t) - 1)
     return t[rintVal]
 
 def per(t, p):
-    p = math.floor(((p or 0.5) * len(t)) + 0.5)
-    return t[max(1, min(len(t), p))]
+    """
+    Function:
+        per
+    Description:
+        Selects a random row based off a given probability
+    Input:
+        t - DATA object
+        p - probability
+    Output:
+        Row from t based on probability p
+    """
+    p = math.floor(((p or 0.5) * len(t)))
+    return t[max(0, min(len(t), p))]
 
 def kap(listOfCols, fun):
     """
@@ -55,6 +67,19 @@ def kap(listOfCols, fun):
     return u
 
 def slice(t, go = None, stop = None, inc = None):
+    """
+    Function:
+        slice
+    Description:
+        Returns a slice of data
+    Input:
+        t - data to slice
+        go - start point
+        stop - stop point
+        inc - increment amount
+    Output:
+        u - Sliced data
+    """
     if go and go < 0:
         go = len(t) - 1 + go
     if stop and stop < 0:
