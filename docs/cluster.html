@@ -72,24 +72,24 @@ def half(data, rows = None, cols = None, above = None):
                 right.append(two[&#34;row&#34;])
         return left, right, A, B, c
 
-def tree(data, cols, above, rows = None):
+def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
-    here = {&#34;data&#34; : DATA.clone(data, rows)}
-    if len(rows)&gt;=2*(len(data.rows)**args.min):
+    here = {&#34;data&#34; : data.clone(data, rows)}
+    if len(rows)&gt;=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
         left, right, A, B, _ = half(data, rows, cols, above)
         here[&#34;left&#34;] = tree(data, left, cols, A)
         here[&#34;right&#34;] = tree(data, right, cols, B)
     return here
 
-def showTree(tree, lvl=0, post=None):
+def showTree(tree, lvl=0):
     if tree:
-        print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree.data.rows)), end=&#34;&#34;)
-        if lvl == 0 or not tree.left:
-            print(stats(tree.data))
+        print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree[&#34;data&#34;].rows)), end=&#34;&#34;)
+        if lvl == 0 or not &#34;left&#34; in tree:
+            print(stats(tree[&#34;data&#34;]))
         else:
             print(&#34;&#34;)
-        showTree(tree.left, lvl + 1)
-        showTree(tree.right, lvl + 1)</code></pre>
+        showTree(tree[&#34;left&#34;] if &#34;left&#34; in tree else None, lvl + 1)
+        showTree(tree[&#34;right&#34;] if &#34;right&#34; in tree else None, lvl + 1)</code></pre>
 </details>
 </section>
 <section>
@@ -165,7 +165,7 @@ c - Distance between A and B</p></div>
 </details>
 </dd>
 <dt id="src.cluster.showTree"><code class="name flex">
-<span>def <span class="ident">showTree</span></span>(<span>tree, lvl=0, post=None)</span>
+<span>def <span class="ident">showTree</span></span>(<span>tree, lvl=0)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -173,19 +173,19 @@ c - Distance between A and B</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def showTree(tree, lvl=0, post=None):
+<pre><code class="python">def showTree(tree, lvl=0):
     if tree:
-        print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree.data.rows)), end=&#34;&#34;)
-        if lvl == 0 or not tree.left:
-            print(stats(tree.data))
+        print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree[&#34;data&#34;].rows)), end=&#34;&#34;)
+        if lvl == 0 or not &#34;left&#34; in tree:
+            print(stats(tree[&#34;data&#34;]))
         else:
             print(&#34;&#34;)
-        showTree(tree.left, lvl + 1)
-        showTree(tree.right, lvl + 1)</code></pre>
+        showTree(tree[&#34;left&#34;] if &#34;left&#34; in tree else None, lvl + 1)
+        showTree(tree[&#34;right&#34;] if &#34;right&#34; in tree else None, lvl + 1)</code></pre>
 </details>
 </dd>
 <dt id="src.cluster.tree"><code class="name flex">
-<span>def <span class="ident">tree</span></span>(<span>data, cols, above, rows=None)</span>
+<span>def <span class="ident">tree</span></span>(<span>data, rows=None, cols=None, above=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -193,10 +193,10 @@ c - Distance between A and B</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def tree(data, cols, above, rows = None):
+<pre><code class="python">def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
-    here = {&#34;data&#34; : DATA.clone(data, rows)}
-    if len(rows)&gt;=2*(len(data.rows)**args.min):
+    here = {&#34;data&#34; : data.clone(data, rows)}
+    if len(rows)&gt;=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
         left, right, A, B, _ = half(data, rows, cols, above)
         here[&#34;left&#34;] = tree(data, left, cols, A)
         here[&#34;right&#34;] = tree(data, right, cols, B)
