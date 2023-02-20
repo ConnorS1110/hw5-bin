@@ -35,11 +35,12 @@ from num import NUM
 from sym import SYM
 from data import DATA
 from update import *
-from query import *
+import query as query
 from copy import deepcopy
-from miscellaneous import cliffsDelta
-from random import random
-from cluster import *
+import miscellaneous as misc
+import cluster as cluster
+import Optimization as opt
+import Discretization as disc
 
 help = &#34;&#34;&#34;
 bins: multi-objective semi-supervised discetization
@@ -254,8 +255,8 @@ def symFunc():
         &#39;a&#39; is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
     &#34;&#34;&#34;
     sym = adds(SYM(), [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;])
-    print(mid(sym), round(div(sym), 2))
-    return 1.38 == round(div(sym), 2)
+    print(query.mid(sym), round(query.div(sym), 2))
+    return 1.38 == round(query.div(sym), 2)
 
 def numFunc():
     &#34;&#34;&#34;
@@ -273,9 +274,9 @@ def numFunc():
         add(num1, rand())
     for i in range(10000):
         add(num2, rand() ** 2)
-    print(1, round(mid(num1), 2), round(div(num1), 2))
-    print(2, round(mid(num2), 2), round(div(num2), 2))
-    return .5 == round(mid(num1), 1) and mid(num1)&gt; mid(num2)
+    print(1, round(query.mid(num1), 2), round(query.div(num1), 2))
+    print(2, round(query.mid(num2), 2), round(query.div(num2), 2))
+    return .5 == round(query.mid(num1), 1) and query.mid(num1)&gt; query.mid(num2)
 
 def crashFunc():
     &#34;&#34;&#34;
@@ -392,31 +393,8 @@ def dataFunc():
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
     col = data.cols.x[1].col
-    print(col.lo,col.hi, mid(col),div(col))
-    print(stats(data, 2))
-    # return (len(data.rows) == 398 and
-    # data.cols.y[1].w == -1 and
-    # data.cols.x[1].at == 1 and
-    # len(data.cols.x) == 4
-    # )
-
-def statsFunc():
-    &#34;&#34;&#34;
-    Function:
-        statsFunc
-    Description:
-        Callback function to test stats function in DATA class
-    Input:
-        None
-    Output:
-        the statistics for the DATA instance using the default file at etc/data/auto93.csv are printed to the console
-    &#34;&#34;&#34;
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    for k, cols in {&#39;y&#39;: data.cols.y, &#39;x&#39;: data.cols.x}.items():
-        print(k, &#34;\tmid&#34;, (data.stats(&#34;mid&#34;, cols, 2)))
-        print(&#34;&#34;, &#34;\tdiv&#34;, (data.stats(&#34;div&#34;, cols, 2)))
+    print(col.lo,col.hi, query.mid(col), query.div(col))
+    print(query.stats(data))
 
 def cloneFunc():
     &#34;&#34;&#34;
@@ -434,8 +412,8 @@ def cloneFunc():
     dataOBJ = DATA()
     data1 = dataOBJ.read(full_path)
     data2 = data1.clone(data1, data1.rows)
-    print(stats(data1))
-    print(stats(data2))
+    print(query.stats(data1))
+    print(query.stats(data2))
 
 def clusterFunc():
     &#34;&#34;&#34;
@@ -466,8 +444,17 @@ def swayFunc():
     &#34;&#34;&#34;
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    show(data.sway(), &#34;mid&#34;, data.cols.y, 1)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    best, rest = opt.sway(data)
+    print(&#34;\nall &#34;, query.stats(data))
+    print(&#34;    &#34;,   query.stats(data, query.div))
+    print(&#34;\nbest&#34;, query.stats(best))
+    print(&#34;    &#34;,   query.stats(best, query.div))
+    print(&#34;\nrest&#34;, query.stats(rest))
+    print(&#34;    &#34;,   query.stats(rest, query.div))
+    print(&#34;\nall ~= best?&#34;, misc.diffs(best.cols.y, data.cols.y))
+    print(&#34;best ~= rest?&#34;, misc.diffs(best.cols.y, rest.cols.y))
 
 def aroundFunc():
     &#34;&#34;&#34;
@@ -502,11 +489,11 @@ def halfFunc():
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
-    left, right, A, B, c = half(data)
+    left, right, A, B, c = cluster.half(data)
     print(len(left), len(right))
     l, r = data.clone(data, left), data.clone(data, right)
-    print(&#34;l&#34;, stats(l))
-    print(&#34;r&#34;, stats(r))
+    print(&#34;l&#34;, query.stats(l))
+    print(&#34;r&#34;, query.stats(r))
 
 def repColsFunc():
     script_dir = os.path.dirname(__file__)
@@ -541,18 +528,18 @@ def copyFunc():
 
 
 def cliffsFunc():
-    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, &#34;1&#34;
-    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, &#34;2&#34;
+    assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, &#34;First cliff fails&#34;
+    assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, &#34;Second cliff fails&#34;
     t1, t2 = [], []
     for i in range(1000):
-        t1.append(random())
-        t2.append(math.sqrt(random()))
-    assert cliffsDelta(t1, t1) == False, &#34;3&#34;
-    # assert cliffsDelta(t1, t2) == True, &#34;4&#34; Giving Error
+        t1.append(util.rand())
+        t2.append(math.sqrt(util.rand()))
+    assert misc.cliffsDelta(t1, t1) == False, &#34;Third cliff fails&#34;
+    assert misc.cliffsDelta(t1, t2) == True, &#34;Fourth cliff fails&#34;
     diff, j = False, 1.0
     while not diff:
         t3 = list(map(lambda x: x*j, t1))
-        diff = cliffsDelta(t1, t3)
+        diff = misc.cliffsDelta(t1, t3)
         print(&#34;&gt;&#34;, round(j, 4), diff)
         j *= 1.025
 
@@ -563,20 +550,31 @@ def distFunc():
     data = dataOBJ.read(full_path)
     num  = NUM()
     for row in data.rows:
-        add(num, dist(data, row, data.rows[0]))
-    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(mid(num)), &#34;div&#34;: round(div(num))})
+        add(num, query.dist(data, row, data.rows[0]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(query.mid(num)), &#34;div&#34;: round(query.div(num))})
 
 def treeFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
-    showTree(tree(data))
+    cluster.showTree(cluster.tree(data))
 
 def binsFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA()</code></pre>
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    best, rest = opt.sway(data)
+    print(&#34;all&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;, &#34;{best= &#34; + str(len(best.rows)) + &#34;, rest= &#34; + str(len(rest.rows)) + &#34;}&#34;)
+    result = disc.bins(data.cols.x, {&#34;best&#34;: best.rows, &#34;rest&#34;: rest.rows})
+    for t in result:
+        for range in t:
+            print(range.txt,
+                  range.lo,
+                  range.hi,
+                  round(query.value(range.y.has, len(best.rows), len(rest.rows), &#34;best&#34;)),
+                  range.y.has)</code></pre>
 </details>
 </section>
 <section>
@@ -633,7 +631,18 @@ def binsFunc():
 <pre><code class="python">def binsFunc():
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA()</code></pre>
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    best, rest = opt.sway(data)
+    print(&#34;all&#34;,&#34;&#34;,&#34;&#34;,&#34;&#34;, &#34;{best= &#34; + str(len(best.rows)) + &#34;, rest= &#34; + str(len(rest.rows)) + &#34;}&#34;)
+    result = disc.bins(data.cols.x, {&#34;best&#34;: best.rows, &#34;rest&#34;: rest.rows})
+    for t in result:
+        for range in t:
+            print(range.txt,
+                  range.lo,
+                  range.hi,
+                  round(query.value(range.y.has, len(best.rows), len(rest.rows), &#34;best&#34;)),
+                  range.y.has)</code></pre>
 </details>
 </dd>
 <dt id="src.utility.cliffsFunc"><code class="name flex">
@@ -646,18 +655,18 @@ def binsFunc():
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def cliffsFunc():
-    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, &#34;1&#34;
-    assert cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, &#34;2&#34;
+    assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [8, 7, 6, 2, 5, 8, 7, 3]) == False, &#34;First cliff fails&#34;
+    assert misc.cliffsDelta([8, 7, 6, 2, 5, 8, 7, 3], [9, 9, 7, 8, 10, 9, 6]) == True, &#34;Second cliff fails&#34;
     t1, t2 = [], []
     for i in range(1000):
-        t1.append(random())
-        t2.append(math.sqrt(random()))
-    assert cliffsDelta(t1, t1) == False, &#34;3&#34;
-    # assert cliffsDelta(t1, t2) == True, &#34;4&#34; Giving Error
+        t1.append(util.rand())
+        t2.append(math.sqrt(util.rand()))
+    assert misc.cliffsDelta(t1, t1) == False, &#34;Third cliff fails&#34;
+    assert misc.cliffsDelta(t1, t2) == True, &#34;Fourth cliff fails&#34;
     diff, j = False, 1.0
     while not diff:
         t3 = list(map(lambda x: x*j, t1))
-        diff = cliffsDelta(t1, t3)
+        diff = misc.cliffsDelta(t1, t3)
         print(&#34;&gt;&#34;, round(j, 4), diff)
         j *= 1.025</code></pre>
 </details>
@@ -694,8 +703,8 @@ def binsFunc():
     dataOBJ = DATA()
     data1 = dataOBJ.read(full_path)
     data2 = data1.clone(data1, data1.rows)
-    print(stats(data1))
-    print(stats(data2))</code></pre>
+    print(query.stats(data1))
+    print(query.stats(data2))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.clusterFunc"><code class="name flex">
@@ -886,13 +895,8 @@ y - y of line between a &amp; b</p></div>
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
     col = data.cols.x[1].col
-    print(col.lo,col.hi, mid(col),div(col))
-    print(stats(data, 2))
-    # return (len(data.rows) == 398 and
-    # data.cols.y[1].w == -1 and
-    # data.cols.x[1].at == 1 and
-    # len(data.cols.x) == 4
-    # )</code></pre>
+    print(col.lo,col.hi, query.mid(col), query.div(col))
+    print(query.stats(data))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.distFunc"><code class="name flex">
@@ -911,8 +915,8 @@ y - y of line between a &amp; b</p></div>
     data = dataOBJ.read(full_path)
     num  = NUM()
     for row in data.rows:
-        add(num, dist(data, row, data.rows[0]))
-    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(mid(num)), &#34;div&#34;: round(div(num))})</code></pre>
+        add(num, query.dist(data, row, data.rows[0]))
+    print({&#34;lo&#34;: num.lo, &#34;hi&#34;: num.hi, &#34;mid&#34;: round(query.mid(num)), &#34;div&#34;: round(query.div(num))})</code></pre>
 </details>
 </dd>
 <dt id="src.utility.dofile"><code class="name flex">
@@ -1043,11 +1047,11 @@ fun - callback function to use for test case</p>
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
-    left, right, A, B, c = half(data)
+    left, right, A, B, c = cluster.half(data)
     print(len(left), len(right))
     l, r = data.clone(data, left), data.clone(data, right)
-    print(&#34;l&#34;, stats(l))
-    print(&#34;r&#34;, stats(r))</code></pre>
+    print(&#34;l&#34;, query.stats(l))
+    print(&#34;r&#34;, query.stats(r))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.last"><code class="name flex">
@@ -1095,9 +1099,9 @@ fun - callback function to use for test case</p>
         add(num1, rand())
     for i in range(10000):
         add(num2, rand() ** 2)
-    print(1, round(mid(num1), 2), round(div(num1), 2))
-    print(2, round(mid(num2), 2), round(div(num2), 2))
-    return .5 == round(mid(num1), 1) and mid(num1)&gt; mid(num2)</code></pre>
+    print(1, round(query.mid(num1), 2), round(query.div(num1), 2))
+    print(2, round(query.mid(num2), 2), round(query.div(num2), 2))
+    return .5 == round(query.mid(num1), 1) and query.mid(num1)&gt; query.mid(num2)</code></pre>
 </details>
 </dd>
 <dt id="src.utility.oo"><code class="name flex">
@@ -1459,41 +1463,6 @@ lvl - how deep the tree is</p>
     # print(has(num1))</code></pre>
 </details>
 </dd>
-<dt id="src.utility.statsFunc"><code class="name flex">
-<span>def <span class="ident">statsFunc</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>statsFunc</p>
-<h2 id="description">Description</h2>
-<p>Callback function to test stats function in DATA class</p>
-<h2 id="input">Input</h2>
-<p>None</p>
-<h2 id="output">Output</h2>
-<p>the statistics for the DATA instance using the default file at etc/data/auto93.csv are printed to the console</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def statsFunc():
-    &#34;&#34;&#34;
-    Function:
-        statsFunc
-    Description:
-        Callback function to test stats function in DATA class
-    Input:
-        None
-    Output:
-        the statistics for the DATA instance using the default file at etc/data/auto93.csv are printed to the console
-    &#34;&#34;&#34;
-    script_dir = os.path.dirname(__file__)
-    full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    for k, cols in {&#39;y&#39;: data.cols.y, &#39;x&#39;: data.cols.x}.items():
-        print(k, &#34;\tmid&#34;, (data.stats(&#34;mid&#34;, cols, 2)))
-        print(&#34;&#34;, &#34;\tdiv&#34;, (data.stats(&#34;div&#34;, cols, 2)))</code></pre>
-</details>
-</dd>
 <dt id="src.utility.swayFunc"><code class="name flex">
 <span>def <span class="ident">swayFunc</span></span>(<span>)</span>
 </code></dt>
@@ -1523,8 +1492,17 @@ lvl - how deep the tree is</p>
     &#34;&#34;&#34;
     script_dir = os.path.dirname(__file__)
     full_path = os.path.join(script_dir, args.file)
-    data = DATA(full_path)
-    show(data.sway(), &#34;mid&#34;, data.cols.y, 1)</code></pre>
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    best, rest = opt.sway(data)
+    print(&#34;\nall &#34;, query.stats(data))
+    print(&#34;    &#34;,   query.stats(data, query.div))
+    print(&#34;\nbest&#34;, query.stats(best))
+    print(&#34;    &#34;,   query.stats(best, query.div))
+    print(&#34;\nrest&#34;, query.stats(rest))
+    print(&#34;    &#34;,   query.stats(rest, query.div))
+    print(&#34;\nall ~= best?&#34;, misc.diffs(best.cols.y, data.cols.y))
+    print(&#34;best ~= rest?&#34;, misc.diffs(best.cols.y, rest.cols.y))</code></pre>
 </details>
 </dd>
 <dt id="src.utility.symFunc"><code class="name flex">
@@ -1555,8 +1533,8 @@ lvl - how deep the tree is</p>
         &#39;a&#39; is the median value in the array and that the div to 3 decimal points equals 1.379 as a boolean
     &#34;&#34;&#34;
     sym = adds(SYM(), [&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;a&#34;,&#34;b&#34;,&#34;b&#34;,&#34;c&#34;])
-    print(mid(sym), round(div(sym), 2))
-    return 1.38 == round(div(sym), 2)</code></pre>
+    print(query.mid(sym), round(query.div(sym), 2))
+    return 1.38 == round(query.div(sym), 2)</code></pre>
 </details>
 </dd>
 <dt id="src.utility.synonymsFunc"><code class="name flex">
@@ -1604,7 +1582,7 @@ lvl - how deep the tree is</p>
     full_path = os.path.join(script_dir, args.file)
     dataOBJ = DATA()
     data = dataOBJ.read(full_path)
-    showTree(tree(data))</code></pre>
+    cluster.showTree(cluster.tree(data))</code></pre>
 </details>
 </dd>
 </dl>
@@ -1655,7 +1633,6 @@ lvl - how deep the tree is</p>
 <li><code><a title="src.utility.rint" href="#src.utility.rint">rint</a></code></li>
 <li><code><a title="src.utility.show" href="#src.utility.show">show</a></code></li>
 <li><code><a title="src.utility.someFunc" href="#src.utility.someFunc">someFunc</a></code></li>
-<li><code><a title="src.utility.statsFunc" href="#src.utility.statsFunc">statsFunc</a></code></li>
 <li><code><a title="src.utility.swayFunc" href="#src.utility.swayFunc">swayFunc</a></code></li>
 <li><code><a title="src.utility.symFunc" href="#src.utility.symFunc">symFunc</a></code></li>
 <li><code><a title="src.utility.synonymsFunc" href="#src.utility.synonymsFunc">synonymsFunc</a></code></li>

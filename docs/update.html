@@ -43,8 +43,8 @@ def row(data, t):
 
 def add(col, x, n = 1):
     if x != &#34;?&#34;:
-        col.n = col.n + n # Source of variable &#39;n&#39;
-        if hasattr(col, &#34;isSym&#34;):
+        col.n += n # Source of variable &#39;n&#39;
+        if hasattr(col, &#34;isSym&#34;) and col.isSym:
             col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] &gt; col.most:
                 col.most = col.has[x]
@@ -96,8 +96,8 @@ def extend(range, n, s):
 </summary>
 <pre><code class="python">def add(col, x, n = 1):
     if x != &#34;?&#34;:
-        col.n = col.n + n # Source of variable &#39;n&#39;
-        if hasattr(col, &#34;isSym&#34;):
+        col.n += n # Source of variable &#39;n&#39;
+        if hasattr(col, &#34;isSym&#34;) and col.isSym:
             col.has[x] = n + (col.has.get(x, 0))
             if col.has[x] &gt; col.most:
                 col.most = col.has[x]
