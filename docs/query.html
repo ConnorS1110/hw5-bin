@@ -56,7 +56,20 @@ def div(col):
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
-def stats(data, nPlaces = None, fun = None, cols = None):
+def stats(data, nPlaces = 2, fun = None, cols = None):
+    &#34;&#34;&#34;
+    Function:
+        stats
+    Description:
+        Gets a given statistic and returns the rounded answer
+    Input:
+        self - current DATA instance
+        what - statistic to be returned
+        cols - cols to use as the data for statistic
+        nPlaces - # of decimal places stat is rounded to
+    Output:
+        map of cols y position and anonymous function that calculates the rounded stat
+    &#34;&#34;&#34;
     cols = cols or data.cols.y
     def callBack(k, col):
         col = col.col
@@ -270,15 +283,38 @@ n - value to normalize</p>
 </details>
 </dd>
 <dt id="src.query.stats"><code class="name flex">
-<span>def <span class="ident">stats</span></span>(<span>data, nPlaces=None, fun=None, cols=None)</span>
+<span>def <span class="ident">stats</span></span>(<span>data, nPlaces=2, fun=None, cols=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><h2 id="function">Function</h2>
+<p>stats</p>
+<h2 id="description">Description</h2>
+<p>Gets a given statistic and returns the rounded answer</p>
+<h2 id="input">Input</h2>
+<p>self - current DATA instance
+what - statistic to be returned
+cols - cols to use as the data for statistic
+nPlaces - # of decimal places stat is rounded to</p>
+<h2 id="output">Output</h2>
+<p>map of cols y position and anonymous function that calculates the rounded stat</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def stats(data, nPlaces = None, fun = None, cols = None):
+<pre><code class="python">def stats(data, nPlaces = 2, fun = None, cols = None):
+    &#34;&#34;&#34;
+    Function:
+        stats
+    Description:
+        Gets a given statistic and returns the rounded answer
+    Input:
+        self - current DATA instance
+        what - statistic to be returned
+        cols - cols to use as the data for statistic
+        nPlaces - # of decimal places stat is rounded to
+    Output:
+        map of cols y position and anonymous function that calculates the rounded stat
+    &#34;&#34;&#34;
     cols = cols or data.cols.y
     def callBack(k, col):
         col = col.col

@@ -152,50 +152,6 @@ class DATA:
                 t = self.around(row1, rows, cols)
                 return t[-1][0]
 
-    def half(self, rows = None, cols = None, above = None):
-        &#34;&#34;&#34;
-        Function:
-            half
-        Description:
-            Splits data in half
-        Input:
-            self - current DATA instance
-            rows - rows to split
-            cols - cols to split
-            above - previous point of split
-        Output:
-            left - list of rows to the left of split
-            right - list of rows to the right of split
-            A - far left point
-            B - far right point
-            mid - mid point where split occurs
-            c - Distance between A and B
-        &#34;&#34;&#34;
-        A, B, left, right, c, mid, some = None, None, None, None, None, None, None
-        def project(row):
-            x, y = util.cosine(dist(row, A), dist(row, B), c)
-            row.x = row.x or x
-            row.y = row.y or y
-            return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
-        def dist(row1, row2):
-            return self.dist(row1, row2, cols)
-        rows = rows or self.rows
-        # some = util.many(rows, util.args.Sample)
-        A = above or util.any(rows)
-        # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
-        B = self.furthest(A, rows)
-        c = dist(A, B)
-        left, right = [], []
-        mapVAR = [project(row) for row in rows]
-        sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
-        for n, tmp in enumerate(sorted_rows):
-            if n &lt;= len(rows) // 2 - 1:
-                left.append(tmp[&#34;row&#34;])
-                mid = tmp[&#34;row&#34;]
-            else:
-                right.append(tmp[&#34;row&#34;])
-        return left, right, A, B, mid, c
-
     def cluster(self, rows = None, cols = None, above = None):
         &#34;&#34;&#34;
         Function:
@@ -387,50 +343,6 @@ class DATA:
     def furthest(self, row1, rows, cols = None):
                 t = self.around(row1, rows, cols)
                 return t[-1][0]
-
-    def half(self, rows = None, cols = None, above = None):
-        &#34;&#34;&#34;
-        Function:
-            half
-        Description:
-            Splits data in half
-        Input:
-            self - current DATA instance
-            rows - rows to split
-            cols - cols to split
-            above - previous point of split
-        Output:
-            left - list of rows to the left of split
-            right - list of rows to the right of split
-            A - far left point
-            B - far right point
-            mid - mid point where split occurs
-            c - Distance between A and B
-        &#34;&#34;&#34;
-        A, B, left, right, c, mid, some = None, None, None, None, None, None, None
-        def project(row):
-            x, y = util.cosine(dist(row, A), dist(row, B), c)
-            row.x = row.x or x
-            row.y = row.y or y
-            return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
-        def dist(row1, row2):
-            return self.dist(row1, row2, cols)
-        rows = rows or self.rows
-        # some = util.many(rows, util.args.Sample)
-        A = above or util.any(rows)
-        # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
-        B = self.furthest(A, rows)
-        c = dist(A, B)
-        left, right = [], []
-        mapVAR = [project(row) for row in rows]
-        sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
-        for n, tmp in enumerate(sorted_rows):
-            if n &lt;= len(rows) // 2 - 1:
-                left.append(tmp[&#34;row&#34;])
-                mid = tmp[&#34;row&#34;]
-            else:
-                right.append(tmp[&#34;row&#34;])
-        return left, right, A, B, mid, c
 
     def cluster(self, rows = None, cols = None, above = None):
         &#34;&#34;&#34;
@@ -707,75 +619,6 @@ cols - cols to use as the data for distance</p>
             return t[-1][0]</code></pre>
 </details>
 </dd>
-<dt id="src.data.DATA.half"><code class="name flex">
-<span>def <span class="ident">half</span></span>(<span>self, rows=None, cols=None, above=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>half</p>
-<h2 id="description">Description</h2>
-<p>Splits data in half</p>
-<h2 id="input">Input</h2>
-<p>self - current DATA instance
-rows - rows to split
-cols - cols to split
-above - previous point of split</p>
-<h2 id="output">Output</h2>
-<p>left - list of rows to the left of split
-right - list of rows to the right of split
-A - far left point
-B - far right point
-mid - mid point where split occurs
-c - Distance between A and B</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def half(self, rows = None, cols = None, above = None):
-    &#34;&#34;&#34;
-    Function:
-        half
-    Description:
-        Splits data in half
-    Input:
-        self - current DATA instance
-        rows - rows to split
-        cols - cols to split
-        above - previous point of split
-    Output:
-        left - list of rows to the left of split
-        right - list of rows to the right of split
-        A - far left point
-        B - far right point
-        mid - mid point where split occurs
-        c - Distance between A and B
-    &#34;&#34;&#34;
-    A, B, left, right, c, mid, some = None, None, None, None, None, None, None
-    def project(row):
-        x, y = util.cosine(dist(row, A), dist(row, B), c)
-        row.x = row.x or x
-        row.y = row.y or y
-        return {&#39;row&#39;: row, &#39;x&#39;: x, &#39;y&#39;: y}
-    def dist(row1, row2):
-        return self.dist(row1, row2, cols)
-    rows = rows or self.rows
-    # some = util.many(rows, util.args.Sample)
-    A = above or util.any(rows)
-    # B = self.around(A, some)[int((util.args.Far * len(rows)) // 1)][0]
-    B = self.furthest(A, rows)
-    c = dist(A, B)
-    left, right = [], []
-    mapVAR = [project(row) for row in rows]
-    sorted_rows = sorted(mapVAR, key=lambda x: x[&#34;x&#34;])
-    for n, tmp in enumerate(sorted_rows):
-        if n &lt;= len(rows) // 2 - 1:
-            left.append(tmp[&#34;row&#34;])
-            mid = tmp[&#34;row&#34;]
-        else:
-            right.append(tmp[&#34;row&#34;])
-    return left, right, A, B, mid, c</code></pre>
-</details>
-</dd>
 <dt id="src.data.DATA.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, sFile)</span>
 </code></dt>
@@ -908,7 +751,6 @@ above - Previous point of split</p>
 <li><code><a title="src.data.DATA.cluster" href="#src.data.DATA.cluster">cluster</a></code></li>
 <li><code><a title="src.data.DATA.dist" href="#src.data.DATA.dist">dist</a></code></li>
 <li><code><a title="src.data.DATA.furthest" href="#src.data.DATA.furthest">furthest</a></code></li>
-<li><code><a title="src.data.DATA.half" href="#src.data.DATA.half">half</a></code></li>
 <li><code><a title="src.data.DATA.read" href="#src.data.DATA.read">read</a></code></li>
 <li><code><a title="src.data.DATA.stats" href="#src.data.DATA.stats">stats</a></code></li>
 <li><code><a title="src.data.DATA.sway" href="#src.data.DATA.sway">sway</a></code></li>
