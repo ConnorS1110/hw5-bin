@@ -4,6 +4,8 @@ import re
 import math
 import utility as util
 
+Seed = 937162211
+
 def many(t, n):
     """
     Function:
@@ -86,7 +88,7 @@ def rand(low, high):
     """
     global Seed
     low, high = low or 0, high or 1
-    Seed = (16807 * util.Seed) % 2147483647
+    Seed = (16807 * Seed) % 2147483647
     return low + (high - low) * Seed / 2147483647
 
 def rint(lo = None, hi = None):

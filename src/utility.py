@@ -537,3 +537,15 @@ def distFunc():
     for row in data.rows:
         add(num, dist(data, row, data.rows[0]))
     print({"lo": num.lo, "hi": num.hi, "mid": round(mid(num)), "div": round(div(num))})
+
+def treeFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    dataOBJ = DATA()
+    data = dataOBJ.read(full_path)
+    showTree(tree(data))
+
+def binsFunc():
+    script_dir = os.path.dirname(__file__)
+    full_path = os.path.join(script_dir, args.file)
+    data = DATA()

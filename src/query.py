@@ -28,7 +28,20 @@ def div(col):
     else:
         return (per(has(col),.9) - per(has(col), .1))/2.58
 
-def stats(data, nPlaces = None, fun = None, cols = None):
+def stats(data, nPlaces = 2, fun = None, cols = None):
+    """
+    Function:
+        stats
+    Description:
+        Gets a given statistic and returns the rounded answer
+    Input:
+        self - current DATA instance
+        what - statistic to be returned
+        cols - cols to use as the data for statistic
+        nPlaces - # of decimal places stat is rounded to
+    Output:
+        map of cols y position and anonymous function that calculates the rounded stat
+    """
     cols = cols or data.cols.y
     def callBack(k, col):
         col = col.col

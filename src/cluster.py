@@ -44,21 +44,21 @@ def half(data, rows = None, cols = None, above = None):
                 right.append(two["row"])
         return left, right, A, B, c
 
-def tree(data, cols, above, rows = None):
+def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
-    here = {"data" : DATA.clone(data, rows)}
-    if len(rows)>=2*(len(data.rows)**args.min):
+    here = {"data" : data.clone(data, rows)}
+    if len(rows)>=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
         left, right, A, B, _ = half(data, rows, cols, above)
         here["left"] = tree(data, left, cols, A)
         here["right"] = tree(data, right, cols, B)
     return here
 
-def showTree(tree, lvl=0, post=None):
+def showTree(tree, lvl=0):
     if tree:
-        print("{}[{}]".format("|.. " * lvl, len(tree.data.rows)), end="")
-        if lvl == 0 or not tree.left:
-            print(stats(tree.data))
+        print("{}[{}]".format("|.. " * lvl, len(tree["data"].rows)), end="")
+        if lvl == 0 or not "left" in tree:
+            print(stats(tree["data"]))
         else:
             print("")
-        showTree(tree.left, lvl + 1)
-        showTree(tree.right, lvl + 1)
+        showTree(tree["left"] if "left" in tree else None, lvl + 1)
+        showTree(tree["right"] if "right" in tree else None, lvl + 1)
