@@ -4,14 +4,28 @@ import query as query
 
 def sway(data):
     """
-    Function:
+    Function: 
         sway
     Description:
-        Finds the best half of the data by recursion
+        Partitions the rows of a dataset into two groups: best and rest. 
+        The partitioning is done recursively until a stopping criterion is met. 
+        The partitioning is done using a function called worker. The function starts by 
+        passing all rows of the dataset to worker. worker then recursively partitions 
+        the rows based on some criterion until it determines the best 
+        rows (a subset of the original rows that meets the criterion) and the rest of the rows. 
+        The criterion is determined by a function called better.
     Input:
-        data - data to sway
+        data: a dataset object.
     Output:
-        Swayed data
+        best: a dataset object containing the best rows.
+        rest: a dataset object containing the rest of the rows.
+    Sub-functions:
+    worker: 
+        recursive function that partitions the rows based on some criterion until it determines
+        the best rows and the rest of the rows.
+    better: 
+        a function that determines whether one subset of rows is better than another based 
+        on some criterion. This function is used by worker to determine the best rows.
     """
     def worker(rows, worse, above = None):
         if len(rows) <= len(data.rows) ** util.args.min:

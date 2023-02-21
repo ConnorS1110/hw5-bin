@@ -140,7 +140,6 @@ def someFunc():
     for i in range(10000):
         add(num1, i)
     args.Max = 512
-    # print(has(num1))
 
 def symFunc():
     """

@@ -47,7 +47,7 @@ def half(data, rows = None, cols = None, above = None):
 def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
     here = {"data" : data.clone(data, rows)}
-    if len(rows)>=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
+    if len(rows)>=2*(len(data.rows)**util.args.min):
         left, right, A, B, _ = half(data, rows, cols, above)
         here["left"] = tree(data, left, cols, A)
         here["right"] = tree(data, right, cols, B)
@@ -55,15 +55,17 @@ def tree(data, rows = None, cols = None, above = None):
 
 def showTree(tree, lvl=0):
     """
-    Function:
+    Function name: 
         showTree
-    Description:
-        Displays optimization of data as a tree
-    Input:
-        tree - data
-        lvl - how deep the tree is
-    Output:
+    Inputs:
+        tree: a dictionary representing a decision tree
+        lvl: an integer representing the current level of the tree (default is 0)
+    Outputs: 
         None
+    Functionality:
+        Recursively prints out the decision tree in a hierarchical format, including the 
+        number of rows in each node's data, and summary statistics for the root node. 
+        If the tree has left and right subtrees, they are printed out as well.
     """
     if tree:
         print("{}[{}]".format("|.. " * lvl, len(tree["data"].rows)), end="")

@@ -8,11 +8,15 @@ def has(col):
     Function:
         has
     Description:
-        Returns has on col
-    Input:
-        col - col to retrieve has from
-    Output:
-        col.has
+        If the column has not been processed before (i.e. col.ok is False), 
+        this function extracts the unique values in the column and sorts them.
+        The sorted values are stored in the col.has attribute of the input object.
+        The col.ok attribute is set to True to indicate that the column has been processed before.
+        The function then returns col.has.
+    Inputs:
+        col: an object representing a column of data
+    Outputs:
+        col.has: a sorted dictionary or list of the unique values in the column
     """
     if not hasattr(col, "isSym") and not col.ok:
         if isinstance(col.has, dict):
@@ -27,26 +31,28 @@ def mid(col):
     Function:
         mid
     Description:
-        Returns median of col
-    Input:
-        col - col to find median of
+        If the input column is symbolic, the function returns the mode value of the column.
+        If the input column is numeric, the function returns the value at the 50th percentile of the column's distribution.
+    Input parameters:
+        col: column object to calculate the middle value from
     Output:
-        col.mode if col col has isSym and is true, otherwise return the middle value in col
+        Returns the mode value of the input column if it's a symbolic column, or the value at the 50th percentile 
+        if it's a numeric column.
     """
-    return col.mode if hasattr(col, "isSym") and col.isSym else per(has(col), 0.5)
+    return col.mode if hasattr(col, "isSym") else per(has(col), 0.5)
 
 def div(col):
     """
-    Function:
-        mid
-    Description:
-        Returns standard deviation of col
+    Function Name: 
+        div
+    Description: 
+        This function computes the div value of a given column.
     Input:
-        col - col to find deviation of
+        col: an instance of the COL class which represents the column to compute the div value for.
     Output:
-        Standard deviation of a col
+        Returns the computed div value.
     """
-    if hasattr(col, "isSym") and col.isSym:
+    if hasattr(col, "isSym"):
         e = 0
         if isinstance(col.has, dict):
             for n in col.has.values():

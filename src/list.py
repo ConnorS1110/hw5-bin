@@ -35,18 +35,20 @@ def any(t):
 
 def per(t, p):
     """
-    Function:
+    Function: 
         per
     Description:
-        Selects a random row based off a given probability
-    Input:
-        t - DATA object
-        p - probability
-    Output:
-        Row from t based on probability p
+        Returns the value at the specified percentile of the input list t. 
+        If the percentile value p is not provided, the default value of 0.5 is used.
+        The percentile calculation is performed using the median method.
+    Inputs:
+        t: a list of values
+        p: a value representing the percentile (default is 0.5 if not provided)
+    Outputs:
+        The value at the pth percentile of t.
     """
-    p = math.floor(((p or 0.5) * len(t)))
-    return t[max(0, min(len(t), p))]
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]
 
 def kap(listOfCols, fun):
     """
@@ -68,17 +70,23 @@ def kap(listOfCols, fun):
 
 def slice(t, go = None, stop = None, inc = None):
     """
-    Function:
+    Function name: 
         slice
-    Description:
-        Returns a slice of data
-    Input:
-        t - data to slice
-        go - start point
-        stop - stop point
-        inc - increment amount
+
+    Description: 
+        This function takes a list t and returns a slice of it based on 
+        the provided parameters. The go parameter specifies the starting 
+        index of the slice (default is 1), the stop parameter specifies 
+        the ending index of the slice (default is len(t)), and the inc 
+        parameter specifies the step size (default is 1).
+
+    Parameters:
+        t: list to be sliced
+        go: starting index of the slice (default is 1)
+        stop: ending index of the slice (default is len(t))
+        inc: step size (default is 1)
     Output:
-        u - Sliced data
+        A list containing the sliced elements of t.
     """
     if go and go < 0:
         go = len(t) - 1 + go
