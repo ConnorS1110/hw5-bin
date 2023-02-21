@@ -31,9 +31,23 @@ import math
 import utility as util
 import list as listModule
 
-Seed = 937162211
 
 def itself(x):
+    &#34;&#34;&#34;
+    Function:
+        itself
+
+    Description:
+        The itself function takes an input value x and returns it as output. 
+        This function is essentially an identity function, meaning it returns 
+        the same value that was passed in.
+
+    Input:
+        x - Any value that can be passed as input.
+
+    Output:
+        The same value as the input parameter.
+&#34;&#34;&#34;
     return x
 
 def cliffsDelta(ns1, ns2):
@@ -41,12 +55,15 @@ def cliffsDelta(ns1, ns2):
     Function:
         cliffsDelta
     Description:
-        Calculates Cliff&#39;s delta effect size measure
+        Computes the Cliff&#39;s delta effect size between two lists of numerical values. 
+        The Cliff&#39;s delta measures the difference in distribution between the two lists, 
+        taking into account both the magnitude of the difference and the size of the lists.
     Input:
-        ns1 - first list of rows
-        ns2 - second list of rows
+        ns1 - First list of numerical values
+        ns2 - Second list of numerical values
     Output:
-        Cliff&#39;s delta effect size
+        A boolean value indicating whether the Cliff&#39;s delta effect size between the two 
+        lists is greater than a specified threshold.
     &#34;&#34;&#34;
     if len(ns1) &gt; 256: ns1 = listModule.many(ns1, 256)
     if len(ns2) &gt; 256: ns2 = listModule.many(ns2, 256)
@@ -64,17 +81,103 @@ def diffs(nums1, nums2):
     &#34;&#34;&#34;
     Function:
         diffs
+
     Description:
-        Creates a list of cliff&#39;s deltas and a textual description of the col
+        The diffs function takes two lists of numerical values nums1 and nums2, 
+        and returns a list of tuples. Each tuple contains the result of the cliffsDelta 
+        function applied to corresponding elements of nums1 and nums2, as well as the 
+        original value from nums1. The cliffsDelta function measures the effect size of 
+        the difference between two groups of numerical values.
+
     Input:
-        nums1 - first list of rows
-        nums2 - second list of rows
+        nums1 - A list of numerical values.
+        nums2 - A list of numerical values of the same length as nums1.
+
     Output:
-        List of cliff&#39;s deltas and a textual description of the col
+    A list of tuples, where each tuple contains the result of cliffsDelta applied to
+    corresponding elements of nums1 and nums2, and the original value from nums1.
     &#34;&#34;&#34;
     def kap(nums, fn):
         return [fn(k, v) for k, v in enumerate(nums)]
-    return kap(nums1, lambda k, nums: (cliffsDelta(nums.col.has, nums2[k].col.has), nums.col.txt))</code></pre>
+    return kap(nums1, lambda k, nums: (cliffsDelta(nums.col.has, nums2[k].col.has), nums.col.txt))
+
+def coerce(s):
+    def fun(s1):
+        if s1 == &#34;true&#34;:
+            return True
+        elif s1 == &#34;false&#34;:
+            return False
+        return s1
+
+    return math.tointeger(s) or float(s) or fun(s.strip())
+
+def cells(s):
+    t = []
+    for s1 in re.findall(&#34;[^,]+&#34;, s):
+        t.append(coerce(s1))
+    return t
+
+def lines(sFilename, fun):
+    &#34;&#34;&#34;
+    Function:
+        lines
+    Description:
+        Reads a text file line by line and applies a given function to each line.
+    Input:
+        sFilename - Name of the text file to read.
+        fun - Function to apply to each line of the text file.
+    Output:
+        None.
+    &#34;&#34;&#34;
+    with open(sFilename, &#34;r&#34;) as src:
+        for s in src:
+            s = s.rstrip(&#34;\r\n&#34;)
+            fun(s)
+    src.close()
+
+def csv(sFilename, fun):
+    &#34;&#34;&#34;
+    Function:
+        csv
+    Description:
+        Reads a CSV file line by line and applies a given function to each line after converting it to a list of cells.
+    Input:
+        sFilename - Name of the CSV file to read
+        fun - Function to apply to each line of the CSV file
+    Output:
+        None
+    &#34;&#34;&#34;
+    lines(sFilename, lambda line: fun(cells(line)))
+
+def rand(low, high):
+    &#34;&#34;&#34;
+    Function:
+        rand
+    Description:
+        Creates a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    &#34;&#34;&#34;
+    low, high = low or 0, high or 1
+    util.Seed = (16807 * util.Seed) % 2147483647
+    return low + (high - low) * util.Seed / 2147483647
+
+def rint(lo = None, hi = None):
+    &#34;&#34;&#34;
+    Function:
+        rint
+    Description:
+        Makes a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    &#34;&#34;&#34;
+    return math.floor(0.5 + rand(lo, hi))</code></pre>
 </details>
 </section>
 <section>
@@ -84,6 +187,22 @@ def diffs(nums1, nums2):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="src.miscellaneous.cells"><code class="name flex">
+<span>def <span class="ident">cells</span></span>(<span>s)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cells(s):
+    t = []
+    for s1 in re.findall(&#34;[^,]+&#34;, s):
+        t.append(coerce(s1))
+    return t</code></pre>
+</details>
+</dd>
 <dt id="src.miscellaneous.cliffsDelta"><code class="name flex">
 <span>def <span class="ident">cliffsDelta</span></span>(<span>ns1, ns2)</span>
 </code></dt>
@@ -91,12 +210,15 @@ def diffs(nums1, nums2):
 <div class="desc"><h2 id="function">Function</h2>
 <p>cliffsDelta</p>
 <h2 id="description">Description</h2>
-<p>Calculates Cliff's delta effect size measure</p>
+<p>Computes the Cliff's delta effect size between two lists of numerical values.
+The Cliff's delta measures the difference in distribution between the two lists,
+taking into account both the magnitude of the difference and the size of the lists.</p>
 <h2 id="input">Input</h2>
-<p>ns1 - first list of rows
-ns2 - second list of rows</p>
+<p>ns1 - First list of numerical values
+ns2 - Second list of numerical values</p>
 <h2 id="output">Output</h2>
-<p>Cliff's delta effect size</p></div>
+<p>A boolean value indicating whether the Cliff's delta effect size between the two
+lists is greater than a specified threshold.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -106,12 +228,15 @@ ns2 - second list of rows</p>
     Function:
         cliffsDelta
     Description:
-        Calculates Cliff&#39;s delta effect size measure
+        Computes the Cliff&#39;s delta effect size between two lists of numerical values. 
+        The Cliff&#39;s delta measures the difference in distribution between the two lists, 
+        taking into account both the magnitude of the difference and the size of the lists.
     Input:
-        ns1 - first list of rows
-        ns2 - second list of rows
+        ns1 - First list of numerical values
+        ns2 - Second list of numerical values
     Output:
-        Cliff&#39;s delta effect size
+        A boolean value indicating whether the Cliff&#39;s delta effect size between the two 
+        lists is greater than a specified threshold.
     &#34;&#34;&#34;
     if len(ns1) &gt; 256: ns1 = listModule.many(ns1, 256)
     if len(ns2) &gt; 256: ns2 = listModule.many(ns2, 256)
@@ -126,6 +251,58 @@ ns2 - second list of rows</p>
     return abs(lt - gt) / n &gt; util.args.cliffs</code></pre>
 </details>
 </dd>
+<dt id="src.miscellaneous.coerce"><code class="name flex">
+<span>def <span class="ident">coerce</span></span>(<span>s)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def coerce(s):
+    def fun(s1):
+        if s1 == &#34;true&#34;:
+            return True
+        elif s1 == &#34;false&#34;:
+            return False
+        return s1
+
+    return math.tointeger(s) or float(s) or fun(s.strip())</code></pre>
+</details>
+</dd>
+<dt id="src.miscellaneous.csv"><code class="name flex">
+<span>def <span class="ident">csv</span></span>(<span>sFilename, fun)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>csv</p>
+<h2 id="description">Description</h2>
+<p>Reads a CSV file line by line and applies a given function to each line after converting it to a list of cells.</p>
+<h2 id="input">Input</h2>
+<p>sFilename - Name of the CSV file to read
+fun - Function to apply to each line of the CSV file</p>
+<h2 id="output">Output</h2>
+<p>None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def csv(sFilename, fun):
+    &#34;&#34;&#34;
+    Function:
+        csv
+    Description:
+        Reads a CSV file line by line and applies a given function to each line after converting it to a list of cells.
+    Input:
+        sFilename - Name of the CSV file to read
+        fun - Function to apply to each line of the CSV file
+    Output:
+        None
+    &#34;&#34;&#34;
+    lines(sFilename, lambda line: fun(cells(line)))</code></pre>
+</details>
+</dd>
 <dt id="src.miscellaneous.diffs"><code class="name flex">
 <span>def <span class="ident">diffs</span></span>(<span>nums1, nums2)</span>
 </code></dt>
@@ -133,12 +310,17 @@ ns2 - second list of rows</p>
 <div class="desc"><h2 id="function">Function</h2>
 <p>diffs</p>
 <h2 id="description">Description</h2>
-<p>Creates a list of cliff's deltas and a textual description of the col</p>
+<p>The diffs function takes two lists of numerical values nums1 and nums2,
+and returns a list of tuples. Each tuple contains the result of the cliffsDelta
+function applied to corresponding elements of nums1 and nums2, as well as the
+original value from nums1. The cliffsDelta function measures the effect size of
+the difference between two groups of numerical values.</p>
 <h2 id="input">Input</h2>
-<p>nums1 - first list of rows
-nums2 - second list of rows</p>
-<h2 id="output">Output</h2>
-<p>List of cliff's deltas and a textual description of the col</p></div>
+<p>nums1 - A list of numerical values.
+nums2 - A list of numerical values of the same length as nums1.</p>
+<p>Output:
+A list of tuples, where each tuple contains the result of cliffsDelta applied to
+corresponding elements of nums1 and nums2, and the original value from nums1.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -147,13 +329,21 @@ nums2 - second list of rows</p>
     &#34;&#34;&#34;
     Function:
         diffs
+
     Description:
-        Creates a list of cliff&#39;s deltas and a textual description of the col
+        The diffs function takes two lists of numerical values nums1 and nums2, 
+        and returns a list of tuples. Each tuple contains the result of the cliffsDelta 
+        function applied to corresponding elements of nums1 and nums2, as well as the 
+        original value from nums1. The cliffsDelta function measures the effect size of 
+        the difference between two groups of numerical values.
+
     Input:
-        nums1 - first list of rows
-        nums2 - second list of rows
+        nums1 - A list of numerical values.
+        nums2 - A list of numerical values of the same length as nums1.
+
     Output:
-        List of cliff&#39;s deltas and a textual description of the col
+    A list of tuples, where each tuple contains the result of cliffsDelta applied to
+    corresponding elements of nums1 and nums2, and the original value from nums1.
     &#34;&#34;&#34;
     def kap(nums, fn):
         return [fn(k, v) for k, v in enumerate(nums)]
@@ -164,13 +354,139 @@ nums2 - second list of rows</p>
 <span>def <span class="ident">itself</span></span>(<span>x)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><h2 id="function">Function</h2>
+<p>itself</p>
+<h2 id="description">Description</h2>
+<p>The itself function takes an input value x and returns it as output.
+This function is essentially an identity function, meaning it returns
+the same value that was passed in.</p>
+<h2 id="input">Input</h2>
+<p>x - Any value that can be passed as input.</p>
+<h2 id="output">Output</h2>
+<p>The same value as the input parameter.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def itself(x):
+    &#34;&#34;&#34;
+    Function:
+        itself
+
+    Description:
+        The itself function takes an input value x and returns it as output. 
+        This function is essentially an identity function, meaning it returns 
+        the same value that was passed in.
+
+    Input:
+        x - Any value that can be passed as input.
+
+    Output:
+        The same value as the input parameter.
+&#34;&#34;&#34;
     return x</code></pre>
+</details>
+</dd>
+<dt id="src.miscellaneous.lines"><code class="name flex">
+<span>def <span class="ident">lines</span></span>(<span>sFilename, fun)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>lines</p>
+<h2 id="description">Description</h2>
+<p>Reads a text file line by line and applies a given function to each line.</p>
+<h2 id="input">Input</h2>
+<p>sFilename - Name of the text file to read.
+fun - Function to apply to each line of the text file.</p>
+<h2 id="output">Output</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lines(sFilename, fun):
+    &#34;&#34;&#34;
+    Function:
+        lines
+    Description:
+        Reads a text file line by line and applies a given function to each line.
+    Input:
+        sFilename - Name of the text file to read.
+        fun - Function to apply to each line of the text file.
+    Output:
+        None.
+    &#34;&#34;&#34;
+    with open(sFilename, &#34;r&#34;) as src:
+        for s in src:
+            s = s.rstrip(&#34;\r\n&#34;)
+            fun(s)
+    src.close()</code></pre>
+</details>
+</dd>
+<dt id="src.miscellaneous.rand"><code class="name flex">
+<span>def <span class="ident">rand</span></span>(<span>low, high)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>rand</p>
+<h2 id="description">Description</h2>
+<p>Creates a random number</p>
+<h2 id="input">Input</h2>
+<p>low - low value
+high - high value</p>
+<h2 id="output">Output</h2>
+<p>Random number</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rand(low, high):
+    &#34;&#34;&#34;
+    Function:
+        rand
+    Description:
+        Creates a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    &#34;&#34;&#34;
+    low, high = low or 0, high or 1
+    util.Seed = (16807 * util.Seed) % 2147483647
+    return low + (high - low) * util.Seed / 2147483647</code></pre>
+</details>
+</dd>
+<dt id="src.miscellaneous.rint"><code class="name flex">
+<span>def <span class="ident">rint</span></span>(<span>lo=None, hi=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="function">Function</h2>
+<p>rint</p>
+<h2 id="description">Description</h2>
+<p>Makes a random number</p>
+<h2 id="input">Input</h2>
+<p>low - low value
+high - high value</p>
+<h2 id="output">Output</h2>
+<p>Random number</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rint(lo = None, hi = None):
+    &#34;&#34;&#34;
+    Function:
+        rint
+    Description:
+        Makes a random number
+    Input:
+        low - low value
+        high - high value
+    Output:
+        Random number
+    &#34;&#34;&#34;
+    return math.floor(0.5 + rand(lo, hi))</code></pre>
 </details>
 </dd>
 </dl>
@@ -190,10 +506,16 @@ nums2 - second list of rows</p>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="src.miscellaneous.cells" href="#src.miscellaneous.cells">cells</a></code></li>
 <li><code><a title="src.miscellaneous.cliffsDelta" href="#src.miscellaneous.cliffsDelta">cliffsDelta</a></code></li>
+<li><code><a title="src.miscellaneous.coerce" href="#src.miscellaneous.coerce">coerce</a></code></li>
+<li><code><a title="src.miscellaneous.csv" href="#src.miscellaneous.csv">csv</a></code></li>
 <li><code><a title="src.miscellaneous.diffs" href="#src.miscellaneous.diffs">diffs</a></code></li>
 <li><code><a title="src.miscellaneous.itself" href="#src.miscellaneous.itself">itself</a></code></li>
+<li><code><a title="src.miscellaneous.lines" href="#src.miscellaneous.lines">lines</a></code></li>
+<li><code><a title="src.miscellaneous.rand" href="#src.miscellaneous.rand">rand</a></code></li>
+<li><code><a title="src.miscellaneous.rint" href="#src.miscellaneous.rint">rint</a></code></li>
 </ul>
 </li>
 </ul>

@@ -75,7 +75,7 @@ def half(data, rows = None, cols = None, above = None):
 def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
     here = {&#34;data&#34; : data.clone(data, rows)}
-    if len(rows)&gt;=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
+    if len(rows)&gt;=2*(len(data.rows)**util.args.min):
         left, right, A, B, _ = half(data, rows, cols, above)
         here[&#34;left&#34;] = tree(data, left, cols, A)
         here[&#34;right&#34;] = tree(data, right, cols, B)
@@ -83,15 +83,17 @@ def tree(data, rows = None, cols = None, above = None):
 
 def showTree(tree, lvl=0):
     &#34;&#34;&#34;
-    Function:
+    Function name: 
         showTree
-    Description:
-        Displays optimization of data as a tree
-    Input:
-        tree - data
-        lvl - how deep the tree is
-    Output:
+    Inputs:
+        tree: a dictionary representing a decision tree
+        lvl: an integer representing the current level of the tree (default is 0)
+    Outputs: 
         None
+    Functionality:
+        Recursively prints out the decision tree in a hierarchical format, including the 
+        number of rows in each node&#39;s data, and summary statistics for the root node. 
+        If the tree has left and right subtrees, they are printed out as well.
     &#34;&#34;&#34;
     if tree:
         print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree[&#34;data&#34;].rows)), end=&#34;&#34;)
@@ -179,30 +181,34 @@ c - Distance between A and B</p></div>
 <span>def <span class="ident">showTree</span></span>(<span>tree, lvl=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>showTree</p>
-<h2 id="description">Description</h2>
-<p>Displays optimization of data as a tree</p>
-<h2 id="input">Input</h2>
-<p>tree - data
-lvl - how deep the tree is</p>
-<h2 id="output">Output</h2>
-<p>None</p></div>
+<div class="desc"><p>Function name:
+showTree</p>
+<h2 id="inputs">Inputs</h2>
+<p>tree: a dictionary representing a decision tree
+lvl: an integer representing the current level of the tree (default is 0)
+Outputs:
+None</p>
+<h2 id="functionality">Functionality</h2>
+<p>Recursively prints out the decision tree in a hierarchical format, including the
+number of rows in each node's data, and summary statistics for the root node.
+If the tree has left and right subtrees, they are printed out as well.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def showTree(tree, lvl=0):
     &#34;&#34;&#34;
-    Function:
+    Function name: 
         showTree
-    Description:
-        Displays optimization of data as a tree
-    Input:
-        tree - data
-        lvl - how deep the tree is
-    Output:
+    Inputs:
+        tree: a dictionary representing a decision tree
+        lvl: an integer representing the current level of the tree (default is 0)
+    Outputs: 
         None
+    Functionality:
+        Recursively prints out the decision tree in a hierarchical format, including the 
+        number of rows in each node&#39;s data, and summary statistics for the root node. 
+        If the tree has left and right subtrees, they are printed out as well.
     &#34;&#34;&#34;
     if tree:
         print(&#34;{}[{}]&#34;.format(&#34;|.. &#34; * lvl, len(tree[&#34;data&#34;].rows)), end=&#34;&#34;)
@@ -226,7 +232,7 @@ lvl - how deep the tree is</p>
 <pre><code class="python">def tree(data, rows = None, cols = None, above = None):
     rows = rows if rows else data.rows
     here = {&#34;data&#34; : data.clone(data, rows)}
-    if len(rows)&gt;=2*(len(data.rows)**0.5):  # util.args.min needed where 0.5 is
+    if len(rows)&gt;=2*(len(data.rows)**util.args.min):
         left, right, A, B, _ = half(data, rows, cols, above)
         here[&#34;left&#34;] = tree(data, left, cols, A)
         here[&#34;right&#34;] = tree(data, right, cols, B)

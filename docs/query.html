@@ -36,11 +36,15 @@ def has(col):
     Function:
         has
     Description:
-        Returns has on col
-    Input:
-        col - col to retrieve has from
-    Output:
-        col.has
+        If the column has not been processed before (i.e. col.ok is False), 
+        this function extracts the unique values in the column and sorts them.
+        The sorted values are stored in the col.has attribute of the input object.
+        The col.ok attribute is set to True to indicate that the column has been processed before.
+        The function then returns col.has.
+    Inputs:
+        col: an object representing a column of data
+    Outputs:
+        col.has: a sorted dictionary or list of the unique values in the column
     &#34;&#34;&#34;
     if not hasattr(col, &#34;isSym&#34;) and not col.ok:
         if isinstance(col.has, dict):
@@ -55,26 +59,28 @@ def mid(col):
     Function:
         mid
     Description:
-        Returns median of col
-    Input:
-        col - col to find median of
+        If the input column is symbolic, the function returns the mode value of the column.
+        If the input column is numeric, the function returns the value at the 50th percentile of the column&#39;s distribution.
+    Input parameters:
+        col: column object to calculate the middle value from
     Output:
-        col.mode if col col has isSym and is true, otherwise return the middle value in col
+        Returns the mode value of the input column if it&#39;s a symbolic column, or the value at the 50th percentile 
+        if it&#39;s a numeric column.
     &#34;&#34;&#34;
-    return col.mode if hasattr(col, &#34;isSym&#34;) and col.isSym else per(has(col), 0.5)
+    return col.mode if hasattr(col, &#34;isSym&#34;) else per(has(col), 0.5)
 
 def div(col):
     &#34;&#34;&#34;
-    Function:
-        mid
-    Description:
-        Returns standard deviation of col
+    Function Name: 
+        div
+    Description: 
+        This function computes the div value of a given column.
     Input:
-        col - col to find deviation of
+        col: an instance of the COL class which represents the column to compute the div value for.
     Output:
-        Standard deviation of a col
+        Returns the computed div value.
     &#34;&#34;&#34;
-    if hasattr(col, &#34;isSym&#34;) and col.isSym:
+    if hasattr(col, &#34;isSym&#34;):
         e = 0
         if isinstance(col.has, dict):
             for n in col.has.values():
@@ -311,30 +317,30 @@ cols - cols to use as the data for distance</p>
 <span>def <span class="ident">div</span></span>(<span>col)</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>mid</p>
-<h2 id="description">Description</h2>
-<p>Returns standard deviation of col</p>
+<div class="desc"><p>Function Name:
+div
+Description:
+This function computes the div value of a given column.</p>
 <h2 id="input">Input</h2>
-<p>col - col to find deviation of</p>
+<p>col: an instance of the COL class which represents the column to compute the div value for.</p>
 <h2 id="output">Output</h2>
-<p>Standard deviation of a col</p></div>
+<p>Returns the computed div value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def div(col):
     &#34;&#34;&#34;
-    Function:
-        mid
-    Description:
-        Returns standard deviation of col
+    Function Name: 
+        div
+    Description: 
+        This function computes the div value of a given column.
     Input:
-        col - col to find deviation of
+        col: an instance of the COL class which represents the column to compute the div value for.
     Output:
-        Standard deviation of a col
+        Returns the computed div value.
     &#34;&#34;&#34;
-    if hasattr(col, &#34;isSym&#34;) and col.isSym:
+    if hasattr(col, &#34;isSym&#34;):
         e = 0
         if isinstance(col.has, dict):
             for n in col.has.values():
@@ -354,11 +360,15 @@ cols - cols to use as the data for distance</p>
 <div class="desc"><h2 id="function">Function</h2>
 <p>has</p>
 <h2 id="description">Description</h2>
-<p>Returns has on col</p>
-<h2 id="input">Input</h2>
-<p>col - col to retrieve has from</p>
-<h2 id="output">Output</h2>
-<p>col.has</p></div>
+<p>If the column has not been processed before (i.e. col.ok is False),
+this function extracts the unique values in the column and sorts them.
+The sorted values are stored in the col.has attribute of the input object.
+The col.ok attribute is set to True to indicate that the column has been processed before.
+The function then returns col.has.</p>
+<h2 id="inputs">Inputs</h2>
+<p>col: an object representing a column of data</p>
+<h2 id="outputs">Outputs</h2>
+<p>col.has: a sorted dictionary or list of the unique values in the column</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -368,11 +378,15 @@ cols - cols to use as the data for distance</p>
     Function:
         has
     Description:
-        Returns has on col
-    Input:
-        col - col to retrieve has from
-    Output:
-        col.has
+        If the column has not been processed before (i.e. col.ok is False), 
+        this function extracts the unique values in the column and sorts them.
+        The sorted values are stored in the col.has attribute of the input object.
+        The col.ok attribute is set to True to indicate that the column has been processed before.
+        The function then returns col.has.
+    Inputs:
+        col: an object representing a column of data
+    Outputs:
+        col.has: a sorted dictionary or list of the unique values in the column
     &#34;&#34;&#34;
     if not hasattr(col, &#34;isSym&#34;) and not col.ok:
         if isinstance(col.has, dict):
@@ -390,11 +404,13 @@ cols - cols to use as the data for distance</p>
 <div class="desc"><h2 id="function">Function</h2>
 <p>mid</p>
 <h2 id="description">Description</h2>
-<p>Returns median of col</p>
-<h2 id="input">Input</h2>
-<p>col - col to find median of</p>
+<p>If the input column is symbolic, the function returns the mode value of the column.
+If the input column is numeric, the function returns the value at the 50th percentile of the column's distribution.
+Input parameters:
+col: column object to calculate the middle value from</p>
 <h2 id="output">Output</h2>
-<p>col.mode if col col has isSym and is true, otherwise return the middle value in col</p></div>
+<p>Returns the mode value of the input column if it's a symbolic column, or the value at the 50th percentile
+if it's a numeric column.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -404,13 +420,15 @@ cols - cols to use as the data for distance</p>
     Function:
         mid
     Description:
-        Returns median of col
-    Input:
-        col - col to find median of
+        If the input column is symbolic, the function returns the mode value of the column.
+        If the input column is numeric, the function returns the value at the 50th percentile of the column&#39;s distribution.
+    Input parameters:
+        col: column object to calculate the middle value from
     Output:
-        col.mode if col col has isSym and is true, otherwise return the middle value in col
+        Returns the mode value of the input column if it&#39;s a symbolic column, or the value at the 50th percentile 
+        if it&#39;s a numeric column.
     &#34;&#34;&#34;
-    return col.mode if hasattr(col, &#34;isSym&#34;) and col.isSym else per(has(col), 0.5)</code></pre>
+    return col.mode if hasattr(col, &#34;isSym&#34;) else per(has(col), 0.5)</code></pre>
 </details>
 </dd>
 <dt id="src.query.norm"><code class="name flex">

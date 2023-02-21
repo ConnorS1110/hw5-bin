@@ -32,6 +32,23 @@ import miscellaneous as misc
 import random
 
 def row(data, t):
+    &#34;&#34;&#34;
+    Function: 
+        row
+    Description:
+        Adds a row t to the data object. If the data.cols attribute 
+        is already set, it adds the row to the data.rows list and updates 
+        the columns of the data.cols object using the add function. If 
+        data.cols is not set, it creates a new data.cols object using the 
+        COLS class and then adds the row and updates the columns of the new 
+        data.cols object.
+
+    Input:
+        data: an object of the DATA class
+        t: a list representing a row to be added to data
+    Output:
+        data: an updated object of the DATA class
+    &#34;&#34;&#34;
     if data.cols:
         data.rows.append(t)
         for cols in [data.cols.x, data.cols.y]:
@@ -43,6 +60,23 @@ def row(data, t):
 
 
 def add(col, x, n = 1):
+    &#34;&#34;&#34;
+    Function: 
+        add
+    Description:
+        Updates the col object based on the given value x. If x is not &#34;?&#34;, 
+        it increments the col.n attribute by n and if the column is symbolic, 
+        it updates the col.has dictionary with the count of the x value. 
+        If the column is numeric, it updates the col.lo and col.hi attributes 
+        and if the number of unique values in the col.has dictionary is less 
+        than util.args.Max, it adds the x value to the col.has dictionary. 
+        Otherwise, it has a probability of util.args.Max / col.n to add the x value to the col.has dictionary.
+    Input:
+        col: an object of the NUM or SYM class
+        x: a value to be added to the column col
+        n (optional): a positive integer representing the count of x in the data. Default is 1.
+    Output: None
+    &#34;&#34;&#34;
     if x != &#34;?&#34;:
         col.n += n # Source of variable &#39;n&#39;
         if hasattr(col, &#34;isSym&#34;) and col.isSym:
@@ -69,11 +103,33 @@ def add(col, x, n = 1):
                 col.ok = False
 
 def adds(col, t):
+    &#34;&#34;&#34;
+    Function: 
+        adds
+    Description:
+        Iterates over the values in the list t and calls the add function to update the col object for each value.
+    Input:
+        col: an object of the NUM or SYM class
+        t: a list of values to be added to the col object
+    Output:
+        col: an updated object of the NUM or SYM class
+    &#34;&#34;&#34;
     for value in t or []:
         add(col, value)
     return col
 
 def extend(range, n, s):
+    &#34;&#34;&#34;
+    Function: 
+        extend
+    Description:
+        Updates the range object with a new minimum and maximum value n, and adds the string s to the range.y column using the add function.
+    Input:
+        range: an object of the RANGE class
+        n: a numeric value to be added to range
+        s: a string value to be added to range.y
+    Output: None
+    &#34;&#34;&#34;
     range.lo = min(n, range.lo)
     range.hi = max(n, range.hi)
     add(range.y, s)</code></pre>
@@ -90,12 +146,43 @@ def extend(range, n, s):
 <span>def <span class="ident">add</span></span>(<span>col, x, n=1)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function:
+add</p>
+<h2 id="description">Description</h2>
+<p>Updates the col object based on the given value x. If x is not "?",
+it increments the col.n attribute by n and if the column is symbolic,
+it updates the col.has dictionary with the count of the x value.
+If the column is numeric, it updates the col.lo and col.hi attributes
+and if the number of unique values in the col.has dictionary is less
+than util.args.Max, it adds the x value to the col.has dictionary.
+Otherwise, it has a probability of util.args.Max / col.n to add the x value to the col.has dictionary.</p>
+<h2 id="input">Input</h2>
+<p>col: an object of the NUM or SYM class
+x: a value to be added to the column col
+n (optional): a positive integer representing the count of x in the data. Default is 1.
+Output: None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add(col, x, n = 1):
+    &#34;&#34;&#34;
+    Function: 
+        add
+    Description:
+        Updates the col object based on the given value x. If x is not &#34;?&#34;, 
+        it increments the col.n attribute by n and if the column is symbolic, 
+        it updates the col.has dictionary with the count of the x value. 
+        If the column is numeric, it updates the col.lo and col.hi attributes 
+        and if the number of unique values in the col.has dictionary is less 
+        than util.args.Max, it adds the x value to the col.has dictionary. 
+        Otherwise, it has a probability of util.args.Max / col.n to add the x value to the col.has dictionary.
+    Input:
+        col: an object of the NUM or SYM class
+        x: a value to be added to the column col
+        n (optional): a positive integer representing the count of x in the data. Default is 1.
+    Output: None
+    &#34;&#34;&#34;
     if x != &#34;?&#34;:
         col.n += n # Source of variable &#39;n&#39;
         if hasattr(col, &#34;isSym&#34;) and col.isSym:
@@ -126,12 +213,31 @@ def extend(range, n, s):
 <span>def <span class="ident">adds</span></span>(<span>col, t)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function:
+adds</p>
+<h2 id="description">Description</h2>
+<p>Iterates over the values in the list t and calls the add function to update the col object for each value.</p>
+<h2 id="input">Input</h2>
+<p>col: an object of the NUM or SYM class
+t: a list of values to be added to the col object</p>
+<h2 id="output">Output</h2>
+<p>col: an updated object of the NUM or SYM class</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def adds(col, t):
+    &#34;&#34;&#34;
+    Function: 
+        adds
+    Description:
+        Iterates over the values in the list t and calls the add function to update the col object for each value.
+    Input:
+        col: an object of the NUM or SYM class
+        t: a list of values to be added to the col object
+    Output:
+        col: an updated object of the NUM or SYM class
+    &#34;&#34;&#34;
     for value in t or []:
         add(col, value)
     return col</code></pre>
@@ -141,12 +247,31 @@ def extend(range, n, s):
 <span>def <span class="ident">extend</span></span>(<span>range, n, s)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function:
+extend</p>
+<h2 id="description">Description</h2>
+<p>Updates the range object with a new minimum and maximum value n, and adds the string s to the range.y column using the add function.</p>
+<h2 id="input">Input</h2>
+<p>range: an object of the RANGE class
+n: a numeric value to be added to range
+s: a string value to be added to range.y
+Output: None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def extend(range, n, s):
+    &#34;&#34;&#34;
+    Function: 
+        extend
+    Description:
+        Updates the range object with a new minimum and maximum value n, and adds the string s to the range.y column using the add function.
+    Input:
+        range: an object of the RANGE class
+        n: a numeric value to be added to range
+        s: a string value to be added to range.y
+    Output: None
+    &#34;&#34;&#34;
     range.lo = min(n, range.lo)
     range.hi = max(n, range.hi)
     add(range.y, s)</code></pre>
@@ -156,12 +281,42 @@ def extend(range, n, s):
 <span>def <span class="ident">row</span></span>(<span>data, t)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Function:
+row</p>
+<h2 id="description">Description</h2>
+<p>Adds a row t to the data object. If the data.cols attribute
+is already set, it adds the row to the data.rows list and updates
+the columns of the data.cols object using the add function. If
+data.cols is not set, it creates a new data.cols object using the
+COLS class and then adds the row and updates the columns of the new
+data.cols object.</p>
+<h2 id="input">Input</h2>
+<p>data: an object of the DATA class
+t: a list representing a row to be added to data</p>
+<h2 id="output">Output</h2>
+<p>data: an updated object of the DATA class</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def row(data, t):
+    &#34;&#34;&#34;
+    Function: 
+        row
+    Description:
+        Adds a row t to the data object. If the data.cols attribute 
+        is already set, it adds the row to the data.rows list and updates 
+        the columns of the data.cols object using the add function. If 
+        data.cols is not set, it creates a new data.cols object using the 
+        COLS class and then adds the row and updates the columns of the new 
+        data.cols object.
+
+    Input:
+        data: an object of the DATA class
+        t: a list representing a row to be added to data
+    Output:
+        data: an updated object of the DATA class
+    &#34;&#34;&#34;
     if data.cols:
         data.rows.append(t)
         for cols in [data.cols.x, data.cols.y]:

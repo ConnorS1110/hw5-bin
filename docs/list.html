@@ -63,18 +63,20 @@ def any(t):
 
 def per(t, p):
     &#34;&#34;&#34;
-    Function:
+    Function: 
         per
     Description:
-        Selects a random row based off a given probability
-    Input:
-        t - DATA object
-        p - probability
-    Output:
-        Row from t based on probability p
+        Returns the value at the specified percentile of the input list t. 
+        If the percentile value p is not provided, the default value of 0.5 is used.
+        The percentile calculation is performed using the median method.
+    Inputs:
+        t: a list of values
+        p: a value representing the percentile (default is 0.5 if not provided)
+    Outputs:
+        The value at the pth percentile of t.
     &#34;&#34;&#34;
-    p = math.floor(((p or 0.5) * len(t)))
-    return t[max(0, min(len(t), p))]
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]
 
 def kap(listOfCols, fun):
     &#34;&#34;&#34;
@@ -96,17 +98,23 @@ def kap(listOfCols, fun):
 
 def slice(t, go = None, stop = None, inc = None):
     &#34;&#34;&#34;
-    Function:
+    Function name: 
         slice
-    Description:
-        Returns a slice of data
-    Input:
-        t - data to slice
-        go - start point
-        stop - stop point
-        inc - increment amount
+
+    Description: 
+        This function takes a list t and returns a slice of it based on 
+        the provided parameters. The go parameter specifies the starting 
+        index of the slice (default is 1), the stop parameter specifies 
+        the ending index of the slice (default is len(t)), and the inc 
+        parameter specifies the step size (default is 1).
+
+    Parameters:
+        t: list to be sliced
+        go: starting index of the slice (default is 1)
+        stop: ending index of the slice (default is len(t))
+        inc: step size (default is 1)
     Output:
-        u - Sliced data
+        A list containing the sliced elements of t.
     &#34;&#34;&#34;
     if go and go &lt; 0:
         go = len(t) - 1 + go
@@ -231,67 +239,81 @@ n - Number of row samples</p>
 <span>def <span class="ident">per</span></span>(<span>t, p)</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>per</p>
+<div class="desc"><p>Function:
+per</p>
 <h2 id="description">Description</h2>
-<p>Selects a random row based off a given probability</p>
-<h2 id="input">Input</h2>
-<p>t - DATA object
-p - probability</p>
-<h2 id="output">Output</h2>
-<p>Row from t based on probability p</p></div>
+<p>Returns the value at the specified percentile of the input list t.
+If the percentile value p is not provided, the default value of 0.5 is used.
+The percentile calculation is performed using the median method.</p>
+<h2 id="inputs">Inputs</h2>
+<p>t: a list of values
+p: a value representing the percentile (default is 0.5 if not provided)</p>
+<h2 id="outputs">Outputs</h2>
+<p>The value at the pth percentile of t.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def per(t, p):
     &#34;&#34;&#34;
-    Function:
+    Function: 
         per
     Description:
-        Selects a random row based off a given probability
-    Input:
-        t - DATA object
-        p - probability
-    Output:
-        Row from t based on probability p
+        Returns the value at the specified percentile of the input list t. 
+        If the percentile value p is not provided, the default value of 0.5 is used.
+        The percentile calculation is performed using the median method.
+    Inputs:
+        t: a list of values
+        p: a value representing the percentile (default is 0.5 if not provided)
+    Outputs:
+        The value at the pth percentile of t.
     &#34;&#34;&#34;
-    p = math.floor(((p or 0.5) * len(t)))
-    return t[max(0, min(len(t), p))]</code></pre>
+    p = math.floor(((p or 0.5) * len(t)) + 0.5)
+    return t[max(1, min(len(t), p))]</code></pre>
 </details>
 </dd>
 <dt id="src.list.slice"><code class="name flex">
 <span>def <span class="ident">slice</span></span>(<span>t, go=None, stop=None, inc=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="function">Function</h2>
-<p>slice</p>
-<h2 id="description">Description</h2>
-<p>Returns a slice of data</p>
-<h2 id="input">Input</h2>
-<p>t - data to slice
-go - start point
-stop - stop point
-inc - increment amount</p>
+<div class="desc"><p>Function name:
+slice</p>
+<p>Description:
+This function takes a list t and returns a slice of it based on
+the provided parameters. The go parameter specifies the starting
+index of the slice (default is 1), the stop parameter specifies
+the ending index of the slice (default is len(t)), and the inc
+parameter specifies the step size (default is 1).</p>
+<h2 id="parameters">Parameters</h2>
+<p>t: list to be sliced
+go: starting index of the slice (default is 1)
+stop: ending index of the slice (default is len(t))
+inc: step size (default is 1)</p>
 <h2 id="output">Output</h2>
-<p>u - Sliced data</p></div>
+<p>A list containing the sliced elements of t.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def slice(t, go = None, stop = None, inc = None):
     &#34;&#34;&#34;
-    Function:
+    Function name: 
         slice
-    Description:
-        Returns a slice of data
-    Input:
-        t - data to slice
-        go - start point
-        stop - stop point
-        inc - increment amount
+
+    Description: 
+        This function takes a list t and returns a slice of it based on 
+        the provided parameters. The go parameter specifies the starting 
+        index of the slice (default is 1), the stop parameter specifies 
+        the ending index of the slice (default is len(t)), and the inc 
+        parameter specifies the step size (default is 1).
+
+    Parameters:
+        t: list to be sliced
+        go: starting index of the slice (default is 1)
+        stop: ending index of the slice (default is len(t))
+        inc: step size (default is 1)
     Output:
-        u - Sliced data
+        A list containing the sliced elements of t.
     &#34;&#34;&#34;
     if go and go &lt; 0:
         go = len(t) - 1 + go
